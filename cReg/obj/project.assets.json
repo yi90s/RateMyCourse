@@ -8,23 +8,23 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "C:\\Users\\chawx\\.nuget\\packages\\": {},
+    "C:\\Users\\malha\\.nuget\\packages\\": {},
     "C:\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chawx\\OneDrive\\Documents\\COMP\\cReg\\Gr8Group\\cReg\\cReg.csproj",
+      "projectUniqueName": "E:\\GithubRepos\\Gr8Group\\cReg\\cReg.csproj",
       "projectName": "cReg",
-      "projectPath": "C:\\Users\\chawx\\OneDrive\\Documents\\COMP\\cReg\\Gr8Group\\cReg\\cReg.csproj",
-      "packagesPath": "C:\\Users\\chawx\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chawx\\OneDrive\\Documents\\COMP\\cReg\\Gr8Group\\cReg\\obj\\",
+      "projectPath": "E:\\GithubRepos\\Gr8Group\\cReg\\cReg.csproj",
+      "packagesPath": "C:\\Users\\malha\\.nuget\\packages\\",
+      "outputPath": "E:\\GithubRepos\\Gr8Group\\cReg\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\"
       ],
       "configFilePaths": [
-        "C:\\Users\\chawx\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\malha\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
