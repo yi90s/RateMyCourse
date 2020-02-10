@@ -26,12 +26,24 @@ namespace cReg_WebApp.Controllers
             this.minor = minor;
         }
 
-        void addCourseToShortlist(Course course)
+        public Boolean addCourseToShortlist(Course course)
         {
+            //To prevent duplicates
+            Boolean result = false;
+            foreach (var cor in shortlist)
+            {
+                if (cor.id == course.id)
+                {
+                    shortlist.Remove(cor);
+                    result = true;
+                    break;
+                }
+            }
             shortlist.Add(course);
+            return result;
         }
 
-        List<Course> getShortlist()
+        public List<Course> getShortlist()
         {
             return shortlist;
         }
