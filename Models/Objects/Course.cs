@@ -7,10 +7,10 @@ namespace cReg_WebApp.Controllers
 {
     public class Course
     {
-        private String name;
-        private int id;
-        private int sectionid;
-        private String desc;
+        public String name { get; }
+        public int id { get; }
+        public int sectionid { get; }
+        public String desc { get; }
 
         public Course(String name, int id, String desc)
         {

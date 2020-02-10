@@ -7,11 +7,11 @@ namespace cReg_WebApp.Controllers
 {
     public class Student
     {
-        private String name;
-        private int id;
-        private Faculty major { get; set; }
-        private Faculty minor { get; set; }
-        private List<Course> shortlist = new List<Course>();
+        public String name { get; }
+        public int id { get; }
+        public Faculty major { get; set; }
+        public Faculty minor { get; set; }
+        List<Course> shortlist = new List<Course>();
 
         public Student (String name, int id)
         {
