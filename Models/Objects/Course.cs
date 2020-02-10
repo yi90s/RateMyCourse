@@ -9,12 +9,20 @@ namespace cReg_WebApp.Controllers
     {
         private String name;
         private int id;
+        private int sectionid;
         private String desc;
 
-        public Course (String name, int id, String desc)
+        public Course(String name, int id, String desc)
         {
             this.name = name;
             this.id = id;
+            this.desc = desc;
+        }
+        public Course (String name, int id, int sectionid, String desc)
+        {
+            this.name = name;
+            this.id = id;
+            this.sectionid = sectionid;
             this.desc = desc;
         }
     }

@@ -21,5 +21,10 @@ namespace cReg_WebApp.Controllers
         {
             courseSet.Add(course);
         }
+
+        public void removeFromCourseSet(Course course)
+        {
+            courseSet.Remove(course);
+        }
     }
 }

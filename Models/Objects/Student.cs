@@ -11,6 +11,7 @@ namespace cReg_WebApp.Controllers
         private int id;
         private Faculty major { get; set; }
         private Faculty minor { get; set; }
+        private List<Course> shortlist = new List<Course>();
 
         public Student (String name, int id)
         {
@@ -23,6 +24,16 @@ namespace cReg_WebApp.Controllers
             this.id = id;
             this.major = major;
             this.minor = minor;
+        }
+
+        void addCourseToShortlist(Course course)
+        {
+            shortlist.Add(course);
+        }
+
+        List<Course> getShortlist()
+        {
+            return shortlist;
         }
     }
 }
