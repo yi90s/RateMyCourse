@@ -7,9 +7,9 @@ namespace cReg_WebApp.Controllers
 {
     public class Course
     {
-        String name;
-        int id;
-        String desc;
+        private String name;
+        private int id;
+        private String desc;
 
         public Course (String name, int id, String desc)
         {

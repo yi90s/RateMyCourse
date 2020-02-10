@@ -5,6 +5,10 @@
     <RootNamespace>cReg_WebApp</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Logic\" />
+  </ItemGroup>
+
 
 
 </Project>
