@@ -18,6 +18,10 @@ namespace cReg_WebApp.Controllers
             this.id = id;
         }
 
+        public List<Course> getCoursesOffered()
+        {
+            return courseSet;
+        }
         public Boolean addToCourseSet(Course course)
         {
             //To prevent duplicates
@@ -38,6 +42,11 @@ namespace cReg_WebApp.Controllers
         public void removeFromCourseSet(Course course)
         {
             courseSet.Remove(course);
+        }
+
+        public List<Student> getStudents()
+        {
+            return studentSet;
         }
 
         public Boolean addStudentToFaculty(Student student)
