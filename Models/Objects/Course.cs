@@ -1,74 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace cReg_WebApp.Controllers
 {
     public class Course
     {
-        public String name { get; }
-        public int id { get; }
-        public int sectionid { get; }
-        public String desc { get; }
-        public List<Course> preReqs;
+        public string Name { get; }
+        public int Id { get; }
+        public int SectionId { get; }
+        public string Desc { get; }
+        public List<Course> PreReqs = null;
 
-        public Course(String name, int id, String desc)
+        public Course(string name, int id, string desc)
         {
-            this.name = name;
-            this.id = id;
-            this.desc = desc;
-            preReqs = null;
-        }
-        public Course (String name, int id, int sectionid, String desc)
-        {
-            this.name = name;
-            this.id = id;
-            this.sectionid = sectionid;
-            this.desc = desc;
-            preReqs = null;
+            Name = name;
+            Id = id;
+            Desc = desc;
         }
 
-        public Course(String name, int id, int sectionid, String desc, List<Course> preReqs)
+        public Course(string name, int id, int sectionId, string desc) : this(name, id, desc)
         {
-            this.name = name;
-            this.id = id;
-            this.sectionid = sectionid;
-            this.desc = desc;
-            this.preReqs = preReqs;
+            SectionId = sectionId;
         }
 
-        public Boolean addPreReq(Course course)
+        public Course(string name, int id, int sectionId, string desc, List<Course> preReqs) : this(name, id, sectionId, desc)
+        {
+            PreReqs = preReqs;
+        }
+
+        public bool AddPreReq(Course course)
         {
             //To prevent duplicates
-            Boolean result = false;
-            if (preReqs != null)
+            bool result = false;
+            if (PreReqs != null)
             {
-                foreach (var cor in preReqs)
+                foreach (var cor in PreReqs) if (!result)
                 {
-                    if (cor.id == course.id)
+                    if (cor.Id == course.Id)
                     {
-                        preReqs.Remove(cor);
+                        PreReqs.Remove(cor);
                         result = true;
-                        break;
                     }
                 }
-            } else //the list is null, and needs to be initialized
-            {
-                preReqs = new List<Course>();
             }
-            preReqs.Add(course);
+            else //the list is null, and needs to be initialized
+            {
+                PreReqs = new List<Course>();
+            }
+            PreReqs.Add(course);
             return result;
         }
 
-        public void removePreReq(Course course)
+        public void RemovePreReq(Course course)
         {
-            preReqs.Remove(course);
+            PreReqs.Remove(course);
         }
 
-        public List<Course> getPreReqs()
+        public List<Course> GetPreReqs()
         {
-            return preReqs;
+            return PreReqs;
         }
     }
 }

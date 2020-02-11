@@ -1,74 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cReg_WebApp.Controllers
 {
     public class Faculty
     {
-        public String name { get; }
-        public int id { get; }
-        private List<Course> courseSet = new List<Course>();
-        private List<Student> studentSet = new List<Student>();
+        public string Name { get; }
+        public int Id { get; }
+        private List<Course> CourseSet = new List<Course>();
+        private List<Student> StudentSet = new List<Student>();
 
-        public Faculty(String name, int id)
+        public Faculty(string name, int id)
         {
-            this.name = name;
-            this.id = id;
+            Name = name;
+            Id = id;
         }
 
-        public List<Course> getCoursesOffered()
-        {
-            return courseSet;
-        }
-        public Boolean addToCourseSet(Course course)
+        public bool AddToCourseSet(Course course)
         {
             //To prevent duplicates
-            Boolean result = false;
-            foreach (var cor in courseSet)
-            {
-                if (cor.id == course.id)
+            bool result = false;
+            foreach (var cor in CourseSet) if (!result)
                 {
-                    courseSet.Remove(cor);
-                    result = true;
-                    break;
+                    if (cor.Id == course.Id)
+                    {
+                        CourseSet.Remove(cor);
+                        result = true;
+                    }
                 }
-            }
-            courseSet.Add(course);
+            CourseSet.Add(course);
             return result;
         }
 
-        public void removeFromCourseSet(Course course)
+        public void RemoveFromCourseSet(Course course)
         {
-            courseSet.Remove(course);
+            CourseSet.Remove(course);
         }
 
-        public List<Student> getStudents()
+        public List<Student> GetStudents()
         {
-            return studentSet;
+            return StudentSet;
         }
 
-        public Boolean addStudentToFaculty(Student student)
+        public List<Course> GetCoursesOffered()
+        {
+            return CourseSet;
+        }
+
+        public bool AddStudentToFaculty(Student student)
         {
             //To prevent duplicates
-            Boolean result = false;
-            foreach (var stu in studentSet)
-            {
-                if (stu.id == student.id)
+            bool result = false;
+            foreach (var stu in StudentSet) if (!result)
                 {
-                    studentSet.Remove(stu);
-                    result = true;
-                    break;
+                    if (stu.Id == student.Id)
+                    {
+                        StudentSet.Remove(stu);
+                        result = true;
+                    }
                 }
-            }
-            studentSet.Add(student);
+            StudentSet.Add(student);
             return result;
         }
 
-        public void removeStudentFromFaculty(Student student)
+        public void RemoveStudentFromFaculty(Student student)
         {
-            studentSet.Remove(student);
+            StudentSet.Remove(student);
         }
     }
 }

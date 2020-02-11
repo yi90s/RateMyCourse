@@ -1,82 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace cReg_WebApp.Controllers
 {
     public class Student
     {
-        public String name { get; }
-        public int id { get; }
-        public Faculty major { get; set; }
-        public Faculty minor { get; set; }
-        public int currYear { get; set; }
-        List<Course> shortlist = new List<Course>();
-        List<Course> completedCourses = new List<Course>();
+        public string Name { get; }
+        public int Id { get; }
+        public Faculty Major { get; set; }
+        public Faculty Minor { get; set; }
+        public int CurrYear { get; set; }
+        List<Course> Shortlist => new List<Course>();
+        List<Course> CompletedCourses => new List<Course>();
 
-        public Student (String name, int id, int currYear)
+        public Student (string name, int id, int currYear)
         {
-            this.name = name;
-            this.id = id;
-            this.currYear = currYear;
+            Name = name;
+            Id = id;
+            CurrYear = currYear;
         }
-        public Student (String name, int id, int currYear, Faculty major, Faculty minor)
+        public Student (string name, int id, int currYear, Faculty major, Faculty minor)
         {
-            this.name = name;
-            this.id = id;
-            this.currYear = currYear;
-            this.major = major;
-            this.minor = minor;
+            Name = name;
+            Id = id;
+            CurrYear = currYear;
+            Major = major;
+            Minor = minor;
         }
 
-        public Boolean addCourseToCompleted(Course course)
+        public bool AddCourseToCompleted(Course course)
         {
             //To prevent duplicates
-            Boolean result = false;
-            foreach (var cor in completedCourses)
+            bool result = false;
+            foreach (var cor in CompletedCourses) if (!result)
             {
-                if (cor.id == course.id)
+                if (cor.Id == course.Id)
                 {
-                    shortlist.Remove(cor);
+                    Shortlist.Remove(cor);
                     result = true;
-                    break;
                 }
             }
-            shortlist.Add(course);
+            Shortlist.Add(course);
             return result;
         }
 
-        public List<Course> getCompletedCourses()
+        public List<Course> GetCompletedCourses()
         {
-            return completedCourses;
+            return CompletedCourses;
         }
 
-        public Boolean addCourseToShortlist(Course course)
+        public bool AddCourseToShortlist(Course course)
         {
             //To prevent duplicates
-            Boolean result = false;
-            foreach (var cor in shortlist)
+            bool result = false;
+            foreach (var cor in Shortlist) if (!result)
             {
-                if (cor.id == course.id)
+                if (cor.Id == course.Id)
                 {
-                    shortlist.Remove(cor);
+                    Shortlist.Remove(cor);
                     result = true;
-                    break;
                 }
             }
-            shortlist.Add(course);
+            Shortlist.Add(course);
             return result;
         }
 
-        public void removeCourseFromShortlist(Course course)
+        public void RemoveCourseFromShortlist(Course course)
         {
-            shortlist.Remove(course);
+            Shortlist.Remove(course);
         }
 
-        public List<Course> getShortlist()
+        public List<Course> GetShortlist()
         {
-            return shortlist;
+            return Shortlist;
         }
     }
 }
