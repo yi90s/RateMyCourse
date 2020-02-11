@@ -1,4 +1,5 @@
 ﻿using cReg_WebApp.Controllers;
+using cReg_WebApp.Models.Objects;
 using System;
 using System.Data.SqlClient;
 
@@ -12,7 +13,10 @@ namespace cReg_WebApp.Models.SQL
         public static void Initialize()
         {
             sqlConnection = new SqlConnection(
-                "Data Source=creg-database.coomsiajgib6.us-east-2.rds.amazonaws.com;Initial Catalog=creg_dev;User ID=admin;Password=ukNyE!S^12f!ByY&");
+                "Data Source=creg-database.coomsiajgib6.us-east-2.rds.amazonaws.com;" +
+                "Initial Catalog=creg_dev;" +
+                "User ID=admin;" +
+                "Password=ukNyE!S^12f!ByY&");
         }
 
         public static void InsertStudentIntoTable(Student student)
@@ -28,13 +32,37 @@ namespace cReg_WebApp.Models.SQL
             var command = sqlConnection.CreateCommand();
             command.CommandType = System.Data.CommandType.StoredProcedure;
             command.CommandText = "dbo.InsertStudent";
-            command.Parameters.AddWithValue("@StudentID", student.Id.ToString());
-            command.Parameters.AddWithValue("@StudentName", student.Name);
-            _ = student.Major != null ? command.Parameters.AddWithValue("@MajorFacultyName", student.Major.Name) : command.Parameters.AddWithValue("@MajorFacultyName", DBNull.Value);
-            _ = student.Major != null ? command.Parameters.AddWithValue("@MajorFacultyID", student.Major.Id) : command.Parameters.AddWithValue("@MajorFacultyID", DBNull.Value);
-            _ = student.Minor != null ? command.Parameters.AddWithValue("@MinorFacultyName", student.Minor.Name) : command.Parameters.AddWithValue("@MinorFacultyName", DBNull.Value);
-            _ = student.Minor != null ? command.Parameters.AddWithValue("@MinorFacultyID", student.Minor.Id) : command.Parameters.AddWithValue("@MinorFacultyID", DBNull.Value);
+            command.Parameters.AddWithValue("@StudentID", student.id.ToString());
+            command.Parameters.AddWithValue("@StudentName", student.name);
+            _ = student.major != null ? command.Parameters.AddWithValue("@MajorFacultyID", student.major.id) : command.Parameters.AddWithValue("@MajorFacultyID", DBNull.Value);
+            _ = student.minor != null ? command.Parameters.AddWithValue("@MinorFacultyID", student.minor.id) : command.Parameters.AddWithValue("@MinorFacultyID", DBNull.Value);
             command.Parameters.AddWithValue("@ShortlistID", DBNull.Value); // TODO : Decide how to implement Shortlist (if it needs unique ID etc.) - for now this is null
+            return command;
+        }
+
+        public static SqlCommand CreateInsertCourseCommand(Course course)
+        {
+            var command = sqlConnection.CreateCommand();
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandText = "dbo.InsertCourse";
+            command.Parameters.AddWithValue("@CourseID", course.id.ToString());
+            command.Parameters.AddWithValue("@CourseName", course.name);
+            command.Parameters.AddWithValue("@CourseSectionID", course.sectionId);
+            _ = course.desc != null ? command.Parameters.AddWithValue("@CourseDesc", course.desc) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
+            _ = course.preReqs != null ? command.Parameters.AddWithValue("@CoursePreReqs", course.preReqs) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
+            return command;
+        }
+
+        public static SqlCommand CreateInsertFacultyCommand(Course course)
+        {
+            var command = sqlConnection.CreateCommand();
+            command.CommandType = System.Data.CommandType.StoredProcedure;
+            command.CommandText = "dbo.InsertCourse";
+            command.Parameters.AddWithValue("@CourseID", course.id.ToString());
+            command.Parameters.AddWithValue("@CourseName", course.name);
+            command.Parameters.AddWithValue("@CourseSectionID", course.sectionId);
+            _ = course.desc != null ? command.Parameters.AddWithValue("@CourseDesc", course.desc) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
+            _ = course.preReqs != null ? command.Parameters.AddWithValue("@CoursePreReqs", course.preReqs) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
             return command;
         }
     }

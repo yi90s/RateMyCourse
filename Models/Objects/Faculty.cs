@@ -1,65 +1,65 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace cReg_WebApp.Controllers
+namespace cReg_WebApp.Models.Objects
 {
     public class Faculty
     {
-        public string Name { get; }
-        public int Id { get; }
-        private List<Course> CourseSet = new List<Course>();
-        private List<Student> StudentSet = new List<Student>();
+        public string name { get; }
+        public int id { get; }
+        private List<Course> courseSet = new List<Course>();
+        private List<Student> studentSet = new List<Student>();
 
         public Faculty(string name, int id)
         {
-            Name = name;
-            Id = id;
+            this.name = name;
+            this.id = id;
         }
 
         public bool AddToCourseSet(Course course)
         {
             //To prevent duplicates
             bool result = false;
-            foreach (var cor in CourseSet) if (!result)
+            foreach (var cor in courseSet) if (!result)
                 {
-                    if (cor.Id == course.Id)
+                    if (cor.id == course.id)
                     {
-                        CourseSet.Remove(cor);
+                        courseSet.Remove(cor);
                         result = true;
                     }
                 }
-            CourseSet.Add(course);
+            courseSet.Add(course);
             return result;
         }
 
         public void RemoveFromCourseSet(Course course)
         {
-            CourseSet.Remove(course);
+            courseSet.Remove(course);
         }
 
         public List<Student> GetStudents()
         {
-            return StudentSet;
+            return studentSet;
         }
 
         public List<Course> GetCoursesOffered()
         {
-            return CourseSet;
+            return courseSet;
         }
 
         public bool AddStudentToFaculty(Student student)
         {
             //To prevent duplicates
             bool result = false;
-            foreach (var stu in StudentSet) if (!result)
+            foreach (var stu in studentSet) if (!result)
                 {
-                    if (stu.Id == student.Id)
+                    if (stu.id == student.id)
                     {
-                        StudentSet.Remove(stu);
+                        studentSet.Remove(stu);
                         result = true;
                     }
                 }
-            StudentSet.Add(student);
+            studentSet.Add(student);
             return result;
         }
 

@@ -1,30 +1,28 @@
 ﻿using System.Collections.Generic;
 
-namespace cReg_WebApp.Controllers
+namespace cReg_WebApp.Models.Objects
 {
     public class Student
     {
-        public string Name { get; }
-        public int Id { get; }
-        public Faculty Major { get; set; }
-        public Faculty Minor { get; set; }
-        public int CurrYear { get; set; }
-        List<Course> Shortlist => new List<Course>();
+        public string name { get; }
+        public int id { get; }
+        public Faculty major { get; set; }
+        public Faculty minor { get; set; }
+        public int currYear { get; set; }
+        Shortlist shortlist = null;
         List<Course> CompletedCourses => new List<Course>();
 
         public Student (string name, int id, int currYear)
         {
-            Name = name;
-            Id = id;
-            CurrYear = currYear;
+            this.name = name;
+            this.id = id;
+            this.currYear = currYear;
+            this.shortlist = new Shortlist(id);
         }
-        public Student (string name, int id, int currYear, Faculty major, Faculty minor)
+        public Student (string name, int id, int currYear, Faculty major, Faculty minor) : this(name, id, currYear)
         {
-            Name = name;
-            Id = id;
-            CurrYear = currYear;
-            Major = major;
-            Minor = minor;
+            this.major = major;
+            this.minor = minor;
         }
 
         public bool AddCourseToCompleted(Course course)
@@ -33,13 +31,13 @@ namespace cReg_WebApp.Controllers
             bool result = false;
             foreach (var cor in CompletedCourses) if (!result)
             {
-                if (cor.Id == course.Id)
+                if (cor.id == course.id)
                 {
-                    Shortlist.Remove(cor);
+                        CompletedCourses.Remove(cor);
                     result = true;
                 }
             }
-            Shortlist.Add(course);
+            CompletedCourses.Add(course);
             return result;
         }
 
@@ -50,28 +48,17 @@ namespace cReg_WebApp.Controllers
 
         public bool AddCourseToShortlist(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var cor in Shortlist) if (!result)
-            {
-                if (cor.Id == course.Id)
-                {
-                    Shortlist.Remove(cor);
-                    result = true;
-                }
-            }
-            Shortlist.Add(course);
-            return result;
+            return shortlist.AddCourseToShortlist(course);
         }
 
         public void RemoveCourseFromShortlist(Course course)
         {
-            Shortlist.Remove(course);
+            shortlist.RemoveCourseFromShortlist(course);
         }
 
         public List<Course> GetShortlist()
         {
-            return Shortlist;
+            return shortlist.getShortlist();
         }
     }
 }

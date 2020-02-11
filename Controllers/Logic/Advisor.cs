@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cReg_WebApp.Models.Objects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,10 @@ namespace cReg_WebApp.Controllers.Logic
 {
     public class Advisor
     {
-        public List<Course> getRemainingPrerequisites(Student student, Course course)
+        public List<Course> GetRemainingPrerequisites(Student student, Course course)
         {
             List<Course> remainingCourses = new List<Course>();
-            foreach (var cor in course.PreReqs)
+            foreach (var cor in course.preReqs)
             {
                 if (student.GetCompletedCourses().Contains(cor) == false) //the student has not completed this (cor) prerequisite course yet
                 {
@@ -24,15 +25,15 @@ namespace cReg_WebApp.Controllers.Logic
             return null;
         }
 
-        public List<Course> getRecommendedCourses(Student student)
+        public List<Course> GetRecommendedCourses(Student student)
         {
             List<Course> recommendedCourses = new List<Course>();
-            recommendedCourses.AddRange(getCoursesInYear(student.Major.GetCoursesOffered(), student.CurrYear));//returns courses in the major faculty of the same year in the program
-            recommendedCourses.AddRange(getCoursesInYear(student.Minor.GetCoursesOffered(), -1));//returns courses in the minor faculty
+            recommendedCourses.AddRange(getCoursesInYear(student.major.GetCoursesOffered(), student.currYear));//returns courses in the major faculty of the same year in the program
+            recommendedCourses.AddRange(getCoursesInYear(student.minor.GetCoursesOffered(), -1));//returns courses in the minor faculty
             return recommendedCourses;
         }
 
-        private List<Course> getCoursesInYear(List<Course> courses, int year)
+        private List<Course> GetCoursesInYear(List<Course> courses, int year)
         {
             List<Course> result = new List<Course>();
             if (year == -1)
@@ -42,7 +43,7 @@ namespace cReg_WebApp.Controllers.Logic
             {
                 foreach (var cor in courses)
                 {
-                    if (cor.Id >= year * 1000 && cor.Id < (year + 1) * 1000)
+                    if (cor.id >= year * 1000 && cor.id < (year + 1) * 1000)
                     {
                         result.Add(cor);
                     }
