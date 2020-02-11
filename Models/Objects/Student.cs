@@ -10,7 +10,7 @@ namespace cReg_WebApp.Models.Objects
         public Faculty minor { get; set; }
         public int currYear { get; set; }
         Shortlist shortlist = null;
-        List<Course> CompletedCourses => new List<Course>();
+        CompletedCourses completedCourses = null;
 
         public Student (string name, int id, int currYear)
         {
@@ -27,23 +27,12 @@ namespace cReg_WebApp.Models.Objects
 
         public bool AddCourseToCompleted(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var cor in CompletedCourses) if (!result)
-            {
-                if (cor.id == course.id)
-                {
-                        CompletedCourses.Remove(cor);
-                    result = true;
-                }
-            }
-            CompletedCourses.Add(course);
-            return result;
+            return completedCourses.AddCourseToCompleted(course);
         }
 
         public List<Course> GetCompletedCourses()
         {
-            return CompletedCourses;
+            return completedCourses.GetCompletedCourses();
         }
 
         public bool AddCourseToShortlist(Course course)

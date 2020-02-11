@@ -8,13 +8,14 @@ namespace cReg_WebApp.Models.Objects
         public int id { get; }
         public int sectionId { get; }
         public string desc { get; }
-        public List<Course> preReqs = null;
+        PrerequisiteList preReqList = null;
 
         public Course(string name, int id, string desc)
         {
             this.name = name;
             this.id = id;
             this.desc = desc;
+            this.preReqList = new PrerequisiteList(id);
         }
 
         public Course(string name, int id, int sectionId, string desc) : this(name, id, desc)
@@ -22,42 +23,24 @@ namespace cReg_WebApp.Models.Objects
             this.sectionId = sectionId;
         }
 
-        public Course(string name, int id, int sectionId, string desc, List<Course> preReqs) : this(name, id, sectionId, desc)
+        public Course(string name, int id, int sectionId, string desc, PrerequisiteList preReqs) : this(name, id, sectionId, desc)
         {
-            this.preReqs = preReqs;
+            this.preReqList = preReqs;
         }
 
         public bool AddPreReq(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            if (preReqs != null)
-            {
-                foreach (var cor in preReqs) if (!result)
-                {
-                    if (cor.id == course.id)
-                    {
-                        preReqs.Remove(cor);
-                        result = true;
-                    }
-                }
-            }
-            else //the list is null, and needs to be initialized
-            {
-                preReqs = new List<Course>();
-            }
-            preReqs.Add(course);
-            return result;
+            return preReqList.AddPreReq(course);
         }
 
         public void RemovePreReq(Course course)
         {
-            preReqs.Remove(course);
+            preReqList.RemovePreReq(course);
         }
 
         public List<Course> GetPreReqs()
         {
-            return preReqs;
+            return preReqList.GetPreReqs();
         }
     }
 }

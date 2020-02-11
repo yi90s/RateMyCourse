@@ -27,7 +27,23 @@ namespace cReg_WebApp.Models.SQL
             sqlConnection.Close();
         }
 
-        public static SqlCommand CreateInsertStudentCommand(Student student)
+        public static void InsertCourseIntoTable(Course course)
+        {
+            sqlConnection.Open();
+            var insertCourseCommand = CreateInsertCourseCommand(course);
+            insertCourseCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        public static void InsertFacultyIntoTable(Faculty faculty)
+        {
+            sqlConnection.Open();
+            var insertCourseCommand = CreateInsertFacultyCommand(faculty);
+            insertCourseCommand.ExecuteNonQuery();
+            sqlConnection.Close();
+        }
+
+        private static SqlCommand CreateInsertStudentCommand(Student student)
         {
             var command = sqlConnection.CreateCommand();
             command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -36,11 +52,11 @@ namespace cReg_WebApp.Models.SQL
             command.Parameters.AddWithValue("@StudentName", student.name);
             _ = student.major != null ? command.Parameters.AddWithValue("@MajorFacultyID", student.major.id) : command.Parameters.AddWithValue("@MajorFacultyID", DBNull.Value);
             _ = student.minor != null ? command.Parameters.AddWithValue("@MinorFacultyID", student.minor.id) : command.Parameters.AddWithValue("@MinorFacultyID", DBNull.Value);
-            command.Parameters.AddWithValue("@ShortlistID", DBNull.Value); // TODO : Decide how to implement Shortlist (if it needs unique ID etc.) - for now this is null
+
             return command;
         }
 
-        public static SqlCommand CreateInsertCourseCommand(Course course)
+        private static SqlCommand CreateInsertCourseCommand(Course course)
         {
             var command = sqlConnection.CreateCommand();
             command.CommandType = System.Data.CommandType.StoredProcedure;
@@ -49,20 +65,16 @@ namespace cReg_WebApp.Models.SQL
             command.Parameters.AddWithValue("@CourseName", course.name);
             command.Parameters.AddWithValue("@CourseSectionID", course.sectionId);
             _ = course.desc != null ? command.Parameters.AddWithValue("@CourseDesc", course.desc) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
-            _ = course.preReqs != null ? command.Parameters.AddWithValue("@CoursePreReqs", course.preReqs) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
             return command;
         }
 
-        public static SqlCommand CreateInsertFacultyCommand(Course course)
+        public static SqlCommand CreateInsertFacultyCommand(Faculty faculty)
         {
             var command = sqlConnection.CreateCommand();
             command.CommandType = System.Data.CommandType.StoredProcedure;
-            command.CommandText = "dbo.InsertCourse";
-            command.Parameters.AddWithValue("@CourseID", course.id.ToString());
-            command.Parameters.AddWithValue("@CourseName", course.name);
-            command.Parameters.AddWithValue("@CourseSectionID", course.sectionId);
-            _ = course.desc != null ? command.Parameters.AddWithValue("@CourseDesc", course.desc) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
-            _ = course.preReqs != null ? command.Parameters.AddWithValue("@CoursePreReqs", course.preReqs) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
+            command.CommandText = "dbo.InsertFaculty";
+            command.Parameters.AddWithValue("@FacultyID", faculty.id.ToString());
+            command.Parameters.AddWithValue("@FacultyName", faculty.name);
             return command;
         }
     }

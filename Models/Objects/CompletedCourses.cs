@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace cReg_WebApp.Models.Objects
 {
+    //TODO other methods
     public class CompletedCourses
     {
-        int id;
+        int id { get; }
         List<Course> courses = null;
 
         public CompletedCourses(int id)
@@ -28,6 +29,11 @@ namespace cReg_WebApp.Models.Objects
                 }
             courses.Add(course);
             return result;
+        }
+
+        public List<Course> GetCompletedCourses()
+        {
+            return courses;
         }
     }
 }
