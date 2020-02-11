@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using cReg_WebApp.Models;
+using cReg_WebApp.Models.SQL;
 
 namespace cReg_WebApp.Controllers
 {
@@ -20,6 +21,9 @@ namespace cReg_WebApp.Controllers
 
         public IActionResult Index()
         {
+            DatabaseClient.Initialize();
+            var student = new Student("Jimmy Barkley", 9, 4); // this is just to see that it will actually execute properly
+            DatabaseClient.InsertStudentIntoTable(student);
             return View();
         }
 
