@@ -23,7 +23,7 @@ namespace cReg_WebApp.Models.SQL
             sqlConnection.Close();
         }
 
-        public static SqlCommand CreateInsertStudentCommand(Student student)
+        private static SqlCommand CreateInsertStudentCommand(Student student)
         {
             var command = sqlConnection.CreateCommand();
             command.CommandType = System.Data.CommandType.StoredProcedure;
