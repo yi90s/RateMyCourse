@@ -1,6 +1,9 @@
 ##README
 
-This folder will contain all documentation and links to external repositories
+This folder will contain all documentation and links to external repositories\
+
+####The function documentation
+This file will contain all the functions and objects that are created for easy viewing among the group
 
 
 External links
