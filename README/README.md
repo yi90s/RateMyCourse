@@ -16,7 +16,7 @@ Guest sign in:
    *pass:* _u1!'#J*mbkF  
    
 AWS DB account:  
-Sign-in URL: https://765879176423.signin.aws.amazon.com/console
-*User name:* grp8
-*pass:* eEyBfsGeAx#f
+Sign-in URL: https://765879176423.signin.aws.amazon.com/console  
+*User name:* grp8  
+*pass:* eEyBfsGeAx#f  
 
