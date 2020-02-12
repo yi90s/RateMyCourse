@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.SQL;
+using cReg_WebApp.Models.Objects;
 
 namespace cReg_WebApp.Controllers
 {
