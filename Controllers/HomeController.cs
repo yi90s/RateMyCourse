@@ -22,9 +22,8 @@ namespace cReg_WebApp.Controllers
 
         public IActionResult Index()
         {
-            DatabaseClient.Initialize();
-            var student = new Student("Jimmy Barkley", 9, 4); // this is just to see that it will actually execute properly
-            DatabaseClient.InsertStudentIntoTable(student);
+            //var student = new Student("Jimmy Barkley", 9, 4); // this is just to see that it will actually execute properly
+            //DatabaseClient.InsertStudentIntoTable(student);
             return View();
         }
 

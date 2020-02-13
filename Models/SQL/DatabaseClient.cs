@@ -1,4 +1,110 @@
-﻿using cReg_WebApp.Controllers;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
+using cReg_WebApp.Models.Objects;
+
+namespace cReg_WebApp.Models.SQL
+{
+    public static class DatabaseClient
+    {
+        private static readonly string connectionStatement =
+            "Data Source=creg-database.coomsiajgib6.us-east-2.rds.amazonaws.com;" +
+            "Initial Catalog=creg_dev;" +
+            "User ID=admin;" +
+            "Password=ukNyE!S^12f!ByY&";
+
+        public static void AddStudentToSupertable(Student student)
+        {
+            using (var sqlConnection = new SqlConnection(connectionStatement))
+            {
+                sqlConnection.Open();
+                var command = new SqlCommand(null, sqlConnection);
+
+                command.CommandText =
+                    "INSERT INTO Students (StudentID, Name, MajorFacultyID, MinorFacultyID) " +
+                    "VALUES (@StudentID, @Name, @MajorFacultyId, @MinorFacultyId)";
+
+                var studentIdParam = new SqlParameter("@StudentID", SqlDbType.Int, student.id);
+                studentIdParam.Value = student.id;
+                command.Parameters.Add(studentIdParam);
+
+                var nameParam = new SqlParameter("@Name", SqlDbType.Text, student.name.Length);
+                nameParam.Value = student.name;
+                command.Parameters.Add(nameParam);
+
+                var majorFacultyIdParam = new SqlParameter("@MajorFacultyId", SqlDbType.Text, 10);
+                _ = student.major != null ? majorFacultyIdParam.Value = student.major.id.ToString() : majorFacultyIdParam.Value = DBNull.Value.ToString();
+                command.Parameters.Add(majorFacultyIdParam);
+
+                var minorFacultyIdParam = new SqlParameter("@MinorFacultyId", SqlDbType.Text, 10);
+                _ = student.minor != null ? minorFacultyIdParam.Value = student.minor.id.ToString() : minorFacultyIdParam.Value = DBNull.Value.ToString();
+                command.Parameters.Add(minorFacultyIdParam);
+
+                command.Prepare();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static void AddCourseToSupertable(Course course)
+        {
+            using (var sqlConnection = new SqlConnection(connectionStatement))
+            {
+                sqlConnection.Open();
+                var command = new SqlCommand(null, sqlConnection);
+
+                command.CommandText =
+                    "INSERT INTO Courses (CourseID, SectionID, Name, Description) " +
+                    "VALUES (@CourseID, @SectionID, @Name, @Description)";
+
+                var courseIDParam = new SqlParameter("@CourseID", SqlDbType.Text, course.id.Length);
+                courseIDParam.Value = course.id;
+                command.Parameters.Add(courseIDParam);
+
+                var sectionIDParam = new SqlParameter("@SectionID", SqlDbType.Text, course.sectionId.Length);
+                sectionIDParam.Value = course.sectionId;
+                command.Parameters.Add(sectionIDParam);
+
+                var nameParam = new SqlParameter("@Name", SqlDbType.Text, course.name.Length);
+                nameParam.Value = course.name;
+                command.Parameters.Add(nameParam);
+
+                var descParam = new SqlParameter("@Description", SqlDbType.Text, course.desc.Length);
+                descParam.Value = course.name;
+                command.Parameters.Add(descParam);
+
+                command.Prepare();
+                command.ExecuteNonQuery();
+            }
+        }
+
+        public static List<Course> GetListOfAllCourses() {
+            List<Course> courseList = new List<Course>();
+            using (var sqlConnection = new SqlConnection(connectionStatement))
+            {
+                sqlConnection.Open();
+                var command = new SqlCommand(null, sqlConnection);
+
+                command.CommandText =
+                    "SELECT * FROM Courses";
+
+                command.Prepare();
+                using (SqlDataReader reader = command.ExecuteReader())
+                {
+                    while (reader.Read()) {
+                        Course course = new Course(reader.GetString(2), reader.GetString(0), reader.GetString(1), reader.GetString(3));
+                        courseList.Add(course);
+                    }
+                }
+            }
+
+            return courseList;
+        }
+    }
+}
+
+/*
+using cReg_WebApp.Controllers;
 using cReg_WebApp.Models.Objects;
 using System;
 using System.Data.SqlClient;
@@ -79,3 +185,4 @@ namespace cReg_WebApp.Models.SQL
         }
     }
 }
+*/

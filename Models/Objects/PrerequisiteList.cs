@@ -7,10 +7,10 @@ namespace cReg_WebApp.Models.Objects
 {
     public class PrerequisiteList
     {
-        int id { get; }
+        string id { get; }
         List<Course> preReqs = new List<Course>();
 
-        public PrerequisiteList(int id)
+        public PrerequisiteList(string id)
         {
             this.id = id;
         }

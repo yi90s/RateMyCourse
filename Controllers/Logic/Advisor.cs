@@ -28,11 +28,12 @@ namespace cReg_WebApp.Controllers.Logic
         public List<Course> GetRecommendedCourses(Student student)
         {
             List<Course> recommendedCourses = new List<Course>();
-            recommendedCourses.AddRange(GetCoursesInYear(student.major.GetCoursesOffered(), student.currYear));//returns courses in the major faculty of the same year in the program
-            recommendedCourses.AddRange(GetCoursesInYear(student.minor.GetCoursesOffered(), -1));//returns courses in the minor faculty
+            //recommendedCourses.AddRange(GetCoursesInYear(student.major.GetCoursesOffered(), student.currYear));//returns courses in the major faculty of the same year in the program
+            //recommendedCourses.AddRange(GetCoursesInYear(student.minor.GetCoursesOffered(), -1));//returns courses in the minor faculty
             return recommendedCourses;
         }
 
+        /*
         private List<Course> GetCoursesInYear(List<Course> courses, int year)
         {
             List<Course> result = new List<Course>();
@@ -51,5 +52,6 @@ namespace cReg_WebApp.Controllers.Logic
             }
             return result;
         }
+        */
     }
 }
