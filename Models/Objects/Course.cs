@@ -1,14 +1,18 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace cReg_WebApp.Controllers
 {
     public class Course
     {
+        [Key]
+        public int Id { get; set; }
         public string Name { get; }
-        public int Id { get; }
         public int SectionId { get; }
         public string Desc { get; }
         public List<Course> PreReqs = null;
+
+        public Course() { }
 
         public Course(string name, int id, string desc)
         {

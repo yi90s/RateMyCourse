@@ -1,16 +1,20 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace cReg_WebApp.Controllers
 {
     public class Student
     {
+        [Key]
+        public int Id { get; set; }
         public string Name { get; }
-        public int Id { get; }
         public Faculty Major { get; set; }
         public Faculty Minor { get; set; }
         public int CurrYear { get; set; }
         List<Course> Shortlist => new List<Course>();
         List<Course> CompletedCourses => new List<Course>();
+
+        public Student() { }
 
         public Student (string name, int id, int currYear)
         {
