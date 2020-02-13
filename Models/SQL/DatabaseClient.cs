@@ -70,7 +70,7 @@ namespace cReg_WebApp.Models.SQL
                 command.Parameters.Add(nameParam);
 
                 var descParam = new SqlParameter("@Description", SqlDbType.Text, course.desc.Length);
-                descParam.Value = course.name;
+                descParam.Value = course.desc;
                 command.Parameters.Add(descParam);
 
                 command.Prepare();
