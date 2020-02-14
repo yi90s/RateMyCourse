@@ -65,5 +65,31 @@ namespace cReg_WebApp.Models.SQL
             _ = course.preReqs != null ? command.Parameters.AddWithValue("@CoursePreReqs", course.preReqs) : command.Parameters.AddWithValue("@CourseDesc", DBNull.Value);
             return command;
         }
+
+        public static Student findStudent(int accountNumber)
+        {
+            try
+            {
+                sqlConnection.Open();
+                var command = sqlConnection.CreateCommand();
+                command.CommandType = System.Data.CommandType.Text;
+                command.CommandText = "select * from [Students] where studentId=@sId";
+                command.Parameters.AddWithValue("@sId", accountNumber);
+                SqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    Student newStu = new Student(reader.GetString(1), reader.GetInt32(0), 0, reader.GetString(5));
+                    return newStu;
+                }
+                else
+                {
+                    sqlConnection.Close();
+                    return null;
+                }
+            }catch (Exception ex)
+            {
+                return null;
+            }
+        }
     }
 }

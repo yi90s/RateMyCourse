@@ -1,0 +1,17 @@
+﻿
+@{
+    Layout = null;
+}
+
+<head>
+
+</head>
+<body>
+    <form id="form1" method="post">
+        <input type="text" name="StudentID" placeholder="StudentID" required><div>@Html.ValidationMessage("StudentID")</div><br>
+        <input type="password" name="Password" placeholder="Password" required><br>
+        <div id="ReCaptchContainer"></div>
+        <label id="lblMessage" runat="server" clientidmode="static"></label><br />
+        <input type="submit" value="Submit">
+    </form>
+</body>

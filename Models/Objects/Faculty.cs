@@ -65,7 +65,7 @@ namespace cReg_WebApp.Models.Objects
 
         public void RemoveStudentFromFaculty(Student student)
         {
-            StudentSet.Remove(student);
+            studentSet.Remove(student);
         }
     }
 }
