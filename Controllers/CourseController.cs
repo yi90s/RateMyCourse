@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 
 namespace cReg_WebApp.Controllers
 {
-    public class CoursesController : Controller
+    public class CourseController : Controller
     {
         private readonly CRegCourseContext _context;
 
-        public CoursesController(CRegCourseContext context)
+        public CourseController(CRegCourseContext context)
         {
             _context = context;
         }
 
-        // GET: CoursesList
+        // GET: Course
         public async Task<IActionResult> Index()
         {
             return View(await _context.Course.ToListAsync());
         }
 
-        // GET: CoursesList/Details/5
+        // GET: Course/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -40,18 +40,18 @@ namespace cReg_WebApp.Controllers
             return View(course);
         }
 
-        // GET: CoursesList/Create
+        // GET: Course/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: CoursesList/Create
+        // POST: Course/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id")] Course course)
+        public async Task<IActionResult> Create([Bind("Id","Name","Description","SectionId")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -62,7 +62,7 @@ namespace cReg_WebApp.Controllers
             return View(course);
         }
 
-        // GET: CoursesList/Edit/5
+        // GET: Course/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,12 +78,12 @@ namespace cReg_WebApp.Controllers
             return View(course);
         }
 
-        // POST: CoursesList/Edit/5
+        // POST: Course/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id")] Course course)
+        public async Task<IActionResult> Edit(int id, [Bind("Id", "Name", "Description", "SectionId")] Course course)
         {
             if (id != course.Id)
             {
@@ -99,6 +99,7 @@ namespace cReg_WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+                    // TODO : Handle if incorrect info is passed (IE. Changing Primary Key is invalid)
                     if (!CourseExists(course.Id))
                     {
                         return NotFound();
@@ -113,7 +114,7 @@ namespace cReg_WebApp.Controllers
             return View(course);
         }
 
-        // GET: CoursesList/Delete/5
+        // GET: Course/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,7 +132,7 @@ namespace cReg_WebApp.Controllers
             return View(course);
         }
 
-        // POST: CoursesList/Delete/5
+        // POST: Course/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

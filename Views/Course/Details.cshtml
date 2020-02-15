@@ -2,9 +2,8 @@
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<!DOCTYPE html>
 
 <h1>Details</h1>
 
@@ -12,33 +11,34 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dt class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
-        </dt>
-        <dt class="col-sm-2">
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dt class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Id)
-        </dt>
-        <dt class="col-sm-2">
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.SectionId)
         </dt>
-        <dt class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.SectionId)
-        </dt>
-        <dt class="col-sm-2">
+        </dd>
+        <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Description)
         </dt>
-        <dt class="col-sm-10">
+        <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
-        </dt>
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    @Html.ActionLink("Edit", "Edit", Model) |
+    @Html.ActionLink("Delete", "Delete", Model) |
     <a asp-action="Index">Back to List</a>
 </div>

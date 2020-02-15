@@ -1,12 +1,6 @@
 ﻿using cReg_WebApp.Models;
-using cReg_WebApp.Models.Objects;
-using cReg_WebApp.Models.SQL;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
 
 namespace cReg_WebApp.Controllers
@@ -22,7 +16,6 @@ namespace cReg_WebApp.Controllers
 
         public IActionResult Index()
         {
-            PerformTestInsert();
             return View();
         }
         public IActionResult Privacy()
@@ -34,32 +27,6 @@ namespace cReg_WebApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        private void PerformTestInsert()
-        {
-            var host = Host.CreateDefaultBuilder()
-                    .ConfigureWebHostDefaults(webBuilder =>
-                    {
-                        webBuilder.UseStartup<Startup>();
-                    }).Build();
-
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
-
-                try
-                {
-                    DatabaseClient.Initialize(services);
-                    var course = new Course("COMP 4380", 1111, "Database Implementation"); // this is just to see that it will actually execute properly
-                    DatabaseClient.InsertCourseIntoTable(course);
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
-            }
         }
     }
 }

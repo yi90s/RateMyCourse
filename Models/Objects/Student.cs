@@ -5,77 +5,52 @@ namespace cReg_WebApp.Models.Objects
 {
     public class Student
     {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; }
-        public Faculty Major { get; set; }
-        public Faculty Minor { get; set; }
-        public int CurrYear { get; set; }
-        List<Course> Shortlist => new List<Course>();
-        List<Course> CompletedCourses => new List<Course>();
+        public string name { get; }
+        public int id { get; }
+        public Faculty major { get; set; }
+        public Faculty minor { get; set; }
+        public int currYear { get; set; }
+        Shortlist shortlist = null;
+        CompletedCourses completedCourses = null;
 
         public Student() { }
 
         public Student (string name, int id, int currYear)
         {
-            Name = name;
-            Id = id;
-            CurrYear = currYear;
+            this.name = name;
+            this.id = id;
+            this.currYear = currYear;
+            this.shortlist = new Shortlist(id);
         }
-        public Student (string name, int id, int currYear, Faculty major, Faculty minor)
+        public Student (string name, int id, int currYear, Faculty major, Faculty minor) : this(name, id, currYear)
         {
-            Name = name;
-            Id = id;
-            CurrYear = currYear;
-            Major = major;
-            Minor = minor;
+            this.major = major;
+            this.minor = minor;
         }
 
         public bool AddCourseToCompleted(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var cor in CompletedCourses) if (!result)
-            {
-                if (cor.Id == course.Id)
-                {
-                    Shortlist.Remove(cor);
-                    result = true;
-                }
-            }
-            Shortlist.Add(course);
-            return result;
+            return completedCourses.AddCourseToCompleted(course);
         }
 
         public List<Course> GetCompletedCourses()
         {
-            return CompletedCourses;
+            return completedCourses.GetCompletedCourses();
         }
 
         public bool AddCourseToShortlist(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var cor in Shortlist) if (!result)
-            {
-                if (cor.Id == course.Id)
-                {
-                    Shortlist.Remove(cor);
-                    result = true;
-                }
-            }
-            Shortlist.Add(course);
-            return result;
+            return shortlist.AddCourseToShortlist(course);
         }
 
         public void RemoveCourseFromShortlist(Course course)
         {
-            Shortlist.Remove(course);
+            shortlist.RemoveCourseFromShortlist(course);
         }
 
         public List<Course> GetShortlist()
         {
-            return Shortlist;
+            return shortlist.getShortlist();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace cReg_WebApp.Models.Objects
@@ -10,7 +11,7 @@ namespace cReg_WebApp.Models.Objects
         public string Name { get; set; }
         public string SectionId { get; set; }
         public string Description { get; set; }
-        public List<Course> PreReqs = null;
+        public PrerequisiteList PreReqList = null;
 
         public Course() { }
 
@@ -33,41 +34,23 @@ namespace cReg_WebApp.Models.Objects
             SectionId = sectionId;
         }
         
-        public Course(string name, int id, string sectionId, string desc, List<Course> preReqs) : this(name, id, sectionId, desc)
+        public Course(string name, int id, string sectionId, string desc, PrerequisiteList preReqs) : this(name, id, sectionId, desc)
         {
-            PreReqs = preReqs;
+            PreReqList = preReqs;
         }
         public bool AddPreReq(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            if (PreReqs != null)
-            {
-                foreach (var cor in PreReqs) if (!result)
-                {
-                    if (cor.Id == course.Id)
-                    {
-                        PreReqs.Remove(cor);
-                        result = true;
-                    }
-                }
-            }
-            else //the list is null, and needs to be initialized
-            {
-                PreReqs = new List<Course>();
-            }
-            PreReqs.Add(course);
-            return result;
+            return PreReqList.AddPreReq(course);
         }
 
         public void RemovePreReq(Course course)
         {
-            PreReqs.Remove(course);
+            PreReqList.RemovePreReq(course);
         }
 
         public List<Course> GetPreReqs()
         {
-            return PreReqs;
+            return PreReqList.GetPreReqs();
         }
     }
 }

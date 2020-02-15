@@ -1,9 +1,7 @@
-﻿using cReg_WebApp.Controllers;
-using cReg_WebApp.Models.Objects;
+﻿using cReg_WebApp.Models.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace cReg_WebApp.Models.SQL

@@ -8,7 +8,7 @@ namespace cReg_WebApp.Controllers.Logic
         public List<Course> GetRemainingPrerequisites(Student student, Course course)
         {
             List<Course> remainingCourses = new List<Course>();
-            foreach (var cor in course.PreReqs)
+            foreach (var cor in course.GetPreReqs())
             {
                 if (student.GetCompletedCourses().Contains(cor) == false) //the student has not completed this (cor) prerequisite course yet
                 {
@@ -21,12 +21,12 @@ namespace cReg_WebApp.Controllers.Logic
             }
             return null;
         }
-        
-        public List<Course> getRecommendedCourses(Student student)
+
+        public List<Course> GetRecommendedCourses(Student student)
         {
             List<Course> recommendedCourses = new List<Course>();
-            recommendedCourses.AddRange(getCoursesInYear(student.Major.GetCoursesOffered(), student.CurrYear));//returns courses in the major faculty of the same year in the program
-            recommendedCourses.AddRange(getCoursesInYear(student.Minor.GetCoursesOffered(), -1));//returns courses in the minor faculty
+            //recommendedCourses.AddRange(GetCoursesInYear(student.major.GetCoursesOffered(), student.currYear));//returns courses in the major faculty of the same year in the program
+            //recommendedCourses.AddRange(GetCoursesInYear(student.minor.GetCoursesOffered(), -1));//returns courses in the minor faculty
             return recommendedCourses;
         }
 

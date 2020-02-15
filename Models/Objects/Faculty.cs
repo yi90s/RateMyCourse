@@ -6,11 +6,11 @@ namespace cReg_WebApp.Models.Objects
 {
     public class Faculty
     {
-        [Key]
-        public int Id { get; set; }
+        public int Id { get; }
         public string Name { get; }
-        private List<Course> CourseSet = new List<Course>();
-        private List<Student> StudentSet = new List<Student>();
+        //TODO make these into classes
+        CourseList CourseList = null;
+        StudentList StudentList = null;
 
         public Faculty() { }
 
@@ -18,58 +18,38 @@ namespace cReg_WebApp.Models.Objects
         {
             Name = name;
             Id = id;
+            CourseList = new CourseList(id);
+            StudentList = new StudentList(id);
         }
 
-        public bool AddToCourseSet(Course course)
+        public bool AddToCourseList(Course course)
         {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var cor in CourseSet) if (!result)
-                {
-                    if (cor.Id == course.Id)
-                    {
-                        CourseSet.Remove(cor);
-                        result = true;
-                    }
-                }
-            CourseSet.Add(course);
-            return result;
+            return CourseList.AddToCourseList(course);
         }
 
-        public void RemoveFromCourseSet(Course course)
+        public void RemoveFromCourseList(Course course)
         {
-            CourseSet.Remove(course);
-        }
-
-        public List<Student> GetStudents()
-        {
-            return StudentSet;
+            CourseList.RemoveFromCourseList(course);
         }
 
         public List<Course> GetCoursesOffered()
         {
-            return CourseSet;
+            return CourseList.GetCoursesOffered();
         }
 
         public bool AddStudentToFaculty(Student student)
         {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var stu in StudentSet) if (!result)
-                {
-                    if (stu.Id == student.Id)
-                    {
-                        StudentSet.Remove(stu);
-                        result = true;
-                    }
-                }
-            StudentSet.Add(student);
-            return result;
+            return StudentList.AddStudentToFaculty(student);
         }
 
         public void RemoveStudentFromFaculty(Student student)
         {
-            StudentSet.Remove(student);
+            StudentList.RemoveStudentFromFaculty(student);
+        }
+
+        public List<Student> GetStudents()
+        {
+            return StudentList.GetStudents();
         }
     }
 }
