@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace cReg_WebApp.Controllers
+namespace cReg_WebApp.Models.Objects
 {
     public class Faculty
     {

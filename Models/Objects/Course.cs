@@ -1,36 +1,42 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace cReg_WebApp.Controllers
+namespace cReg_WebApp.Models.Objects
 {
     public class Course
     {
         [Key]
         public int Id { get; set; }
-        public string Name { get; }
-        public int SectionId { get; }
-        public string Desc { get; }
+        public string Name { get; set; }
+        public string SectionId { get; set; }
+        public string Description { get; set; }
         public List<Course> PreReqs = null;
 
         public Course() { }
+
+        public Course(string name, string desc, string sectionId)
+        {
+            Name = name;
+            Description = desc;
+            SectionId = sectionId;
+        }
 
         public Course(string name, int id, string desc)
         {
             Name = name;
             Id = id;
-            Desc = desc;
+            Description = desc;
         }
 
-        public Course(string name, int id, int sectionId, string desc) : this(name, id, desc)
+        public Course(string name, int id, string sectionId, string desc) : this(name, id, desc)
         {
             SectionId = sectionId;
         }
-
-        public Course(string name, int id, int sectionId, string desc, List<Course> preReqs) : this(name, id, sectionId, desc)
+        
+        public Course(string name, int id, string sectionId, string desc, List<Course> preReqs) : this(name, id, sectionId, desc)
         {
             PreReqs = preReqs;
         }
-
         public bool AddPreReq(Course course)
         {
             //To prevent duplicates

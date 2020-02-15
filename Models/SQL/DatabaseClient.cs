@@ -1,8 +1,10 @@
 ﻿using cReg_WebApp.Controllers;
+using cReg_WebApp.Models.Objects;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Data.SqlClient;
+using System.Linq;
 
 namespace cReg_WebApp.Models.SQL
 {
@@ -17,10 +19,19 @@ namespace cReg_WebApp.Models.SQL
             using (var context = new CRegCourseContext(
                 _serviceProvider.GetRequiredService<DbContextOptions<CRegCourseContext>>()))
             {
-                if (context.Database.CanConnect())
+                if (context.Course.Any())
                 {
                     return;
                 }
+
+                context.Course.AddRange(
+                    new Course
+                    {
+                        Id = 2,
+                        SectionId = "A01",
+                        Name = "COMP 4350",
+                        Description = "Software Engineering 2"
+                    });
             }
         }
 

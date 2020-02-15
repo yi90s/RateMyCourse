@@ -1,4 +1,5 @@
 ﻿using cReg_WebApp.Models;
+using cReg_WebApp.Models.Objects;
 using cReg_WebApp.Models.SQL;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -50,7 +51,7 @@ namespace cReg_WebApp.Controllers
                 try
                 {
                     DatabaseClient.Initialize(services);
-                    var course = new Course("COMP 4380", 91, "Database Implementation"); // this is just to see that it will actually execute properly
+                    var course = new Course("COMP 4380", 1111, "Database Implementation"); // this is just to see that it will actually execute properly
                     DatabaseClient.InsertCourseIntoTable(course);
                 }
                 catch (Exception ex)

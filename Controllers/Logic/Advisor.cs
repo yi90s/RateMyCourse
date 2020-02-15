@@ -1,13 +1,11 @@
-﻿using System;
+﻿using cReg_WebApp.Models.Objects;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cReg_WebApp.Controllers.Logic
 {
     public class Advisor
     {
-        public List<Course> getRemainingPrerequisites(Student student, Course course)
+        public List<Course> GetRemainingPrerequisites(Student student, Course course)
         {
             List<Course> remainingCourses = new List<Course>();
             foreach (var cor in course.PreReqs)
@@ -23,7 +21,7 @@ namespace cReg_WebApp.Controllers.Logic
             }
             return null;
         }
-
+        
         public List<Course> getRecommendedCourses(Student student)
         {
             List<Course> recommendedCourses = new List<Course>();
@@ -38,7 +36,8 @@ namespace cReg_WebApp.Controllers.Logic
             if (year == -1)
             {
                 result.AddRange(courses);
-            } else
+            }
+            else
             {
                 foreach (var cor in courses)
                 {
