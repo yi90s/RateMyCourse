@@ -3,6 +3,7 @@ cReg™ is an application that enables university students to efficiently and ef
 
 # Progress
 - Right now, we are focusing on building our website. You can check out our progress in [here](https://github.com/MQuizzle/Gr8Group/projects/1)
+- [Milestone-1](https://github.com/MQuizzle/Gr8Group/milestone/1)
 
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
