@@ -1,6 +1,9 @@
 # cReg™
 cReg™ is an application that enables university students to efficiently and effectively register for courses and view their courses over the internet.
 
+# Progress
+- [Progress](https://github.com/MQuizzle/Gr8Group/projects/1)
+
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
 - [Function Documents](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/FunctionDoc.md)
