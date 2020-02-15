@@ -23,7 +23,7 @@ namespace cReg_WebApp.Models.Objects
             {
                 foreach (var cor in preReqs) if (!result)
                     {
-                        if (cor.id == course.id)
+                        if (cor.Id == course.Id)
                         {
                             preReqs.Remove(cor);
                             result = true;

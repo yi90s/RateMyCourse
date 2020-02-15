@@ -21,7 +21,7 @@ namespace cReg_WebApp.Models.Objects
             bool result = false;
             foreach (var cor in courses) if (!result)
                 {
-                    if (cor.id == course.id)
+                    if (cor.Id == course.Id)
                     {
                         courses.Remove(cor);
                         result = true;

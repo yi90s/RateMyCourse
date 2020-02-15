@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace cReg_WebApp.Models.Objects
 {
@@ -11,6 +12,8 @@ namespace cReg_WebApp.Models.Objects
         public int currYear { get; set; }
         Shortlist shortlist = null;
         CompletedCourses completedCourses = null;
+
+        public Student() { }
 
         public Student (string name, int id, int currYear)
         {

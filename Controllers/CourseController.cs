@@ -1,103 +1,151 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using cReg_WebApp.Models.Objects;
+using cReg_WebApp.Models.SQL;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using cReg_WebApp.Models.Objects;
-using cReg_WebApp.Models.SQL;
 
 namespace cReg_WebApp.Controllers
 {
     public class CourseController : Controller
     {
-        // GET: Course
-        public ActionResult Index()
+        private readonly CRegCourseContext _context;
+
+        public CourseController(CRegCourseContext context)
         {
-            List<Course> courseList = DatabaseClient.GetListOfAllCourses();
-            return View(courseList);
+            _context = context;
+        }
+
+        // GET: Course
+        public async Task<IActionResult> Index()
+        {
+            return View(await _context.Course.ToListAsync());
         }
 
         // GET: Course/Details/5
-        public ActionResult Details(int id)
+        public async Task<IActionResult> Details(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Course
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course);
         }
 
         // GET: Course/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         // POST: Course/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        public async Task<IActionResult> Create([Bind("Id","Name","Description","SectionId")] Course course)
         {
-            try
+            if (ModelState.IsValid)
             {
-                string name = collection["name"];
-                string id = collection["id"];
-                string sectionId = collection["sectionId"];
-                string desc = collection["desc"];
-
-                Course course = new Course(name, id, sectionId, desc);
-                DatabaseClient.AddCourseToSupertable(course);
-
+                _context.Add(course);
+                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(course);
         }
 
         // GET: Course/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Course.FindAsync(id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+            return View(course);
         }
 
         // POST: Course/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        public async Task<IActionResult> Edit(int id, [Bind("Id", "Name", "Description", "SectionId")] Course course)
         {
-            try
+            if (id != course.Id)
             {
-                // TODO: Add update logic here
+                return NotFound();
+            }
 
-
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(course);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    // TODO : Handle if incorrect info is passed (IE. Changing Primary Key is invalid)
+                    if (!CourseExists(course.Id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
                 return RedirectToAction(nameof(Index));
             }
-            catch
-            {
-                return View();
-            }
+            return View(course);
         }
 
         // GET: Course/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var course = await _context.Course
+                .FirstOrDefaultAsync(m => m.Id == id);
+            if (course == null)
+            {
+                return NotFound();
+            }
+
+            return View(course);
         }
 
         // POST: Course/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            try
-            {
-                // TODO: Add delete logic here
+            var course = await _context.Course.FindAsync(id);
+            _context.Course.Remove(course);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
 
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+        private bool CourseExists(int id)
+        {
+            return _context.Course.Any(e => e.Id == id);
         }
     }
 }

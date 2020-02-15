@@ -1,8 +1,5 @@
 ﻿using cReg_WebApp.Models.Objects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cReg_WebApp.Controllers.Logic
 {
@@ -33,18 +30,18 @@ namespace cReg_WebApp.Controllers.Logic
             return recommendedCourses;
         }
 
-        /*
-        private List<Course> GetCoursesInYear(List<Course> courses, int year)
+        private List<Course> getCoursesInYear(List<Course> courses, int year)
         {
             List<Course> result = new List<Course>();
             if (year == -1)
             {
                 result.AddRange(courses);
-            } else
+            }
+            else
             {
                 foreach (var cor in courses)
                 {
-                    if (cor.id >= year * 1000 && cor.id < (year + 1) * 1000)
+                    if (cor.Id >= year * 1000 && cor.Id < (year + 1) * 1000)
                     {
                         result.Add(cor);
                     }
@@ -52,6 +49,5 @@ namespace cReg_WebApp.Controllers.Logic
             }
             return result;
         }
-        */
     }
 }

@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using cReg_WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using cReg_WebApp.Models;
-using cReg_WebApp.Models.SQL;
-using cReg_WebApp.Models.Objects;
+using System.Diagnostics;
 
 namespace cReg_WebApp.Controllers
 {
@@ -24,7 +18,6 @@ namespace cReg_WebApp.Controllers
         {
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();
