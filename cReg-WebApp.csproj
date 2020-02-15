@@ -6,8 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Pages\**" />
+    <Content Remove="Models\Pages\**" />
+    <EmbeddedResource Remove="Models\Pages\**" />
+    <None Remove="Models\Pages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\Logic\" />
-    <Folder Include="Models\Pages\" />
   </ItemGroup>
 
   <ItemGroup>
