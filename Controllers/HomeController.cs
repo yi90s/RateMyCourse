@@ -67,11 +67,6 @@ namespace cReg_WebApp.Controllers
             }
         }
 
-        public IActionResult Register()
-        {
-
-        }
-
         //public IActionResult Privacy()
         //{
         //    return View();
