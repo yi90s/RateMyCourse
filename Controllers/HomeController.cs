@@ -2,14 +2,22 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using cReg_WebApp.Models;
-using cReg_WebApp.Models.Objects;
+using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.SQL;
+using cReg_WebApp.Models.context;
+using System.Linq;
 
 namespace cReg_WebApp.Controllers
 {
     public class HomeController : Controller
     {
 
+        private readonly DataContext _context;
+
+        public HomeController(DataContext context)
+        {
+            _context = context;
+        }
         [HttpGet]
         public IActionResult Login()
         {
@@ -19,39 +27,13 @@ namespace cReg_WebApp.Controllers
         [HttpPost]
         public IActionResult Login(string StudentID, string Password)
         {
-            int id = int.Parse(StudentID);
-            DatabaseClient.Initialize();
-            Student stu = DatabaseClient.findStudent(id);
-            if (stu != null)
-            {
-                if (stu.password.Equals(Password))
-                {
-                    string url = string.Format("/home/index?studentId={0}", stu.id);
-                    return Redirect(url);
-                }
-                else
-                {
-                    return View();
-                }
-            }
-            else
-            {
-                return View();
-            }
+            return View();
         }
 
-        public IActionResult Index()
+        public string Index()
         {
-            DatabaseClient.Initialize();
-            if(!String.IsNullOrEmpty(Request.Query["studentId"]))
-            {
-                Student stu = DatabaseClient.findStudent(int.Parse(Request.Query["studentId"]));
-                return View(stu);
-            }
-            else
-            {
-                return RedirectToAction("Home", "Login");
-            }
+            var firstStu = _context.Students.ToList();
+            return firstStu[0].name;
         }
 
         public IActionResult Privacy()

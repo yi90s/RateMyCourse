@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200217082537_InitialCreate.cs" />
+    <Compile Remove="Migrations\20200217082537_InitialCreate.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Controllers\Logic\" />
   </ItemGroup>
 
