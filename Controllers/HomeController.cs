@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.Objects;
 using cReg_WebApp.Models.SQL;
+using cReg_WebApp.Controllers.Logic;
+
 
 namespace cReg_WebApp.Controllers
 {
@@ -19,23 +21,34 @@ namespace cReg_WebApp.Controllers
         [HttpPost]
         public IActionResult Login(string StudentID, string Password)
         {
-            int id = int.Parse(StudentID);
-            DatabaseClient.Initialize();
-            Student stu = DatabaseClient.findStudent(id);
-            if (stu != null)
+            Recaptcha newRecap = new Recaptcha(Request.Form["g-recaptcha-response"]);
+            if(newRecap.IsReCaptchValid())
             {
-                if (stu.password.Equals(Password))
+                int id = int.Parse(StudentID);
+                DatabaseClient.Initialize();
+                Student stu = DatabaseClient.findStudent(id);
+                if (stu != null)
                 {
-                    string url = string.Format("/home/index?studentId={0}", stu.id);
-                    return Redirect(url);
+                    if (stu.password.Equals(Password))
+                    {
+                        string url = string.Format("/home/index?studentId={0}", stu.id);
+                        return Redirect(url);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "student Id or password is invalid";
+                        return View();
+                    }
                 }
                 else
                 {
+                    ViewBag.Message = "student Id or password is invalid";
                     return View();
                 }
             }
             else
             {
+                ViewBag.Message = "Recapture is invalid";
                 return View();
             }
         }
