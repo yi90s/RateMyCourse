@@ -20,12 +20,26 @@ namespace cReg_WebApp.Models.context
 
         public DbSet<Faculty> Faculties { get; set; }
 
-        public DbSet<CompletedCourse> CompletedCourses { get; set; }
+        public DbSet<Prerequisite> Prerequisites { get; set; }
+
+        public DbSet<Required> Required { get; set; }
+
+        public DbSet<Enrolled> Enrolled { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<CompletedCourse>()
-                .HasKey(c => new { c.studentId, c.courseId });
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
+            modelBuilder.Entity<Required>()
+                .HasKey(r => new { r.facultyId, r.courseId });
+
+            modelBuilder.Entity<Prerequisite>()
+                .HasKey(p => new { p.courseId, p.prerequisiteId });
+
         }
     }
 }
