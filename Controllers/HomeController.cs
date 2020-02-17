@@ -67,10 +67,37 @@ namespace cReg_WebApp.Controllers
             }
         }
 
-        public IActionResult Privacy()
+        public IActionResult Register()
         {
-            return View();
+
         }
+
+        //public IActionResult Privacy()
+        //{
+        //    return View();
+        //}
+        //public async Task<IActionResult> RegisterPage()
+        //{
+        //    var courses = await _context.Course.ToListAsync();
+        //    return View(courses.GroupBy(course => course.Name).Select(g => g.First()).ToList());
+        //}
+
+
+        //// GET: CourseInfo
+        //public async Task<IActionResult> CourseInfo(string? name)
+        //{
+        //    if (name == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var courses = await _context.Course.ToListAsync();
+        //    if (courses == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(courses.FindAll(e => e.Name == name));
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
