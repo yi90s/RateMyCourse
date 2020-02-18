@@ -1,4 +1,4 @@
-﻿using cReg_WebApp.Models.Objects;
+﻿using cReg_WebApp.Models.entities;
 using System.Collections.Generic;
 
 namespace cReg_WebApp.Controllers.Logic
@@ -41,7 +41,7 @@ namespace cReg_WebApp.Controllers.Logic
             {
                 foreach (var cor in courses)
                 {
-                    if (cor.Id >= year * 1000 && cor.Id < (year + 1) * 1000)
+                    if (cor.courseId >= year * 1000 && cor.courseId < (year + 1) * 1000)
                     {
                         result.Add(cor);
                     }

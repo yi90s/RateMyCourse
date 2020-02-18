@@ -1,4 +1,4 @@
-﻿@model IEnumerable<cReg_WebApp.Models.Objects.Course>
+﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
 
 @{
     ViewData["Title"] = "CourseInfo";
@@ -15,16 +15,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Id)
+                    @Html.DisplayFor(modelItem => item.courseId)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(modelItem => item.courseName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SectionId)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.courseDescription)
                 </td>
                 <td>
                     <button onclick="testFunc()">Register</button>

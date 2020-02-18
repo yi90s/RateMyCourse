@@ -1,4 +1,4 @@
-﻿using cReg_WebApp.Models.Objects;
+﻿using cReg_WebApp.Models.entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace cReg_WebApp.Models.SQL

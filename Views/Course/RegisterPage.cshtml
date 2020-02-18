@@ -1,4 +1,4 @@
-﻿@model IEnumerable<cReg_WebApp.Models.Objects.Course>
+﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
 @{
     ViewData["Title"] = "RegisterPage";
 }
@@ -43,16 +43,16 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                        @Html.DisplayFor(modelItem => item.courseId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.DisplayFor(modelItem => item.courseName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Description)
+                        @Html.DisplayFor(modelItem => item.courseDescription)
                     </td>
                     <td>
-                        <a asp-action="CourseInfo" asp-route-name="@item.Name">View Course</a>
+                        <a asp-action="CourseInfo" asp-route-name="@item.courseName">View Course</a>
                     </td>
                 </tr>
             }

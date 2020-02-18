@@ -14,7 +14,7 @@ namespace cReg_WebApp.Models.entities
         public int majorId { get; set; }
         public string name { get; set; }
 
-        public ICollection<Enrolled> CompletedCourses { get; set; }
+        public Faculty major { get; set; }
         
     }
 }

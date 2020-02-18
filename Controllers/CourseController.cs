@@ -1,10 +1,10 @@
-﻿using cReg_WebApp.Models.Objects;
-using cReg_WebApp.Models.SQL;
+﻿using cReg_WebApp.Models.SQL;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
+using cReg_WebApp.Models.entities;
 
 namespace cReg_WebApp.Controllers
 {
@@ -32,7 +32,7 @@ namespace cReg_WebApp.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.courseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -86,7 +86,7 @@ namespace cReg_WebApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id", "Name", "Description", "SectionId")] Course course)
         {
-            if (id != course.Id)
+            if (id != course.courseId)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace cReg_WebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     // TODO : Handle if incorrect info is passed (IE. Changing Primary Key is invalid)
-                    if (!CourseExists(course.Id))
+                    if (!CourseExists(course.courseId))
                     {
                         return NotFound();
                     }
@@ -124,7 +124,7 @@ namespace cReg_WebApp.Controllers
             }
 
             var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.courseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -146,17 +146,17 @@ namespace cReg_WebApp.Controllers
 
         private bool CourseExists(int id)
         {
-            return _context.Course.Any(e => e.Id == id);
+            return _context.Course.Any(e => e.courseId == id);
         }
 
         public async Task<IActionResult> RegisterPage(string searchString)
         {
             var courses = await _context.Course.ToListAsync();
-            courses = courses.GroupBy(course => course.Name).Select(g => g.First()).ToList();
+            courses = courses.GroupBy(course => course.courseName).Select(g => g.First()).ToList();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                courses = courses.FindAll(c => c.Name.Contains(searchString));
+                courses = courses.FindAll(c => c.courseName.Contains(searchString));
             }
 
             return View(courses);
@@ -169,7 +169,7 @@ namespace cReg_WebApp.Controllers
         }
 
         // GET: CourseInfo
-        public async Task<IActionResult> CourseInfo(string? name)
+        public async Task<IActionResult> CourseInfo(string name)
         {
             if (name == null)
             {
@@ -181,7 +181,7 @@ namespace cReg_WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(courses.FindAll(e => e.Name == name));
+            return View(courses.FindAll(e => e.courseName == name));
         }
     }
 

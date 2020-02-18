@@ -1,4 +1,4 @@
-﻿@model cReg_WebApp.Models.Objects.Course
+﻿@model cReg_WebApp.Models.entities.Course
 
 @{
     ViewData["Title"] = "Details";
@@ -12,28 +12,22 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.courseName)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.courseName)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Id)
+            @Html.DisplayNameFor(model => model.courseId)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Id)
+            @Html.DisplayFor(model => model.courseId)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SectionId)
+            @Html.DisplayNameFor(model => model.courseDescription)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SectionId)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
+            @Html.DisplayFor(model => model.courseDescription)
         </dd>
     </dl>
 </div>

@@ -45,15 +45,6 @@ namespace cReg_WebApp.Data
                 context.Add(faculty);
             }
 
-            var completedCourses = new CompletedCourse[]
-            {
-                new CompletedCourse{studentId=1, courseId=1, grade=50, rating=70, comment="decent"}
-            };
-            foreach (CompletedCourse cc in completedCourses)
-            {
-                context.Add(cc);
-            }
-
 
         }
     }

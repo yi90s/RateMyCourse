@@ -2,9 +2,8 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using cReg_WebApp.Models;
-using cReg_WebApp.Models.Objects;
+using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.SQL;
 using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.context;
@@ -29,24 +28,14 @@ namespace cReg_WebApp.Controllers
         [HttpPost]
         public IActionResult Login(string StudentID, string Password)
         {
-            Recaptcha newRecap = new Recaptcha(Request.Form["g-recaptcha-response"]);
-            if(newRecap.IsReCaptchValid())
+            int id = int.Parse(StudentID);
+            Student stu = _context.Students.Find(id);
+            if (stu != null)
             {
-                int id = int.Parse(StudentID);
-                DatabaseClient.Initialize();
-                Student stu = DatabaseClient.findStudent(id);
-                if (stu != null)
+                if (stu.password.Equals(Password))
                 {
-                    if (stu.password.Equals(Password))
-                    {
-                        string url = string.Format("/home/index?studentId={0}", stu.id);
-                        return Redirect(url);
-                    }
-                    else
-                    {
-                        ViewBag.Message = "student Id or password is invalid";
-                        return View();
-                    }
+                    string url = string.Format("/home/index?studentId={0}", stu.studentId);
+                    return Redirect(url);
                 }
                 else
                 {
@@ -56,17 +45,17 @@ namespace cReg_WebApp.Controllers
             }
             else
             {
-                ViewBag.Message = "Recapture is invalid";
+                ViewBag.Message = "student Id or password is invalid";
                 return View();
             }
         }
 
+
         public IActionResult Index()
         {
-            DatabaseClient.Initialize();
             if(!String.IsNullOrEmpty(Request.Query["studentId"]))
             {
-                Student stu = DatabaseClient.findStudent(int.Parse(Request.Query["studentId"]));
+                Student stu = _context.Students.Find(int.Parse(Request.Query["studentId"]));
                 return View(stu);
             }
             else
