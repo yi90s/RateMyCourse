@@ -5,12 +5,18 @@ using cReg_WebApp.Models;
 using cReg_WebApp.Models.Objects;
 using cReg_WebApp.Models.SQL;
 using cReg_WebApp.Controllers.Logic;
-
+using cReg_WebApp.Models.context;
 
 namespace cReg_WebApp.Controllers
 {
     public class HomeController : Controller
     {
+        private DataContext _context;
+
+        public HomeController(DataContext context)
+        {
+            _context = context;
+        }
 
         [HttpGet]
         public IActionResult Login()
