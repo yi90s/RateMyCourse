@@ -1,5 +1,6 @@
 ﻿using cReg_WebApp.Models.Objects;
 using cReg_WebApp.Models.SQL;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -147,5 +148,41 @@ namespace cReg_WebApp.Controllers
         {
             return _context.Course.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> RegisterPage(string searchString)
+        {
+            var courses = await _context.Course.ToListAsync();
+            courses = courses.GroupBy(course => course.Name).Select(g => g.First()).ToList();
+
+            if (!string.IsNullOrEmpty(searchString))
+            {
+                courses = courses.FindAll(c => c.Name.Contains(searchString));
+            }
+
+            return View(courses);
+        }
+
+        [HttpPost]
+        public string RegisterPage(FormCollection fc, string searchString)
+        {
+            return "<h3> From [HttpPost]RegisterPage: " + searchString + "</h3>";
+        }
+
+        // GET: CourseInfo
+        public async Task<IActionResult> CourseInfo(string? name)
+        {
+            if (name == null)
+            {
+                return NotFound();
+            }
+
+            var courses = await _context.Course.ToListAsync();
+            if (courses == null)
+            {
+                return NotFound();
+            }
+            return View(courses.FindAll(e => e.Name == name));
+        }
     }
+
 }
