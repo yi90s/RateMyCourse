@@ -13,7 +13,6 @@ namespace cReg_WebApp.Models.Objects
 
         public string password { get; set; }
         Shortlist shortlist = null;
-        CompletedCourses completedCourses = null;
 
         public Student() { }
 
@@ -32,15 +31,6 @@ namespace cReg_WebApp.Models.Objects
             this.minor = minor;
         }
 
-        public bool AddCourseToCompleted(Course course)
-        {
-            return completedCourses.AddCourseToCompleted(course);
-        }
-
-        public List<Course> GetCompletedCourses()
-        {
-            return completedCourses.GetCompletedCourses();
-        }
 
         public bool AddCourseToShortlist(Course course)
         {

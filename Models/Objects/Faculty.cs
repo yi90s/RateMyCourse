@@ -16,21 +16,21 @@ namespace cReg_WebApp.Models.Objects
             this.id = id;
         }
 
-        public bool AddToCourseSet(Course course)
-        {
-            //To prevent duplicates
-            bool result = false;
-            foreach (var cor in courseSet) if (!result)
-                {
-                    if (cor.id == course.id)
-                    {
-                        courseSet.Remove(cor);
-                        result = true;
-                    }
-                }
-            courseSet.Add(course);
-            return result;
-        }
+        //public bool AddToCourseSet(Course course)
+        //{
+        //    //To prevent duplicates
+        //    bool result = false;
+        //    foreach (var cor in courseSet) if (!result)
+        //        {
+        //            if (cor.id == course.id)
+        //            {
+        //                courseSet.Remove(cor);
+        //                result = true;
+        //            }
+        //        }
+        //    courseSet.Add(course);
+        //    return result;
+        //}
 
         public void RemoveFromCourseSet(Course course)
         {

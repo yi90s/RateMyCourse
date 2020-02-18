@@ -5,22 +5,22 @@ namespace cReg_WebApp.Controllers.Logic
 {
     public class Advisor
     {
-        public List<Course> GetRemainingPrerequisites(Student student, Course course)
-        {
-            List<Course> remainingCourses = new List<Course>();
-            foreach (var cor in course.GetPreReqs())
-            {
-                if (student.GetCompletedCourses().Contains(cor) == false) //the student has not completed this (cor) prerequisite course yet
-                {
-                    remainingCourses.Add(cor);
-                }
-            }
-            if (remainingCourses.Count > 0) //if there is at least 1 course remaining
-            {
-                return remainingCourses;
-            }
-            return null;
-        }
+        //public List<Course> GetRemainingPrerequisites(Student student, Course course)
+        //{
+        //    List<Course> remainingCourses = new List<Course>();
+        //    foreach (var cor in course.GetPreReqs())
+        //    {
+        //        if (student.GetCompletedCourses().Contains(cor) == false) //the student has not completed this (cor) prerequisite course yet
+        //        {
+        //            remainingCourses.Add(cor);
+        //        }
+        //    }
+        //    if (remainingCourses.Count > 0) //if there is at least 1 course remaining
+        //    {
+        //        return remainingCourses;
+        //    }
+        //    return null;
+        //}
 
         public List<Course> getRecommendedCourses(Student student)
         {
