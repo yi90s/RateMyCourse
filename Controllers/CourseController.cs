@@ -1,5 +1,5 @@
-﻿using cReg_WebApp.Models.Objects;
-using cReg_WebApp.Models.SQL;
+﻿using cReg_WebApp.Models.context;
+using cReg_WebApp.Models.entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,9 +10,9 @@ namespace cReg_WebApp.Controllers
 {
     public class CourseController : Controller
     {
-        private readonly CRegCourseContext _context;
+        private readonly DataContext _context;
 
-        public CourseController(CRegCourseContext context)
+        public CourseController(DataContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace cReg_WebApp.Controllers
         // GET: Course
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Course.ToListAsync());
+            return View(await _context.Courses.ToListAsync());
         }
 
         // GET: Course/Details/5
@@ -31,8 +31,8 @@ namespace cReg_WebApp.Controllers
                 return NotFound();
             }
 
-            var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(m => m.CourseId == id);
             if (course == null)
             {
                 return NotFound();
@@ -52,7 +52,7 @@ namespace cReg_WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id","Name","Description","SectionId")] Course course)
+        public async Task<IActionResult> Create([Bind("CourseId", "CourseName", "CourseDescription")] Course course)
         {
             if (ModelState.IsValid)
             {
@@ -64,14 +64,14 @@ namespace cReg_WebApp.Controllers
         }
 
         // GET: Course/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? courseId)
         {
-            if (id == null)
+            if (courseId == null)
             {
                 return NotFound();
             }
 
-            var course = await _context.Course.FindAsync(id);
+            var course = await _context.Courses.FindAsync(courseId);
             if (course == null)
             {
                 return NotFound();
@@ -84,9 +84,9 @@ namespace cReg_WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id", "Name", "Description", "SectionId")] Course course)
+        public async Task<IActionResult> Edit(int courseId, [Bind("CourseId", "CourseName", "CourseDescription")] Course course)
         {
-            if (id != course.Id)
+            if (courseId != course.CourseId)
             {
                 return NotFound();
             }
@@ -101,7 +101,7 @@ namespace cReg_WebApp.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     // TODO : Handle if incorrect info is passed (IE. Changing Primary Key is invalid)
-                    if (!CourseExists(course.Id))
+                    if (!CourseExists(course.CourseId))
                     {
                         return NotFound();
                     }
@@ -116,15 +116,15 @@ namespace cReg_WebApp.Controllers
         }
 
         // GET: Course/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? courseId)
         {
-            if (id == null)
+            if (courseId == null)
             {
                 return NotFound();
             }
 
-            var course = await _context.Course
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var course = await _context.Courses
+                .FirstOrDefaultAsync(m => m.CourseId == courseId);
             if (course == null)
             {
                 return NotFound();
@@ -136,27 +136,27 @@ namespace cReg_WebApp.Controllers
         // POST: Course/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed([Bind("CourseId", "CourseName", "CourseDescription")] Course course)
         {
-            var course = await _context.Course.FindAsync(id);
-            _context.Course.Remove(course);
+            var tempCourse = _context.Courses.Find(course.CourseId);
+            _context.Courses.Remove(tempCourse);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CourseExists(int id)
+        private bool CourseExists(int courseId)
         {
-            return _context.Course.Any(e => e.Id == id);
+            return _context.Courses.Any(e => e.CourseId == courseId);
         }
 
         public async Task<IActionResult> RegisterPage(string searchString)
         {
-            var courses = await _context.Course.ToListAsync();
-            courses = courses.GroupBy(course => course.Name).Select(g => g.First()).ToList();
+            var courses = await _context.Courses.ToListAsync();
+            courses = courses.GroupBy(course => course.CourseName).Select(g => g.First()).ToList();
 
             if (!string.IsNullOrEmpty(searchString))
             {
-                courses = courses.FindAll(c => c.Name.Contains(searchString));
+                courses = courses.FindAll(c => c.CourseName.Contains(searchString));
             }
 
             return View(courses);
@@ -176,12 +176,12 @@ namespace cReg_WebApp.Controllers
                 return NotFound();
             }
 
-            var courses = await _context.Course.ToListAsync();
+            var courses = await _context.Courses.ToListAsync();
             if (courses == null)
             {
                 return NotFound();
             }
-            return View(courses.FindAll(e => e.Name == name));
+            return View(courses.FindAll(e => e.CourseName == name));
         }
     }
 

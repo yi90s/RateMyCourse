@@ -17,7 +17,7 @@ namespace cReg_WebApp.Data
 
             var students = new Student[]
             {
-                new Student{name="Carson", majorId=1, password="123456", studentId=1}
+                new Student{Name="Carson", MajorId=1, Password="123456"}
             };
             foreach (Student s in students)
             {
@@ -27,7 +27,7 @@ namespace cReg_WebApp.Data
 
             var courses = new Course[]
             {
-                new Course{courseId=1, courseName="Database Implementation"}
+                new Course{CourseName="Database Implementation"}
             };
             foreach (Course c in courses)
             {
@@ -37,23 +37,13 @@ namespace cReg_WebApp.Data
 
             var faculties = new Faculty[]
             {
-                new Faculty{facultyId=1,facultyName="Computer Science"},
-                new Faculty{facultyId=2,facultyName="Engineering"}
+                new Faculty{FacultyId=1,FacultyName="Computer Science"},
+                new Faculty{FacultyId=2,FacultyName="Engineering"}
             };
             foreach (Faculty faculty in faculties)
             {
                 context.Add(faculty);
             }
-
-            var completedCourses = new CompletedCourse[]
-            {
-                new CompletedCourse{studentId=1, courseId=1, grade=50, rating=70, comment="decent"}
-            };
-            foreach (CompletedCourse cc in completedCourses)
-            {
-                context.Add(cc);
-            }
-
 
         }
     }

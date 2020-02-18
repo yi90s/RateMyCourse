@@ -1,13 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
+﻿using cReg_WebApp.Controllers.Logic;
+using cReg_WebApp.Data;
 using cReg_WebApp.Models;
-using cReg_WebApp.Models.Objects;
-using cReg_WebApp.Models.SQL;
-using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.context;
+using cReg_WebApp.Models.entities;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace cReg_WebApp.Controllers
 {
@@ -30,16 +27,16 @@ namespace cReg_WebApp.Controllers
         public IActionResult Login(string StudentID, string Password)
         {
             Recaptcha newRecap = new Recaptcha(Request.Form["g-recaptcha-response"]);
-            if(newRecap.IsReCaptchValid())
+            if (newRecap.IsReCaptchValid())
             {
                 int id = int.Parse(StudentID);
-                DatabaseClient.Initialize();
-                Student stu = DatabaseClient.findStudent(id);
+                DbInitializer.Initialize(_context);
+                Student stu = _context.Students.Find(id);
                 if (stu != null)
                 {
-                    if (stu.password.Equals(Password))
+                    if (stu.Password.Equals(Password))
                     {
-                        string url = string.Format("/home/index?studentId={0}", stu.id);
+                        string url = string.Format("/home/index?studentId={0}", stu.StudentId);
                         return Redirect(url);
                     }
                     else
@@ -63,10 +60,10 @@ namespace cReg_WebApp.Controllers
 
         public IActionResult Index()
         {
-            DatabaseClient.Initialize();
-            if(!String.IsNullOrEmpty(Request.Query["studentId"]))
+            DbInitializer.Initialize(_context);
+            if (!string.IsNullOrEmpty(Request.Query["studentId"]))
             {
-                Student stu = DatabaseClient.findStudent(int.Parse(Request.Query["studentId"]));
+                Student stu = _context.Students.Find(int.Parse(Request.Query["studentId"]));
                 return View(stu);
             }
             else

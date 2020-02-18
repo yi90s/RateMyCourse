@@ -9,12 +9,12 @@ namespace cReg_WebApp.Models.entities
     public class Course
     {
         [Key]
-        public int courseId { get; set; }
-        public string courseName { get; set; }
-        public string courseDescription { get; set; }
-        public int creditHours { get; set; }
-        public int space { get; set; }
-        public String date { get; set; }
+        public int CourseId { get; set; }
+        public string CourseName { get; set; }
+        public string CourseDescription { get; set; }
+        public int CreditHours { get; set; }
+        public int Space { get; set; }
+        public string Date { get; set; }
 
     }
 }
