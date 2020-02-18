@@ -10,19 +10,23 @@ namespace cReg_WebApp.Models.Objects
         public Faculty major { get; set; }
         public Faculty minor { get; set; }
         public int currYear { get; set; }
+
+        public string password { get; set; }
         Shortlist shortlist = null;
         CompletedCourses completedCourses = null;
 
         public Student() { }
 
-        public Student (string name, int id, int currYear)
+
+        public Student (string name, int id, int currYear,string password)
         {
             this.name = name;
             this.id = id;
             this.currYear = currYear;
             this.shortlist = new Shortlist(id);
+            this.password = password;
         }
-        public Student (string name, int id, int currYear, Faculty major, Faculty minor) : this(name, id, currYear)
+        public Student (string name, int id, int currYear, string password, Faculty major, Faculty minor) : this(name, id, currYear,password)
         {
             this.major = major;
             this.minor = minor;

@@ -1,55 +1,71 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace cReg_WebApp.Models.Objects
 {
     public class Faculty
     {
-        public int Id { get; }
-        public string Name { get; }
-        //TODO make these into classes
-        CourseList CourseList = null;
-        StudentList StudentList = null;
-
-        public Faculty() { }
+        public string name { get; }
+        public int id { get; }
+        private List<Course> courseSet = new List<Course>();
+        private List<Student> studentSet = new List<Student>();
 
         public Faculty(string name, int id)
         {
-            Name = name;
-            Id = id;
-            CourseList = new CourseList(id);
-            StudentList = new StudentList(id);
+            this.name = name;
+            this.id = id;
         }
 
-        public bool AddToCourseList(Course course)
+        public bool AddToCourseSet(Course course)
         {
-            return CourseList.AddToCourseList(course);
+            //To prevent duplicates
+            bool result = false;
+            foreach (var cor in courseSet) if (!result)
+                {
+                    if (cor.id == course.id)
+                    {
+                        courseSet.Remove(cor);
+                        result = true;
+                    }
+                }
+            courseSet.Add(course);
+            return result;
         }
 
-        public void RemoveFromCourseList(Course course)
+        public void RemoveFromCourseSet(Course course)
         {
-            CourseList.RemoveFromCourseList(course);
-        }
-
-        public List<Course> GetCoursesOffered()
-        {
-            return CourseList.GetCoursesOffered();
-        }
-
-        public bool AddStudentToFaculty(Student student)
-        {
-            return StudentList.AddStudentToFaculty(student);
-        }
-
-        public void RemoveStudentFromFaculty(Student student)
-        {
-            StudentList.RemoveStudentFromFaculty(student);
+            courseSet.Remove(course);
         }
 
         public List<Student> GetStudents()
         {
-            return StudentList.GetStudents();
+            return studentSet;
+        }
+
+        public List<Course> GetCoursesOffered()
+        {
+            return courseSet;
+        }
+
+        public bool AddStudentToFaculty(Student student)
+        {
+            //To prevent duplicates
+            bool result = false;
+            foreach (var stu in studentSet) if (!result)
+                {
+                    if (stu.id == student.id)
+                    {
+                        studentSet.Remove(stu);
+                        result = true;
+                    }
+                }
+            studentSet.Add(student);
+            return result;
+        }
+
+        public void RemoveStudentFromFaculty(Student student)
+        {
+            studentSet.Remove(student);
         }
     }
 }

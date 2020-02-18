@@ -22,7 +22,7 @@ namespace cReg_WebApp.Controllers.Logic
             return null;
         }
 
-        public List<Course> GetRecommendedCourses(Student student)
+        public List<Course> getRecommendedCourses(Student student)
         {
             List<Course> recommendedCourses = new List<Course>();
             //recommendedCourses.AddRange(GetCoursesInYear(student.major.GetCoursesOffered(), student.currYear));//returns courses in the major faculty of the same year in the program
