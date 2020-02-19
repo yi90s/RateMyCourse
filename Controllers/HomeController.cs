@@ -1,5 +1,4 @@
-﻿using cReg_WebApp.Controllers.Logic;
-using cReg_WebApp.Data;
+﻿using cReg_WebApp.Data;
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.entities;
