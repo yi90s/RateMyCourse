@@ -1,12 +1,10 @@
-﻿using System;
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
+﻿using cReg_WebApp.Controllers.Logic;
+using cReg_WebApp.Data;
 using cReg_WebApp.Models;
-using cReg_WebApp.Models.entities;
-using cReg_WebApp.Models.SQL;
-using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.context;
+using cReg_WebApp.Models.entities;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace cReg_WebApp.Controllers
 {
@@ -28,14 +26,24 @@ namespace cReg_WebApp.Controllers
         [HttpPost]
         public IActionResult Login(string StudentID, string Password)
         {
-            int id = int.Parse(StudentID);
-            Student stu = _context.Students.Find(id);
-            if (stu != null)
+            Recaptcha newRecap = new Recaptcha(Request.Form["g-recaptcha-response"]);
+            if (newRecap.IsReCaptchValid())
             {
-                if (stu.password.Equals(Password))
+                int id = int.Parse(StudentID);
+                DbInitializer.Initialize(_context);
+                Student stu = _context.Students.Find(id);
+                if (stu != null)
                 {
-                    string url = string.Format("/home/index?studentId={0}", stu.studentId);
-                    return Redirect(url);
+                    if (stu.Password.Equals(Password))
+                    {
+                        string url = string.Format("/home/index?studentId={0}", stu.StudentId);
+                        return Redirect(url);
+                    }
+                    else
+                    {
+                        ViewBag.Message = "student Id or password is invalid";
+                        return View();
+                    }
                 }
                 else
                 {
@@ -45,15 +53,15 @@ namespace cReg_WebApp.Controllers
             }
             else
             {
-                ViewBag.Message = "student Id or password is invalid";
+                ViewBag.Message = "Recapture is invalid";
                 return View();
             }
         }
 
-
         public IActionResult Index()
         {
-            if(!String.IsNullOrEmpty(Request.Query["studentId"]))
+            DbInitializer.Initialize(_context);
+            if (!string.IsNullOrEmpty(Request.Query["studentId"]))
             {
                 Student stu = _context.Students.Find(int.Parse(Request.Query["studentId"]));
                 return View(stu);

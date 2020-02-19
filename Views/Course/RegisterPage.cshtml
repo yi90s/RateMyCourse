@@ -43,16 +43,16 @@
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.courseId)
+                        @Html.DisplayFor(modelItem => item.CourseId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.courseName)
+                        @Html.DisplayFor(modelItem => item.CourseName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.courseDescription)
+                        @Html.DisplayFor(modelItem => item.CourseDescription)
                     </td>
                     <td>
-                        <a asp-action="CourseInfo" asp-route-name="@item.courseName">View Course</a>
+                        <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
                     </td>
                 </tr>
             }

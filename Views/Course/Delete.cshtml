@@ -12,28 +12,47 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.courseName)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseId)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.courseName)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseId)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.courseId)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseName)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.courseId)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseName)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.courseDescription)
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CourseDescription)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.courseDescription)
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CourseDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CreditHours)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CreditHours)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Space)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Space)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Date)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <input type="hidden" asp-for="CourseId" />
+        <input type="submit" value="Submit" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

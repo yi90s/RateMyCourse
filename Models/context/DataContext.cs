@@ -35,10 +35,10 @@ namespace cReg_WebApp.Models.context
             }
 
             modelBuilder.Entity<Required>()
-                .HasKey(r => new { r.facultyId, r.courseId });
+                .HasKey(r => new { r.FacultyId, r.CourseId });
 
             modelBuilder.Entity<Prerequisite>()
-                .HasKey(p => new { p.courseId, p.prerequisiteId });
+                .HasKey(p => new { p.CourseId, p.PrerequisiteId });
 
         }
     }

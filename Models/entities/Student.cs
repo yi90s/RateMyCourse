@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace cReg_WebApp.Models.entities
 {
     public class Student
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public int studentId { get; set; }
-        public string password { get; set; }
-        public int majorId { get; set; }
-        public string name { get; set; }
+        public int StudentId { get; set; }
+        public string Password { get; set; }
+        public int MajorId { get; set; }
+        public string Name { get; set; }
 
-        public Faculty major { get; set; }
-        
+        public ICollection<Enrolled> CompletedCourses { get; set; }
+
     }
 }

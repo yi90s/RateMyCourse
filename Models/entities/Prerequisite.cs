@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cReg_WebApp.Models.entities
 {
@@ -11,14 +7,15 @@ namespace cReg_WebApp.Models.entities
     {
         [Key]
         [Column(Order = 1)]
-        public int courseId { get; set; }
+        public int CourseId { get; set; }
         [Key]
         [Column(Order = 1)]
-        public int prerequisiteId { get; set; }
-        public int grade { get; set; }
+        public int PrerequisiteId { get; set; }
+        public int Grade { get; set; }
 
-        public Course course { get; set; }
-        public Course prerequisite { get; set; }
+        [ForeignKey("CourseId")]
+        public Course Course { get; set; }
+        public Course PrerequisiteCourse { get; set; }
 
     }
 }

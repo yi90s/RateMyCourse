@@ -9,19 +9,19 @@ namespace cReg_WebApp.Models.entities
     public class Enrolled
     {
         [Key]
-        public int enrollId { get; set; }
+        public int EnrollId { get; set; }
 
-        public int courseId { get; set; }
+        public int CourseId { get; set; }
 
-        public int studentId { get; set; }
+        public int StudentId { get; set; }
 
-        public Boolean completed { get; set; }
+        public bool Completed { get; set; }
 
-        public int grade { get; set; }
-        public int rating { get; set; }
-        public string comment { get; set; }
+        public int Grade { get; set; }
+        public int Rating { get; set; }
+        public string Comment { get; set; }
 
-        public Course course { get; set; }
-        public Student student { get; set; }
+        public Course Course { get; set; }
+        public Student Student { get; set; }
     }
 }
