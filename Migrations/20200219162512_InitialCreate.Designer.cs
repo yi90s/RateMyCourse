@@ -10,7 +10,7 @@ using cReg_WebApp.Models.context;
 namespace cReg_WebApp.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20200218223445_InitialCreate")]
+    [Migration("20200219162512_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

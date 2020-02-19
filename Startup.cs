@@ -56,6 +56,9 @@ namespace cReg_WebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Course}/{action=Details}");
             });
         }
     }

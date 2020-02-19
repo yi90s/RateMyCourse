@@ -24,15 +24,15 @@ namespace cReg_WebApp.Controllers
         }
 
         // GET: Course/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? courseId)
         {
-            if (id == null)
+            if (courseId == null)
             {
                 return NotFound();
             }
 
             var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.CourseId == id);
+                .FirstOrDefaultAsync(m => m.CourseId == courseId);
             if (course == null)
             {
                 return NotFound();
@@ -84,9 +84,9 @@ namespace cReg_WebApp.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int courseId, [Bind("CourseId", "CourseName", "CourseDescription")] Course course)
+        public async Task<IActionResult> Edit([Bind("CourseId", "CourseName", "CourseDescription", "CreditHours", "Space", "Date")] Course course)
         {
-            if (courseId != course.CourseId)
+            if (course == null)
             {
                 return NotFound();
             }
@@ -136,10 +136,13 @@ namespace cReg_WebApp.Controllers
         // POST: Course/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed([Bind("CourseId", "CourseName", "CourseDescription")] Course course)
+        public async Task<IActionResult> DeleteConfirmed([Bind("CourseId")] Course course)
         {
-            var tempCourse = _context.Courses.Find(course.CourseId);
-            _context.Courses.Remove(tempCourse);
+            if (course.CourseId == 0)
+            {
+                return NotFound();
+            }
+            _context.Courses.Remove(course);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
