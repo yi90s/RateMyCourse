@@ -1,8 +1,138 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model cReg_WebApp.Models.Objects.Student
+@{
+    ViewData["Title"] = "cReg Home";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <style>
+        table, th {
+            border: 1px solid black;
+        }
+    </style> 
+
+
+    <div style="float : left; margin-left: 2%;">
+        <h1 class="display-4" align="left">Welcome Student</h1>
+        <table class="table">
+            <tr>
+                <td>
+                    <h5>Student Id</h5>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.id)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Major</h5>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.major)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Minor</h5>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.minor)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Degree Year</h5>
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.currYear)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Credit hours remaining</h5>
+                </td>
+                <td>
+                    <p></p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="float : right;  margin-right: 2%;">
+        <h1 class="display-4" align="left">Your Schedule</h1>
+        <p>Calendar element to be imported</p>
+        <table style="border: 1px solid black;">
+            <tr>
+                <th>Monday</th>
+                <th>Tuesday</th>
+                <th>Wednesday</th>
+                <th>Thursday</th>
+                <th>Friday</th>
+                <th>Saturday</th>
+                <th>Sunday</th>
+            </tr>
+            <tr>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>7</th>
+            </tr>
+            <tr>
+                <th>8</th>
+                <th>9</th>
+                <th>10</th>
+                <th>11</th>
+                <th>12</th>
+                <th>13</th>
+                <th>14</th>
+            </tr>
+            <tr>
+                <th>15</th>
+                <th>16</th>
+                <th>17</th>
+                <th>18</th>
+                <th>19</th>
+                <th>20</th>
+                <th>21</th>
+            </tr>
+            <tr>
+                <th>22</th>
+                <th>23</th>
+                <th>24</th>
+                <th>25</th>
+                <th>26</th>
+                <th>27</th>
+                <th>28</th>
+            </tr>
+            <tr>
+                <th>29</th>
+                <th>30</th>
+                <th>31</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </table>
+    </div>
+
