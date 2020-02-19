@@ -7,7 +7,7 @@ cReg™ is an application that enables university students to efficiently and ef
 
 # Design
 - We use MVC model
-- [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/ER%20diagram.png)
+- [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/entity%20diagram.PNG)
 - [DFD](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/DFD.png)
 - Tools:
   - .NET frameworks
