@@ -14,7 +14,6 @@ namespace cReg_WebApp.Controllers.Logic
 
         public bool IsReCaptchValid()
         {
-            var result = false;
             var secretKey = "6Lf-EtUUAAAAAP5-bE08l018Y5LTCMfcWoI5pccY";
             var apiUrl = "https://www.google.com/recaptcha/api/siteverify?secret={0}&response={1}";
             var requestUri = string.Format(apiUrl, secretKey, captchaResponse);
@@ -26,11 +25,9 @@ namespace cReg_WebApp.Controllers.Logic
                 {
                     JObject jResponse = JObject.Parse(stream.ReadToEnd());
                     var isSuccess = jResponse.Value<bool>("success");
-                    result = (isSuccess) ? true : false;
+                    return isSuccess;
                 }
             }
-
-            return result;
         }
     }
 }
