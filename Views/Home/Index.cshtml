@@ -1,10 +1,36 @@
 ﻿@model cReg_WebApp.Models.entities.Student
 @{
-    ViewData["Title"] = "Home Page";
-    ViewData["Name"] = @Model.Name;
+    ViewData["Title"] = "Student Profile";
+    ViewData["Name"] = @ViewBag.stu.Name;
 }
 
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    </div>
+
+<h2>Student Profile</h2>
+
+<h3>@ViewBag.stu.Name</h3>
+<h3>@ViewBag.stu.StudentId</h3>
+
+
+<p>Registered Courses</p>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in ViewBag.registeredCourses)
+        {
+            <tr>
+                <td>
+                    @item.CourseName
+                </td>
+                <td>
+                    @item.CourseId
+                </td>
+                <td>
+                    @item.CourseDescription)
+                </td>
+                <td>
+                    <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
