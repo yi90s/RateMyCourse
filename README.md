@@ -17,7 +17,7 @@ cReg™ is an application that enables university students to efficiently and ef
 # Testing
 - Website login:  
   -username: 3  
-  -password: 12345
+  -password: 123456
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
 - [Function Documents](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/FunctionDoc.md)
