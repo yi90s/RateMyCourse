@@ -1,0 +1,61 @@
+﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
+@{
+    ViewData["Title"] = "RegisterPage";
+}
+
+    <html>
+    <head>
+        <style>
+            .rec {
+                border: 1px solid;
+                border-color: aqua;
+                border-radius: 16px;
+                padding: 0.01em 16px;
+                line-height: 50px;
+            }
+        </style>
+    </head>
+
+    <div>
+        <ul style="list-style-type: none">
+            <li>Student's Name: blah</li>
+            <li>Student's ID: xxx</li>
+        </ul>
+    </div>
+
+    <div class="rec">
+        <span style="margin: 10px">Recommended Courses: COMP6969, COMP4500, COMP1111, YEET1000 </span>
+    </div>
+
+    @using (Html.BeginForm("RegisterPage", "Course", FormMethod.Get))
+    {
+        <p>
+            Title: @Html.TextBox("SearchString") <br />
+            <input type="submit" value="Search" />
+        </p>
+
+    }
+
+
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CourseDescription)
+                    </td>
+                    <td>
+                        <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    </html>
