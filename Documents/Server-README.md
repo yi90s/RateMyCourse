@@ -8,4 +8,4 @@
 AWS DB account:
 - Sign-in URL: https://765879176423.signin.aws.amazon.com/console
 - User name: grp8
-- pass: eEyBfsGeAx#f
+- pass: *9o^E|xMi{M
