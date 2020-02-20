@@ -15,8 +15,8 @@ cReg™ is an application that enables university students to efficiently and ef
   - AWS RDS
 
 # Testing
-- Website login:
-  -username: 3
+- Website login:  
+  -username: 3  
   -password: 12345
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
