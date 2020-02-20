@@ -1,6 +1,8 @@
 ﻿@model cReg_WebApp.Models.entities.Student
 @{
-    ViewData["Title"] = "cReg Home";
+
+    ViewData["Title"] = "Student Profile";
+    ViewData["Name"] = @ViewBag.stu.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -65,18 +67,30 @@
         </tr>
     </table>
 
-    @*Will turn into dynamically generated list when the list exists*@
-    <h1 class="display-4" align="left">Current Enrollment)</h1>
-    <table class="table">
-        <tr>
-            <td>
-                <h5>Example 1040</h5>
-            </td>
-            <td>
-                <p>link to: course page, drop, etc</p>
-            </td>
-        </tr>
-    </table>
+  <p>Registered Courses</p>
+
+<table class="table">
+    <tbody>
+        @foreach (var item in ViewBag.registeredCourses)
+        {
+            <tr>
+                <td>
+                    @item.CourseName
+                </td>
+                <td>
+                    @item.CourseId
+                </td>
+                <td>
+                    @item.CourseDescription)
+                </td>
+                <td>
+                    <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 </div>
 
     <div style="float : right;  margin-right: 2%;">
@@ -139,4 +153,8 @@
             </tr>
         </table>
     </div>
+
+    
+
+
 

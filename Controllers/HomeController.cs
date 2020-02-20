@@ -4,7 +4,11 @@ using cReg_WebApp.Models;
 using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.entities;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
+
+
 
 namespace cReg_WebApp.Controllers
 {
@@ -58,19 +62,30 @@ namespace cReg_WebApp.Controllers
             }
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             DbInitializer.Initialize(_context);
             if (!string.IsNullOrEmpty(Request.Query["studentId"]))
             {
+                List<Course> registeredCourses = new List<Course>();
                 Student stu = _context.Students.Find(int.Parse(Request.Query["studentId"]));
-                return View(stu);
+                List<Enrolled> courses = _context.Enrolled.Where(c => c.StudentId == stu.StudentId).ToList();
+                foreach (Enrolled var in courses)
+                {
+                    int courseId = var.CourseId;
+                    registeredCourses.Add(_context.Courses.Find(courseId));
+                }
+                ViewBag.stu = stu;
+                ViewBag.registeredCourses = registeredCourses;
+                return View();
             }
             else
             {
                 return RedirectToAction("Home", "Login");
             }
         }
+        
 
         //public IActionResult Privacy()
         //{
