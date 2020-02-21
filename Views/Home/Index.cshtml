@@ -13,87 +13,87 @@
     </style> 
 
     @*Most Data is just for show and not actually dynamic yet*@
-
-<div style="float : left; margin-left: 2%;">
-    <h1 class="display-4" align="left">Welcome @Html.DisplayFor(model => model.Name)</h1>
-    <table class="table">
-        <tr>
-            <td>
-                <h5>Student Id</h5>
-            </td>
-            <td>
-                @Html.DisplayFor(model => model.StudentId)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h5>Major</h5>
-            </td>
-            <td>
-                <p>MicroBiology</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <p>Minor</p>
-            </td>
-            <td>
-                <p>Biology</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h5>Degree Year</h5>
-            </td>
-            <td>
-                <p>1</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h5>Credit hours remaining</h5>
-            </td>
-            <td>
-                <p>120</p>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h5>Current Balance</h5>
-            </td>
-            <td>
-                <p>80,000$</p>
-            </td>
-        </tr>
-    </table>
-
-  <p>Registered Courses</p>
-
-<table class="table">
-    <tbody>
-        @foreach (var item in ViewBag.registeredCourses)
-        {
+<div class=" = container">
+    <div style="float : left;">
+        <h1 class="display-4" align="left">Welcome</h1>
+        <table class="table">
             <tr>
                 <td>
-                    @item.CourseName
+                    <h5>Student Id</h5>
                 </td>
                 <td>
-                    @item.CourseId
-                </td>
-                <td>
-                    @item.CourseDescription)
-                </td>
-                <td>
-                    <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
+                    @Html.DisplayFor(model => model.StudentId)
                 </td>
             </tr>
-        }
-    </tbody>
-</table>
+            <tr>
+                <td>
+                    <h5>Major</h5>
+                </td>
+                <td>
+                    <p>MicroBiology</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Minor</h5>
+                </td>
+                <td>
+                    <p>Biology</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Degree Year</h5>
+                </td>
+                <td>
+                    <p>1</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Credit hours remaining</h5>
+                </td>
+                <td>
+                    <p>120</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h5>Current Balance</h5>
+                </td>
+                <td>
+                    <p>80,000$</p>
+                </td>
+            </tr>
+        </table>
 
-</div>
+        <p>Registered Courses</p>
 
-    <div style="float : right;  margin-right: 2%;">
+        <table class="table">
+            <tbody>
+                @foreach (var item in ViewBag.registeredCourses)
+                {
+                    <tr>
+                        <td>
+                            @item.CourseName
+                        </td>
+                        <td>
+                            @item.CourseId
+                        </td>
+                        <td>
+                            @item.CourseDescription)
+                        </td>
+                        <td>
+                            <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+
+    <div style="float : left; ">
         <h1 class="display-4" align="left">Your Schedule</h1>
         @*Calendar element to be imported*@
         <table style="border: 1px solid black;">
@@ -154,7 +154,7 @@
         </table>
     </div>
 
-    
+</div>
 
 
 
