@@ -87,10 +87,6 @@ namespace cReg_WebApp.Controllers
         }
         
 
-        //public IActionResult Privacy()
-        //{
-        //    return View();
-        //}
         //public async Task<IActionResult> RegisterPage()
         //{
         //    var courses = await _context.Course.ToListAsync();
