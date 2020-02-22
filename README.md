@@ -9,14 +9,14 @@ cReg™ is an application that enables university students to efficiently and ef
 - We use MVC model
 - [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/entity%20diagram.PNG)
 - [DFD](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/DFD.png)
-- [Page Diagram] (https://github.com/MQuizzle/Gr8Group/blob/master/Documents/page_diagram.png)
-- [System Diagram] (https://github.com/MQuizzle/Gr8Group/blob/master/Documents/system_diagram.png)
+- [Page Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/page_diagram.png)
+- [System Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/system_diagram.png)
 
 # File Route
 
 
 # Installing Environment
-- [.NET Core 3.1] (https://dotnet.microsoft.com/download)
+- [.NET Core 3.1](https://dotnet.microsoft.com/download)
 
 # Tools:
 - FrameWork
