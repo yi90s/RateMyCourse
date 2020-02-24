@@ -20,18 +20,18 @@ cReg™ is an application that enables university students to efficiently and ef
 
 # Tools:
 - FrameWork
-  - .NET frameworks
+  - ASP.NET Core
   - AWS EC2
   - AWS RDS
-  - Entity FrameWork
   
 - Test Tool
-  - Unit Test:
-  - Intergration Test:
-  - System Test:
+  - Unit Test: xUnit
+  - Intergration Test: In Progress
+  - System Test: In Progress
 
 # Login Information
-- Website login:  
+- Website Link:
+- Authentication: 
   -username: 3  
   -password: 123456
   
