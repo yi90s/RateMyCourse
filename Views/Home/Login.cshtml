@@ -1,0 +1,22 @@
+﻿@{
+    Layout = null;
+}
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<link rel="stylesheet" type="text/css" href="~/css/login.css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div>
+            <h1>cReg</h1>
+        </div>
+        <form id="form1" method="post">
+            <input type="text" name="StudentID" placeholder="StudentID" pattern="[0-9]{1,9}" title="No more than 9 numbers" required>
+            <input type="password" name="Password" placeholder="Password" pattern="[^\s]{1,20}" title="Less than 20 characters no space" required>
+            <div>@ViewBag.Message</div>
+            <input type="submit" value="Submit">
+        </form>
+        <div id="formFooter">
+        </div>
+    </div>
+</div>

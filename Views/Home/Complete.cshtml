@@ -1,0 +1,39 @@
+﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
+@{
+    ViewData["Title"] = "Complete";
+}
+<h1>Complete</h1>
+
+<h4>Below are all of your completed courses</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Course Code
+            </th>
+            <th>
+                Course Name
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.courseName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.courseDescription)
+                </td>
+                <td>
+                    <a asp-controller="course" asp-action="details" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
