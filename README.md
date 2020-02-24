@@ -4,6 +4,7 @@ cReg™ is an application that enables university students to efficiently and ef
 # Progress
 - Right now, we are focusing on building our website. You can check out our progress in [here](https://github.com/MQuizzle/Gr8Group/projects/1)
 - [Milestone-1](https://github.com/MQuizzle/Gr8Group/milestone/1)
+- [Milestone-2](https://github.com/MQuizzle/Gr8Group/milestone/2)
 
 # Design
 - MVC pattern
@@ -12,9 +13,34 @@ cReg™ is an application that enables university students to efficiently and ef
 - [Page Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/page_diagram.png)
 - [System Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/system_diagram.png)
 
-# File Route
-
-
+# Code File Route
+- Controllers
+     - Logic
+         -[Advisor.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Controllers/Logic/Advisor.cs)
+     - [CourseController.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Controllers/CourseController.cs)
+     - [HomeController.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Controllers/HomeController.cs)
+- Models
+     - ViewModels
+         -[ErrorViewModel.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/ViewModels/ErrorViewModel.cs)
+	     -[ViewModelBase.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/ViewModels/ViewModelBase.cs)
+	     -[rateCourseViewModel.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/ViewModels/rateCourseViewModel.cs)
+     - entities
+         -[Course.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Course.cs)
+	     -[Enrolled.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Enrolled.cs)
+	     -[Faculty.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Faculty.cs)
+	     -[Prerequisite.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Prerequisite.cs)
+	     -[Required.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Required.cs)
+	     -[Student.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Student.cs)
+- Persistence/Contexts
+     - [DataContext.cs] (https://github.com/MQuizzle/Gr8Group/blob/master/Persistence/Contexts/DataContext.cs)
+- Test
+     - Infrastructure
+         -[DataContextTest.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/Infrastructure/DataContextTest.cs)
+	     -[TestBase.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/Infrastructure/TestBase.cs)
+     - UnitTests/Controller
+         -[HomeControllerTests.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/UnitTests/Controller/HomeControllerTests.cs)
+	 
+  
 # Installing Environment
 - [.NET Core 3.1](https://dotnet.microsoft.com/download)
 
