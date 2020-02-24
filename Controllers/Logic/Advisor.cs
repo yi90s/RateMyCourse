@@ -41,7 +41,7 @@ namespace cReg_WebApp.Controllers.Logic
             {
                 foreach (var cor in courses)
                 {
-                    if (cor.CourseId >= year * 1000 && cor.CourseId < (year + 1) * 1000)
+                    if (cor.courseId >= year * 1000 && cor.courseId < (year + 1) * 1000)
                     {
                         result.Add(cor);
                     }

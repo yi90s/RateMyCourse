@@ -1,28 +1,34 @@
-﻿@model cReg_WebApp.Models.entities.Student
+﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
 @{
 
-    ViewData["Title"] = "Student Profile";
-    ViewData["Name"] = @ViewBag.stu.Name;
+    ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-    <style>
-        table, th {
-            border: 1px solid black;
-        }
-    </style> 
+<style>
+    table, th {
+        border: 1px solid black;
+    }
+</style>
 
-    @*Most Data is just for show and not actually dynamic yet*@
 <div class=" = container">
     <div style="float : left;">
         <h1 class="display-4" align="left">Welcome</h1>
         <table class="table">
             <tr>
                 <td>
+                    <h5>Student Name</h5>
+                </td>
+                <td>
+                    @ViewData["Name"]
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <h5>Student Id</h5>
                 </td>
                 <td>
-                    @Html.DisplayFor(model => model.StudentId)
+                    @ViewData["studentId"]
                 </td>
             </tr>
             <tr>
@@ -30,25 +36,10 @@
                     <h5>Major</h5>
                 </td>
                 <td>
-                    <p>MicroBiology</p>
+                    @ViewData["majorName"]
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <h5>Minor</h5>
-                </td>
-                <td>
-                    <p>Biology</p>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h5>Degree Year</h5>
-                </td>
-                <td>
-                    <p>1</p>
-                </td>
-            </tr>
+
             <tr>
                 <td>
                     <h5>Credit hours remaining</h5>
@@ -57,38 +48,28 @@
                     <p>120</p>
                 </td>
             </tr>
-            <tr>
-                <td>
-                    <h5>Current Balance</h5>
-                </td>
-                <td>
-                    <p>80,000$</p>
-                </td>
-            </tr>
         </table>
 
         <p>Registered Courses</p>
 
         <table class="table">
-            <tbody>
-                @foreach (var item in ViewBag.registeredCourses)
-                {
-                    <tr>
-                        <td>
-                            @item.CourseName
-                        </td>
-                        <td>
-                            @item.CourseId
-                        </td>
-                        <td>
-                            @item.CourseDescription)
-                        </td>
-                        <td>
-                            <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.courseId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.courseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.courseDescription)
+                    </td>
+                    <td>
+                        <a asp-controller="course" asp-action="details" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
+                    </td>
+                </tr>
+            }
         </table>
 
     </div>
@@ -155,6 +136,3 @@
     </div>
 
 </div>
-
-
-

@@ -12,47 +12,28 @@
     <h4>Course</h4>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseId)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.courseName)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CourseId)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.courseName)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseName)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.courseId)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CourseName)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.courseId)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CourseDescription)
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.courseDescription)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CourseDescription)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreditHours)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreditHours)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Space)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Space)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Date)
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.courseDescription)
         </dd>
     </dl>
     
     <form asp-action="Delete">
-        <input type="hidden" asp-for="CourseId" />
-        <input type="submit" value="Submit" class="btn btn-danger" /> |
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
         <a asp-action="Index">Back to List</a>
     </form>
 </div>

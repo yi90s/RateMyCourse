@@ -11,12 +11,12 @@ namespace cReg_WebApp.Models.entities
     {
         [Key]
         [Column(Order = 1)]
-        public int FacultyId { get; set; }
+        public int facultyId { get; set; }
         [Key]
         [Column(Order = 2)]
-        public int CourseId { get; set; }
+        public int courseId { get; set; }
 
-        public Faculty Faculty { get; set; }
-        public Course Course { get; set; }
+        public Faculty faculty { get; set; }
+        public Course course { get; set; }
     }
 }

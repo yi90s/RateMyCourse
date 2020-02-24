@@ -9,8 +9,8 @@ namespace cReg_WebApp.Models.entities
     public class Faculty
     {
         [Key]
-        public int FacultyId { get; set; }
-        public string FacultyName { get; set; }
+        public int facultyId { get; set; }
+        public string facultyName { get; set; }
 
     }
 }

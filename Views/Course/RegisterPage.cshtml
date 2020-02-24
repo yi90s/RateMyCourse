@@ -3,7 +3,7 @@
     ViewData["Title"] = "RegisterPage";
 }
 
-    <html>
+<html>
     <head>
         <style>
             .rec {
@@ -18,8 +18,8 @@
 
     <div>
         <ul style="list-style-type: none">
-            <li>Student's Name: blah</li>
-            <li>Student's ID: xxx</li>
+            <li>Student's Name: @ViewData["Name"]</li>
+            <li>Student's ID: @ViewData["StudentId"]</li>
         </ul>
     </div>
 
@@ -38,24 +38,34 @@
 
 
     <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Course Name
+                </th>
+                <th>
+                    Course Description
+                </th>
+                <th>
+                    Action
+                </th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var item in Model)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CourseId)
+                        @Html.DisplayFor(modelItem => item.courseName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CourseName)
+                        @Html.DisplayFor(modelItem => item.courseDescription)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.CourseDescription)
-                    </td>
-                    <td>
-                        <a asp-action="CourseInfo" asp-route-name="@item.CourseName">View Course</a>
+                        <a asp-action="CourseInfo" asp-route-name="@item.courseName">View Course</a>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
-    </html>
+</html>

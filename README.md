@@ -6,16 +6,34 @@ cReg™ is an application that enables university students to efficiently and ef
 - [Milestone-1](https://github.com/MQuizzle/Gr8Group/milestone/1)
 
 # Design
-- We use MVC model
-- [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/ER%20diagram.png)
+- MVC pattern
+- [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/entity%20diagram.PNG)
 - [DFD](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/DFD.png)
-- Tools:
-  - .NET frameworks
+- [Page Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/page_diagram.png)
+- [System Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/system_diagram.png)
+
+# File Route
+
+
+# Installing Environment
+- [.NET Core 3.1](https://dotnet.microsoft.com/download)
+
+# Tools:
+- Technologies
+  - ASP.NET Core
   - AWS EC2
   - AWS RDS
+  
+- Testing Tools
+  - Unit Test: xUnit
+  - Intergration Test: In Progress
+  - System Test: In Progress
 
-# Testing
-
+# Login Information
+- Website Link: http://cregwebapp-prod.us-east-2.elasticbeanstalk.com/
+- Username: **1**  
+- Password: **password**
+  
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
 - [Function Documents](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/FunctionDoc.md)
