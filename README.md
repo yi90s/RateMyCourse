@@ -30,10 +30,10 @@ cReg™ is an application that enables university students to efficiently and ef
   - System Test: In Progress
 
 # Login Information
-- Website Link:
+- Website Link: http://cregwebapp-prod.us-east-2.elasticbeanstalk.com/
 - Authentication: 
-  -username: 3  
-  -password: 123456
+  -username: 1  
+  -password: password
   
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
