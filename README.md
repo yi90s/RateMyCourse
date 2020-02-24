@@ -32,7 +32,7 @@ cReg™ is an application that enables university students to efficiently and ef
 	 - [Required.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Required.cs)
 	 - [Student.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Student.cs)
 - Persistence/Contexts
-     - [DataContext.cs] (https://github.com/MQuizzle/Gr8Group/blob/master/Persistence/Contexts/DataContext.cs)
+     - [DataContext.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Persistence/Contexts/DataContext.cs)
 - Test
      - Infrastructure
          - [DataContextTest.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/Infrastructure/DataContextTest.cs)
