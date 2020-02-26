@@ -6,16 +6,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.context;
+using System.Collections.Generic;
+using cReg_WebApp.Controllers.Logic;
+using cReg_WebApp.Models.ViewModels;
 
 namespace cReg_WebApp.Controllers
 {
     public class CourseController : Controller
     {
         private readonly DataContext _context;
+        private Functions functions;
 
         public CourseController(DataContext context)
         {
             _context = context;
+            functions = new Functions(context);
         }
 
         // GET: Course
@@ -25,7 +30,7 @@ namespace cReg_WebApp.Controllers
         }
 
         // GET: Course/Details/5
-        public async Task<IActionResult> Details(int? sid , int? cid)
+        public async Task<IActionResult>Details(int? sid , int? cid)
         {
             if(sid!=null)
             {
@@ -51,6 +56,107 @@ namespace cReg_WebApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+
+        [HttpGet]
+        public async Task<IActionResult> RegisterDetails(int? sid, int? cid)
+        {
+            if (sid != null)
+            {
+                var stu = await _context.Students.FirstOrDefaultAsync(s => s.studentId == sid);
+                ViewData["studentId"] = sid;
+                ViewData["Name"] = stu.name;
+                if (cid == null)
+                {
+                    return NotFound();
+                }
+
+                CourseViewModel thisModel = new CourseViewModel(cid.GetValueOrDefault(), _context);
+                if (thisModel == null)
+                {
+                    return NotFound();
+                }
+
+                return View(thisModel);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        public async Task<IActionResult> Register(int? sid, int? cid)
+        {
+            if(sid!=null&&cid!=null)
+            {
+                if(await functions.registrationVerifierAsync(sid.GetValueOrDefault(), cid.GetValueOrDefault()))
+                {
+                    _context.Enrolled.Add(new Enrolled {  courseId = cid.GetValueOrDefault(), studentId = sid.GetValueOrDefault(), completed = false, grade = null, rating = null, comment = null });
+                    await _context.SaveChangesAsync();
+                    ViewBag.message = "<scipt>alert('Success Registration');</script>";
+                }
+                else
+                {
+                    ViewBag.message = "<scipt>alert('Failed Registration');</script>";
+                }
+                return RedirectToAction("Register","Home", new { id = sid });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> DropDetails(int? sid, int? cid)
+        {
+            if (sid != null)
+            {
+                var stu = await _context.Students.FirstOrDefaultAsync(s => s.studentId == sid);
+                ViewData["studentId"] = sid;
+                ViewData["Name"] = stu.name;
+                if (cid == null)
+                {
+                    return NotFound();
+                }
+
+                var course = await _context.Courses
+                    .FirstOrDefaultAsync(m => m.courseId == cid);
+                if (course == null)
+                {
+                    return NotFound();
+                }
+
+                return View(course);
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
+
+        //public async Task<IActionResult> Drop(int? sid, int? cid)
+        //{
+        //    if (sid != null && cid != null)
+        //    {
+        //        //int eId = functions.dropVerifierAsync(sid.GetValueOrDefault(), cid.GetValueOrDefault());
+        //        if (eId != -1 )
+        //        {
+        //            Enrolled row = _context.Enrolled.Find(eId);
+        //            _context.Enrolled.Remove(row);
+        //            await _context.SaveChangesAsync();
+        //            ViewBag.message = "<scipt>alert('Success Drop');</script>";
+        //        }
+        //        else
+        //        {
+        //            ViewBag.message = "<scipt>alert('Failed Drop');</script>";
+        //        }
+        //        return RedirectToAction("Register", "Home", new { id = sid });
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //}
 
         // GET: Course/Create
         public IActionResult Create()

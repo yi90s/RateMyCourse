@@ -3,6 +3,7 @@
     ViewData["Title"] = "Register Page";
 }
 <html>
+@ViewBag.message
 <body>
     <div>
         <ul style="list-style-type: none">
@@ -37,7 +38,7 @@
                         @Html.DisplayFor(modelItem => item.courseDescription)
                     </td>
                     <td>
-                        <a asp-controller="Course" asp-action="Details" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
+                        <a asp-controller="Course" asp-action="RegisterDetails" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
                     </td>
                 </tr>
             }

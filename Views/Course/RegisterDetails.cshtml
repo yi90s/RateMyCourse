@@ -1,0 +1,63 @@
+﻿@model cReg_WebApp.Models.ViewModels.CourseViewModel;
+
+@{
+    ViewData["Title"] = "RegisterDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Details</h1>
+@ViewBag.message
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.thisCourse.courseName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.thisCourse.courseName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.thisCourse.courseId)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.thisCourse.courseId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.thisCourse.courseDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.thisCourse.courseDescription)
+        </dd>
+    </dl>
+</div>
+<table class="table">
+    <tr>
+        <th>
+            Comments
+        </th>
+        <th>
+            @Html.DisplayFor(modelItem => Model.commentNum)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var comments in Model.comments)
+    {
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => comments.studentName)
+            </th>
+            <td>
+                @Html.DisplayFor(modelItem => comments.comments)
+            </td>
+        </tr>
+    }
+
+</table>
+<div>
+    <h4><a asp-controller="Course" asp-action="Register" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@Model.thisCourse.courseId">Register</a></h4>
+</div>
+
+
+
