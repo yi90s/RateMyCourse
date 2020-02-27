@@ -63,14 +63,13 @@ namespace cReg_WebApp.Controllers
             if (sid != null)
             {
                 var stu = await _context.Students.FirstOrDefaultAsync(s => s.studentId == sid);
-                ViewData["studentId"] = sid;
-                ViewData["Name"] = stu.name;
                 if (cid == null)
                 {
                     return NotFound();
                 }
 
                 CourseViewModel thisModel = new CourseViewModel(cid.GetValueOrDefault(), _context);
+                thisModel.user = stu;
                 if (thisModel == null)
                 {
                     return NotFound();
@@ -107,26 +106,20 @@ namespace cReg_WebApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> DropDetails(int? sid, int? cid)
+        public IActionResult DropDetails(int? eid)
         {
-            if (sid != null)
+            if (eid != null)
             {
-                var stu = await _context.Students.FirstOrDefaultAsync(s => s.studentId == sid);
-                ViewData["studentId"] = sid;
-                ViewData["Name"] = stu.name;
+                int? cid = _context.Enrolled.Find(eid).courseId;
                 if (cid == null)
                 {
                     return NotFound();
                 }
 
-                var course = await _context.Courses
-                    .FirstOrDefaultAsync(m => m.courseId == cid);
-                if (course == null)
-                {
-                    return NotFound();
-                }
+                CourseViewModel thisView = new CourseViewModel(cid.GetValueOrDefault(), _context);
+                thisView.setEnrolled( eid.GetValueOrDefault(),_context);
 
-                return View(course);
+                return View(thisView);
             }
             else
             {
@@ -134,29 +127,25 @@ namespace cReg_WebApp.Controllers
             }
         }
 
-        //public async Task<IActionResult> Drop(int? sid, int? cid)
-        //{
-        //    if (sid != null && cid != null)
-        //    {
-        //        //int eId = functions.dropVerifierAsync(sid.GetValueOrDefault(), cid.GetValueOrDefault());
-        //        if (eId != -1 )
-        //        {
-        //            Enrolled row = _context.Enrolled.Find(eId);
-        //            _context.Enrolled.Remove(row);
-        //            await _context.SaveChangesAsync();
-        //            ViewBag.message = "<scipt>alert('Success Drop');</script>";
-        //        }
-        //        else
-        //        {
-        //            ViewBag.message = "<scipt>alert('Failed Drop');</script>";
-        //        }
-        //        return RedirectToAction("Register", "Home", new { id = sid });
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Login", "Home");
-        //    }
-        //}
+        public async Task<IActionResult> Drop(int? sid, int? eid)
+        {
+            if (sid != null && eid != null)
+            {
+                if (await functions.dropCourse(eid.GetValueOrDefault()))
+                {
+                    ViewBag.message = "<scipt>alert('Success Drop');</script>";
+                }
+                else
+                {
+                    ViewBag.message = "<scipt>alert('Failed Drop');</script>";
+                }
+                return RedirectToAction("Register", "Home", new { id = sid });
+            }
+            else
+            {
+                return RedirectToAction("Login", "Home");
+            }
+        }
 
         // GET: Course/Create
         public IActionResult Create()
