@@ -139,7 +139,7 @@ namespace cReg_WebApp.Controllers
                 {
                     ViewBag.message = "<scipt>alert('Failed Drop');</script>";
                 }
-                return RedirectToAction("Register", "Home", new { id = sid });
+                return RedirectToAction("Index", "Home", new { id = sid });
             }
             else
             {
