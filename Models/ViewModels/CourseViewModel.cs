@@ -14,6 +14,8 @@ namespace cReg_WebApp.Models.ViewModels
         public string rate { get; set; }
 
         public int commentNum {get;set; }
+
+        public int avaliableSpace { get; set; }
         public Course thisCourse { get; set; }
 
         public Student user { get; set; }
@@ -25,30 +27,38 @@ namespace cReg_WebApp.Models.ViewModels
         {
             enrollId = -1;
             this.thisCourse = context.Courses.Find(courseId);
-            var sIdAndComments = context.Enrolled.Where(e => e.courseId == courseId && e.completed && e.comment!=null).ToDictionary(e => e.studentId, e => e.comment);
-            int count = 0;
-            int totalRate = 0;
-            Array rating = context.Enrolled.Where(e => e.courseId == courseId && e.completed && e.rating != null).Select(e => e.rating).ToArray();
-            keyParis = new Dictionary<string, string>();
-            foreach (KeyValuePair<int,string> sAndc in sIdAndComments)
+            if(thisCourse!=null)
             {
-                int sid = sAndc.Key;
-                Student stu = context.Students.Find(sid);
-                keyParis.Add(stu.name,sAndc.Value);
-                count++;
-            }
-            commentNum = count;
-            foreach (int singleRate in rating)
-            {
-                totalRate += singleRate;
-            }
-            if(count!=0)
-            {
-                rate = (totalRate / count).ToString("0")+"/100";
-            }
-            else
-            {
-                rate = "N/A";
+                var sIdAndComments = context.Enrolled.Where(e => e.courseId == courseId && e.completed && (e.comment != null && !e.comment.Equals(""))).ToDictionary(e => e.studentId, e => e.comment);
+                int count = 0;
+                int totalRate = 0;
+                Array rating = context.Enrolled.Where(e => e.courseId == courseId && e.completed && e.rating != null).Select(e => e.rating).ToArray();
+                keyParis = new Dictionary<string, string>();
+                foreach (KeyValuePair<int, string> sAndc in sIdAndComments)
+                {
+                    int sid = sAndc.Key;
+                    Student stu = context.Students.Find(sid);
+                    keyParis.Add(stu.name, sAndc.Value);
+                    count++;
+                }
+                commentNum = count;
+                foreach (int singleRate in rating)
+                {
+                    if (singleRate > 0 && singleRate < 100)
+                    {
+                        totalRate += singleRate;
+                    }
+                }
+                if (count != 0)
+                {
+                    rate = (totalRate / count).ToString("0") + "/100";
+                }
+                else
+                {
+                    rate = "N/A";
+                }
+
+                avaliableSpace = thisCourse.space - context.Enrolled.Where(e => e.courseId == thisCourse.courseId).Count();
             }
         }
 
@@ -58,5 +68,6 @@ namespace cReg_WebApp.Models.ViewModels
             int userId = context.Enrolled.Find(id).studentId;
             user = context.Students.Find(userId);
         }
+
     }
 }
