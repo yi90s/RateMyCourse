@@ -29,6 +29,7 @@ namespace cReg_WebApp
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Local")));
             services.AddControllersWithViews();
             services.AddIdentity<StudentUser, IdentityRole>()
+                    .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<DataContext>();
         }
 

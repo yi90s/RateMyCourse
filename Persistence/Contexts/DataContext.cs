@@ -1,16 +1,19 @@
-﻿using cReg_WebApp.Models.entities;
+﻿using cReg_WebApp.Models;
+using cReg_WebApp.Models.entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityRole = Microsoft.AspNetCore.Identity.IdentityRole;
 
 namespace cReg_WebApp.Models.context
 {
     public class 
-        DataContext : IdentityDbContext
-    {
+        
+        DataContext : IdentityDbContext{
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
@@ -56,7 +59,7 @@ namespace cReg_WebApp.Models.context
 
         }
 
-        public virtual void seed(ModelBuilder modelBuilder)
+        protected virtual void seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>().HasData(
             new Course { courseId = 1, courseName = "COMP 4380", courseDescription = "Database Implementation", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
@@ -78,22 +81,59 @@ namespace cReg_WebApp.Models.context
                 );
 
             modelBuilder.Entity<Student>().HasData(
-                new Student { studentId = 1, name = "John Braico", majorId = 1},
-                new Student { studentId = 2, name = "Mike Zapp", majorId = 2},
-                new Student { studentId = 3, name = "Peter Graham", majorId = 3}
+                new Student { studentId = 1, name = "John Braico", majorId = 1 },
+                new Student { studentId = 2, name = "Mike Zapp", majorId = 2 },
+                new Student { studentId = 3, name = "Peter Graham", majorId = 3 }
                 );
 
-            modelBuilder.Entity<StudentUser>().HasData(
-                new StudentUser { UserName = "jb", StudentId = 1, Password = "password" },
-                new StudentUser { UserName = "mz", StudentId = 2, Password = "password" },
-                new StudentUser { UserName = "pg", StudentId = 3, Password = "password" }
-                );
 
             modelBuilder.Entity<Faculty>().HasData(
                 new Faculty { facultyId = 1, facultyName = "Computer Science" },
                 new Faculty { facultyId = 2, facultyName = "Engineering" },
                 new Faculty { facultyId = 3, facultyName = "Arts" }
                 );
+
+            var studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };
+            var adminRole = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" };
+            modelBuilder.Entity<IdentityRole>().HasData(
+                studentRole, adminRole
+                );
+
+            var user1 = makeStudentUser("jb", 1, "Password1!");
+            var user2 = makeStudentUser("mz", 2, "Password1!");
+            var user3 = makeStudentUser("pg", 3, "Password1!");
+            modelBuilder.Entity<StudentUser>().HasData(
+                user1, user2, user3
+                );
+
+            modelBuilder.Entity<IdentityUserRole<string>>().HasData(
+                new IdentityUserRole<string> { RoleId = studentRole.Id, UserId = user1.Id },
+                new IdentityUserRole<string> { RoleId = studentRole.Id, UserId = user2.Id },
+                new IdentityUserRole<string> { RoleId = studentRole.Id, UserId = user3.Id }
+                );
+        }
+
+        protected virtual StudentUser makeStudentUser(string UserName, int StudentId, string Password )
+        {
+            try
+            {
+                //filling up the mandatoryy fields in AspNetusers table
+                StudentUser user = new StudentUser {
+                    UserName = UserName,
+                    StudentId = StudentId,
+                    NormalizedUserName = UserName.ToUpper(),
+                    TwoFactorEnabled = false,
+                    EmailConfirmed = false,
+                    PhoneNumberConfirmed = false
+                };
+
+                user.PasswordHash = new PasswordHasher<StudentUser>().HashPassword(user, Password);
+                return user;
+
+            }catch(Exception e)
+            {
+                return null;
+            }
         }
 
 

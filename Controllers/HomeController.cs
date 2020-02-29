@@ -16,73 +16,36 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace cReg_WebApp.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class HomeController : Controller
     {
 
         private readonly DataContext _context;
-        private UserManager<StudentUser> userManager;
-        private SignInManager<StudentUser> signInManager;
+        private readonly UserManager<StudentUser> userManager;
+        private readonly SignInManager<StudentUser> signInManager;
+        private readonly IPasswordHasher<StudentUser> passwordHasher;
 
         public HomeController(DataContext context, 
                               UserManager<StudentUser> userManager, 
-                              SignInManager<StudentUser> signInManager)
+                              SignInManager<StudentUser> signInManager,
+                              IPasswordHasher<StudentUser> passwordHasher)
         {
             _context = context;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.passwordHasher = passwordHasher;
         }
 
         [HttpGet]
-        public async Task <IActionResult> Login()    
+        public async Task<IActionResult> Index()
         {
-
-            //if (result.Succeeded)
-            //{
-            return await Task.Run(() => View());
-            //}
-
-            //var errors = "";
-            //foreach( var error in result.Errors)
-            //{
-            //    errors += error.Description;
-            //}
-            //return Content(errors);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(string StudentID, string Password)
-        {
-            int id = int.Parse(StudentID);
-            Student stu = await _context.Students.FindAsync(id);
-            Boolean pass = false;
-
-
-            //if (stu != null)
-            //{
-            //    if (stu.password.Equals(Password))
-            //    {
-            //        HttpContext.Response.Cookies.Append("studentId", StudentID);
-            //        pass = true;
-            //    }
-            //}
-
-            //if (pass)
-            //{
-            //    return RedirectToAction("Index", "Home", new { id = stu.studentId });
-            //}
-            //else
-            //{
-            //    ViewBag.Message = "student Id or password is invalid";
-            return View("Login");
-            //}
-        }
-
-
-        public async Task<IActionResult> Index(int id)
-        {
+            //get instance of current StudentUser oboject
+            var curUser = await userManager.GetUserAsync(this.User);
+            int id = curUser.StudentId;
             Student stu = await _context.Students.FindAsync(id);
             if (stu != null)
             {
@@ -99,6 +62,7 @@ namespace cReg_WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+     
         }
 
         public async Task<IActionResult> Register(int id)
@@ -186,6 +150,14 @@ namespace cReg_WebApp.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
+        }
+
+        //TODO: Allow users to sign out
+        [HttpGet]
+        public IActionResult SignOut()
+        {
+            signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
 

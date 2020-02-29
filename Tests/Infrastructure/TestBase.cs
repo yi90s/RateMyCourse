@@ -14,6 +14,7 @@ namespace cReg_WebApp.test.Infrastructure
         protected readonly DataContextTest _context;
         protected readonly UserManager<StudentUser> mockUserManager;
         protected readonly SignInManager<StudentUser> mockSignInManager;
+        protected readonly IPasswordHasher<StudentUser> mockHasher;
 
         public TestBase()
         {
@@ -24,6 +25,7 @@ namespace cReg_WebApp.test.Infrastructure
 
             mockUserManager = new UserManager<StudentUser>(userStore.Object, null, null, null, null, null, null, null, null);
             mockSignInManager = new SignInManager<StudentUser>(mockUserManager, null, null, null, null, null, null);
+            mockHasher = new PasswordHasher<StudentUser>();
 
             _context = new DataContextTest(options);
             _context.Database.EnsureCreated();

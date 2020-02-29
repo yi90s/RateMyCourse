@@ -8,18 +8,13 @@ using System.Threading.Tasks;
 
 namespace cReg_WebApp.Models
 {
-    public class StudentUser
+    public class StudentUser : IdentityUser
     {
-        [Required]
-        public string UserName { get; set; }
 
         [Required]
         public int StudentId { get; set; }
 
-        [Required]
-        public string Password { get; set; }
-
-        public Student student { get; set; }
+        public Student Student { get; set; }
 
     }
 }
