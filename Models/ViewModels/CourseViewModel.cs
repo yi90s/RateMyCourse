@@ -62,11 +62,17 @@ namespace cReg_WebApp.Models.ViewModels
             }
         }
 
-        public void setEnrolled(int id, DataContext context)
+        public bool setEnrolled(int id, DataContext context)
         {
-            enrollId = id;
-            int userId = context.Enrolled.Find(id).studentId;
-            user = context.Students.Find(userId);
+            int? temp = context.Enrolled.Find(id).studentId;
+            int? courseId = context.Enrolled.Find(id).courseId;
+            if (temp != null && thisCourse!=null && courseId.GetValueOrDefault()==thisCourse.courseId)
+            {
+                enrollId = id;
+                user = context.Students.Find(temp.GetValueOrDefault());
+                return true;
+            }
+            return false;
         }
 
     }

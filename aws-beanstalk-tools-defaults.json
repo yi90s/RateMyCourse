@@ -2,17 +2,18 @@
 {
     "comment" : "This file is used to help set default values when using the dotnet CLI extension Amazon.ElasticBeanstalk.Tools. For more information run \"dotnet eb --help\" from the project root.",
     "profile" : "RayLiang",
-    "region"  : "us-east-2",
+    "region"  : "ca-central-1",
     "application" : "cRegWebApp",
-    "environment" : "cRegWebApp-prod",
-    "cname"       : "cregwebapp-prod",
+    "environment" : "cRegWebApp-dev",
+    "cname"       : "cregwebapp-dev",
     "solution-stack" : "64bit Windows Server 2016 v2.5.1 running IIS 10.0",
     "environment-type" : "SingleInstance",
     "instance-profile" : "aws-elasticbeanstalk-ec2-role",
     "service-role"     : "aws-elasticbeanstalk-service-role",
-    "instance-type"    : "t3a.medium",
-    "key-pair"         : "cReg",
+    "instance-type"    : "t2.micro",
+    "key-pair"         : "GroupGr8",
     "iis-website"      : "Default Web Site",
     "app-path"         : "/",
-    "enable-xray"      : false
+    "enable-xray"      : false,
+    "health-check-url" : "/"
 }

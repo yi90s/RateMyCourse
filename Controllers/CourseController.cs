@@ -9,6 +9,7 @@ using cReg_WebApp.Models.context;
 using System.Collections.Generic;
 using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.ViewModels;
+using System;
 
 namespace cReg_WebApp.Controllers
 {
@@ -117,9 +118,15 @@ namespace cReg_WebApp.Controllers
                 }
 
                 CourseViewModel thisView = new CourseViewModel(cid.GetValueOrDefault(), _context);
-                thisView.setEnrolled( eid.GetValueOrDefault(),_context);
+                if(thisView.setEnrolled( eid.GetValueOrDefault(),_context))
+                {
+                    return View(thisView);
+                }
+                else
+                {
+                    return NotFound();
+                }
 
-                return View(thisView);
             }
             else
             {
