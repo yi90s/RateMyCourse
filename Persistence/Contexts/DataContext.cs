@@ -1,4 +1,5 @@
 ﻿using cReg_WebApp.Models.entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace cReg_WebApp.Models.context
 {
-    public class DataContext : DbContext
+    public class 
+        DataContext : IdentityDbContext
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
@@ -31,9 +33,12 @@ namespace cReg_WebApp.Models.context
 
         public DbSet<Enrolled> Enrolled { get; set; }
 
+        public DbSet<StudentUser> StuentUsers { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
@@ -54,10 +59,10 @@ namespace cReg_WebApp.Models.context
         public virtual void seed(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Course>().HasData(
-            new Course { courseId = 1, courseName = "COMP 4380", courseDescription = "Database Implementation", creditHours = 3, space = 80, date = "2019 Winter" },
-            new Course { courseId = 2, courseName = "COMP 4350", courseDescription = "Software Engineering", creditHours = 3, space = 80, date = "2019 Winter" },
-            new Course { courseId = 3, courseName = "COMP 4490", courseDescription = "Computer Graphics", creditHours = 3, space = 80, date = "2019 Winter" },
-            new Course { courseId = 4, courseName = "COMP 4360", courseDescription = "Machine Learning", creditHours = 3, space = 80, date = "2019 Winter" }
+            new Course { courseId = 1, courseName = "COMP 4380", courseDescription = "Database Implementation", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 2, courseName = "COMP 4350", courseDescription = "Software Engineering", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 3, courseName = "COMP 4490", courseDescription = "Computer Graphics", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 4, courseName = "COMP 4360", courseDescription = "Machine Learning", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) }
             );
 
             modelBuilder.Entity<Enrolled>().HasData(
@@ -73,9 +78,15 @@ namespace cReg_WebApp.Models.context
                 );
 
             modelBuilder.Entity<Student>().HasData(
-                new Student { studentId = 1, name = "John Braico", majorId = 1, password = "password" },
-                new Student { studentId = 2, name = "Mike Zapp", majorId = 2, password = "password" },
-                new Student { studentId = 3, name = "Peter Graham", majorId = 3, password = "password" }
+                new Student { studentId = 1, name = "John Braico", majorId = 1},
+                new Student { studentId = 2, name = "Mike Zapp", majorId = 2},
+                new Student { studentId = 3, name = "Peter Graham", majorId = 3}
+                );
+
+            modelBuilder.Entity<StudentUser>().HasData(
+                new StudentUser { UserName = "jb", StudentId = 1, Password = "password" },
+                new StudentUser { UserName = "mz", StudentId = 2, Password = "password" },
+                new StudentUser { UserName = "pg", StudentId = 3, Password = "password" }
                 );
 
             modelBuilder.Entity<Faculty>().HasData(

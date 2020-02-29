@@ -12,6 +12,10 @@ using System.Linq;
 using cReg_WebApp.Models.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 namespace cReg_WebApp.Controllers
 {
@@ -19,15 +23,33 @@ namespace cReg_WebApp.Controllers
     {
 
         private readonly DataContext _context;
+        private UserManager<StudentUser> userManager;
+        private SignInManager<StudentUser> signInManager;
 
-        public HomeController(DataContext context)
+        public HomeController(DataContext context, 
+                              UserManager<StudentUser> userManager, 
+                              SignInManager<StudentUser> signInManager)
         {
             _context = context;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
+
         [HttpGet]
         public async Task <IActionResult> Login()    
         {
-            return await Task.Run(()=>View());
+
+            //if (result.Succeeded)
+            //{
+            return await Task.Run(() => View());
+            //}
+
+            //var errors = "";
+            //foreach( var error in result.Errors)
+            //{
+            //    errors += error.Description;
+            //}
+            //return Content(errors);
         }
 
         [HttpPost]
@@ -35,23 +57,27 @@ namespace cReg_WebApp.Controllers
         {
             int id = int.Parse(StudentID);
             Student stu = await _context.Students.FindAsync(id);
-            if (stu != null)
-            {
-                if (stu.password.Equals(Password))
-                {
-                    return RedirectToAction("Index", "Home", new { id = stu.studentId });
-                }
-                else
-                {
-                    ViewBag.Message = "student Id or password is invalid";
-                    return View("Login");
-                }
-            }
-            else
-            {
-                ViewBag.Message = "student Id or password is invalid";
-                return View("Login");
-            }
+            Boolean pass = false;
+
+
+            //if (stu != null)
+            //{
+            //    if (stu.password.Equals(Password))
+            //    {
+            //        HttpContext.Response.Cookies.Append("studentId", StudentID);
+            //        pass = true;
+            //    }
+            //}
+
+            //if (pass)
+            //{
+            //    return RedirectToAction("Index", "Home", new { id = stu.studentId });
+            //}
+            //else
+            //{
+            //    ViewBag.Message = "student Id or password is invalid";
+            return View("Login");
+            //}
         }
 
 
