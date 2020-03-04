@@ -9,13 +9,29 @@
 
   <ItemGroup>
     <Compile Remove="Models\Pages\**" />
+    <Compile Remove="Views\NewFolder1\**" />
+    <Compile Remove="Views\NewFolder\**" />
     <Content Remove="Models\Pages\**" />
+    <Content Remove="Views\NewFolder1\**" />
+    <Content Remove="Views\NewFolder\**" />
     <EmbeddedResource Remove="Models\Pages\**" />
+    <EmbeddedResource Remove="Views\NewFolder1\**" />
+    <EmbeddedResource Remove="Views\NewFolder\**" />
     <None Remove="Models\Pages\**" />
+    <None Remove="Views\NewFolder1\**" />
+    <None Remove="Views\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="automapper" Version="9.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0-preview1.19506.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.0-preview1.19506.2">
       <PrivateAssets>all</PrivateAssets>
@@ -26,8 +42,10 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.BrowserLink" Version="2.2.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.1" />
+    <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="System.Data.Common" Version="4.3.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+    <PackageReference Include="System.Threading.Tasks" Version="4.3.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
       <PrivateAssets>all</PrivateAssets>

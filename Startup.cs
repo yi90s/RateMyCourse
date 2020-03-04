@@ -1,15 +1,22 @@
 
+using cReg_WebApp.Models;
 using cReg_WebApp.Models.context;
+using cReg_WebApp.Models.entities;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
+using cReg_WebApp.Mapping;
 
 namespace cReg_WebApp
 {
-    public class Startup
+    public class 
+        Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -21,8 +28,12 @@ namespace cReg_WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("localConnection")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Local")));
             services.AddControllersWithViews();
+            services.AddIdentity<StudentUser, IdentityRole>()
+                    .AddRoles<IdentityRole>()
+                    .AddEntityFrameworkStores<DataContext>();
+            services.AddAutoMapper(typeof(MappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,12 +60,13 @@ namespace cReg_WebApp
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Login}/{id?}");
+                    pattern: "{controller=Auth}/{action=index}/{id?}");
             });
         }
     }

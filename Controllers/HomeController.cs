@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.entities;
+using cReg_WebApp.Services;
 using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.context;
 using System.Collections.Generic;
@@ -12,65 +13,61 @@ using System.Linq;
 using cReg_WebApp.Models.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace cReg_WebApp.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class HomeController : Controller
     {
 
-        private readonly DataContext _context;
+        private readonly Service services;
+        private readonly UserManager<StudentUser> userManager;
+        private readonly SignInManager<StudentUser> signInManager;
 
-        public HomeController(DataContext context)
+        public HomeController(DataContext context, 
+                              UserManager<StudentUser> userManager, 
+                              SignInManager<StudentUser> signInManager)
         {
-            _context = context;
+            this.services = new Service(context, userManager);
+            this.userManager = userManager;
+            this.signInManager = signInManager;
         }
+
         [HttpGet]
-        public async Task <IActionResult> Login()    
+        public async Task<IActionResult> Index()
         {
-            return await Task.Run(()=>View());
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(string StudentID, string Password)
-        {
-            int id = int.Parse(StudentID);
-            Student stu = await _context.Students.FindAsync(id);
-            if (stu != null)
+            try
             {
-                if (stu.password.Equals(Password))
+                //get instance of current StudentUser oboject
+                var curUser = await userManager.GetUserAsync(this.User);
+                Student student = await services.findStudentById(curUser.StudentId);
+                List<Enrolled> takingCourses = await services.findAllCurrentEnrollsForStudent(student);
+                ProfileViewModel thisView = await services.createProfileViewModel(student.studentId);
+                if (thisView.thisStudent != null)
                 {
-                    return RedirectToAction("Index", "Home", new { id = stu.studentId });
+                    return View(thisView);
                 }
                 else
                 {
-                    ViewBag.Message = "student Id or password is invalid";
-                    return View("Login");
+                    return RedirectToAction("Login", "Home");
                 }
-            }
-            else
+
+
+            }catch(Exception e)
             {
-                ViewBag.Message = "student Id or password is invalid";
-                return View("Login");
+                return RedirectToAction("Error", "Home");
             }
-        }
+            
 
-
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Register()
         {
-            ProfileViewModel thisView = new ProfileViewModel(id, _context);
-            if (thisView.thisStudent != null)
-            {
-                return View(thisView);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
-
-        public async Task<IActionResult> Register(int id)
-        {
-            Student stu = await _context.Students.FindAsync(id);
+                var curUser = await userManager.GetUserAsync(this.User);
+                Student stu = await services.findStudentById(curUser.StudentId);
             if (stu!=null)
             {
                 ViewData["studentId"] = stu.studentId;
@@ -84,77 +81,50 @@ namespace cReg_WebApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+            public async Task<IActionResult> Complete(int id)
+            {
+                Student stu = await _context.Students.FindAsync(id);
+                if (stu != null)
+                {
+                    ViewData["studentId"] = stu.studentId;
+                    @ViewData["Name"] = stu.name;
+
+
+                    List<int> takingCourseId = await _context.Enrolled.Where(c => c.studentId == stu.studentId && c.completed).Select(c => c.courseId).ToListAsync();
+                    List<Course> registeredCourses = await _context.Courses.Where(c => takingCourseId.Contains(c.courseId)).ToListAsync();
+                    return View(registeredCourses);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+            }
+            //TODO
+            public IActionResult WishList(int id)
+            {
+                Student stu = _context.Students.Find(id);
+                if (stu != null)
+                {
+                    ViewData["studentId"] = stu.studentId;
+                    @ViewData["Name"] = stu.name;
+                    return View(stu);
+                }
+                else
+                {
+                    return RedirectToAction("Login", "Home");
+                }
+            }
 
 
 
 
+
+        //TODO: Allow users to sign out
         [HttpGet]
-        public async Task<IActionResult> RateCourse(int id)
+        public IActionResult SignOut()
         {
-            try
-            {
-                Enrolled enroll = await _context.Enrolled.FindAsync(id);
-                Course courseDetail = await _context.Courses.FindAsync(enroll.courseId);
-                var rateCourseVM = new RateCourseViewModel (enroll, courseDetail);
-
-                return View(rateCourseVM);
-            }catch (Exception ex)
-            {
-                return RedirectToAction("Error: "+ ex);
-            }
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateCourseRate(RateCourseViewModel courseRate)
-        {
-            try
-            {
-                Enrolled updated =await _context.Enrolled.FindAsync(courseRate.EnrollId);
-                updated.rating = courseRate.Rating;
-                updated.comment = courseRate.Comment;
-                _context.Enrolled.Update(updated);
-                _context.SaveChanges();
-                return RedirectToAction("Home/Index");
-
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error: "+ex);
-            }
-        }
-        public async Task<IActionResult> Complete(int id)
-        {
-            Student stu = await _context.Students.FindAsync(id);
-            if (stu != null)
-            {
-                ViewData["studentId"] = stu.studentId;
-                @ViewData["Name"] = stu.name;
-
-
-                List<int> takingCourseId = await _context.Enrolled.Where(c => c.studentId == stu.studentId && c.completed).Select(c => c.courseId).ToListAsync();
-                List<Course> registeredCourses = await _context.Courses.Where(c => takingCourseId.Contains(c.courseId)).ToListAsync();
-                return View(registeredCourses);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
-        //TODO
-        public IActionResult WishList(int id)
-        {
-            Student stu = _context.Students.Find(id);
-            if (stu != null)
-            {
-                ViewData["studentId"] = stu.studentId;
-                @ViewData["Name"] = stu.name;
-                return View(stu);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
 

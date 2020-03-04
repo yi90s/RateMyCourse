@@ -1,4 +1,5 @@
-﻿using cReg_WebApp.Models.entities;
+﻿using AutoMapper;
+using cReg_WebApp.Models.entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -20,21 +21,15 @@ namespace cReg_WebApp.Models.ViewModels
         [StringLength(100)]
         [Required]
         public string Comment { get; set; }
-        public string CourseFullName { get; set; }
+        public string CourseName { get; set; }
+        public string courseDescription { get; set; }
         public string Instructor { get; set; }
         public string date { get; set; }
+
+        public RateCourseViewModel(Enrolled rate, Course course)
+        {
+
+        }
         
-
-        public RateCourseViewModel()
-        {
-
-        }
-        public RateCourseViewModel(Enrolled enroll, Course courseDetail)
-        {
-            this.EnrollId = enroll.enrollId;
-            this.Rating = enroll.rating;
-            this.Comment = enroll.comment;
-            this.CourseFullName= courseDetail.courseName + " - " + courseDetail.courseDescription;
-        }
     }
 }

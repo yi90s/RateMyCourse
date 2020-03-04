@@ -1,23 +1,31 @@
 ﻿
-using cReg_WebApp.Models.context;
+using cReg_WebApp.Models;
+using cReg_WebApp.Models.entities;
 using cReg_WebApp.Tests.Infrastructure;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Moq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace cReg_WebApp.test.Infrastructure
 {
     public class TestBase : IDisposable
     {
         protected readonly DataContextTest _context;
+        protected readonly UserManager<StudentUser> mockUserManager;
+        protected readonly SignInManager<StudentUser> mockSignInManager;
+        protected readonly IPasswordHasher<StudentUser> mockHasher;
 
         public TestBase()
         {
+            var userStore = new Mock<IUserStore<StudentUser>>();
             var options = new DbContextOptionsBuilder<DataContextTest>()
                 .UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
                 .Options;
+
+            mockUserManager = new UserManager<StudentUser>(userStore.Object, null, null, null, null, null, null, null, null);
+            mockSignInManager = new SignInManager<StudentUser>(mockUserManager, null, null, null, null, null, null);
+            mockHasher = new PasswordHasher<StudentUser>();
 
             _context = new DataContextTest(options);
             _context.Database.EnsureCreated();
