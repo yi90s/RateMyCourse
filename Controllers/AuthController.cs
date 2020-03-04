@@ -17,13 +17,14 @@ namespace cReg_WebApp.Controllers
             this.signInManager = signInManager;
         }
         
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             //if user is already logged in
             bool loggedIn = this.User.Identity.IsAuthenticated;
             if (loggedIn)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
 
             return await Task.Run(() => View());
@@ -37,7 +38,7 @@ namespace cReg_WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 ViewData["Message"] = "Incorrect user name or password";
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Index");
             }
 
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
@@ -48,7 +49,7 @@ namespace cReg_WebApp.Controllers
             }
 
             //for unknown reason login failed
-            return RedirectToAction("Login", "Home");
+            return RedirectToAction("Index");
 
         }
     }

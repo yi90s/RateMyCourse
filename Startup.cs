@@ -66,7 +66,7 @@ namespace cReg_WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Login}/{id?}");
+                    pattern: "{controller=Auth}/{action=index}/{id?}");
             });
         }
     }

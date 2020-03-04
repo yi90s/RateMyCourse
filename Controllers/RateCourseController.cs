@@ -17,14 +17,13 @@ namespace cReg_WebApp.Controllers
     [Authorize(Roles = "Student")]
     public class RateCourseController : Controller
     {
-        private readonly IMapper mapper;
+
         private readonly Service services;
         private readonly UserManager<StudentUser> userManager;
 
-        public RateCourseController(DataContext context, UserManager<StudentUser> userManager, IMapper mapper)
+        public RateCourseController(DataContext context, UserManager<StudentUser> userManager)
         {
-            this.mapper = mapper;
-            this.services = new Service(context);
+            this.services = new Service(context, userManager);
             this.userManager= userManager;
         }
 
@@ -32,40 +31,28 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int id)
         {
-            try
-            {
-                Enrolled rateCourse = await services.findEnrollById(id);
-                Course course = await services.findCourseById(rateCourse.courseId);
-                //map all fields in Course to RateCourseViewModel to reduce effort of mapping them one-by-one
-                RateCourseViewModel vm = mapper.Map<Enrolled, RateCourseViewModel>(rateCourse);
-                mapper.Map<Course, RateCourseViewModel>(course);
+           
+            Enrolled rate = await services.findEnrollById(id);
+            Course course = await services.findCourseById(rate.courseId);
+            RateCourseViewModel vm = new RateCourseViewModel(rate, course);
 
-                return View(vm);
+            return View(vm);
 
-            }catch(Exception e)
-            {
-                return View("Error", "Home");
-            }
+ 
         }
 
         [HttpPost]
         public async Task<IActionResult> Index(RateCourseViewModel courseRate)
         {
-            try
-            {
+           
+            Enrolled newRating = await services.findEnrollById(courseRate.EnrollId);
+            newRating.rating = courseRate.Rating;
+            newRating.comment = courseRate.Comment;
+            await services.updateEnroll(newRating);
 
-                Enrolled newRating = await services.findEnrollById(courseRate.EnrollId);
-                newRating.rating = courseRate.Rating;
-                newRating.comment = courseRate.Comment;
-                await services.updateEnroll(newRating);
+            return RedirectToAction("Home/Index");
 
-                return RedirectToAction("Home/Index");
 
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error", "Home");
-            }
         }
     }
 }

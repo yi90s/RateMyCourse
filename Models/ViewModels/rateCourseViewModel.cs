@@ -25,6 +25,11 @@ namespace cReg_WebApp.Models.ViewModels
         public string courseDescription { get; set; }
         public string Instructor { get; set; }
         public string date { get; set; }
+
+        public RateCourseViewModel(Enrolled rate, Course course)
+        {
+
+        }
         
     }
 }

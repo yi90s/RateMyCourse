@@ -6,21 +6,21 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace cReg_WebApp.Services
 {
-    public class 
-        Service
+    public class Service
     {
         private readonly DataContext _context;
         private readonly UserManager<StudentUser> _userManager;
-        private readonly Controller _cc;
-        public Service(DataContext context, UserManager<StudentUser> userManager, Controller cc)
+
+        public Service(DataContext context, UserManager<StudentUser> userManager)
         {
             this._context = context;
             this._userManager = userManager;
-            _cc = cc;
+
         }
 
 
@@ -109,12 +109,13 @@ namespace cReg_WebApp.Services
         }
 
 
-        public async Task<Student> findCurrentStudent()
+        public async Task<Student> findCurrentStudent(ClaimsPrincipal user)
         {
+
             try
             {
 
-                StudentUser curUser = await _userManager.GetUserAsync(_cc.User);
+                StudentUser curUser = await _userManager.GetUserAsync(user);
                 return await findStudentById(curUser.StudentId);
             }
             catch (Exception e)
