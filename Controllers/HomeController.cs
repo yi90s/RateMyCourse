@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.entities;
+using cReg_WebApp.Services;
 using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.context;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace cReg_WebApp.Controllers
     public class HomeController : Controller
     {
 
-        private readonly DataContext _context;
+        private readonly Service services;
         private readonly UserManager<StudentUser> userManager;
         private readonly SignInManager<StudentUser> signInManager;
         private readonly IPasswordHasher<StudentUser> passwordHasher;
@@ -34,7 +35,7 @@ namespace cReg_WebApp.Controllers
                               SignInManager<StudentUser> signInManager,
                               IPasswordHasher<StudentUser> passwordHasher)
         {
-            _context = context;
+            this.services = new Service(context, userManager ,this);
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.passwordHasher = passwordHasher;
@@ -43,25 +44,37 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            //get instance of current StudentUser oboject
-            var curUser = await userManager.GetUserAsync(this.User);
-            int id = curUser.StudentId;
-            Student stu = await _context.Students.FindAsync(id);
-            if (stu != null)
+            try
             {
-                ViewData["studentId"] = stu.studentId;
-                ViewData["Name"] = stu.name;
-                Faculty major = _context.Faculties.Find(stu.majorId);
-                ViewData["majorName"] = major.facultyName;
-                List<int> takingCourseId = await _context.Enrolled.Where(c => c.studentId == stu.studentId && !c.completed).Select(c => c.courseId).ToListAsync();
-                List<Course> registeredCourses = await _context.Courses.Where(c => takingCourseId.Contains(c.courseId)).ToListAsync();
+                //get instance of current StudentUser oboject
+                var curUser = await userManager.GetUserAsync(this.User);
+                Student student = await services.findStudentById(curUser.StudentId);
+                List<Enrolled> takingCourses = await services.findAllCurrentEnrollsForStudent(student);
+                HomeViewModel homeVM = new HomeViewModel(takingCourses, student);
 
-                return View(registeredCourses);
-            }
-            else
+                return View(homeVM);
+
+            }catch(Exception e)
             {
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Error", "Home");
             }
+
+            //Student stu = await _context.Students.FindAsync(id);
+            //if (stu != null)
+            //{
+            //    ViewData["studentId"] = stu.studentId;
+            //    ViewData["Name"] = stu.name;
+            //    Faculty major = _context.Faculties.Find(stu.majorId);
+            //    ViewData["majorName"] = major.facultyName;
+            //    List<int> takingCourseId = await _context.Enrolled.Where(c => c.studentId == stu.studentId && !c.completed).Select(c => c.courseId).ToListAsync();
+            //    List<Course> registeredCourses = await _context.Courses.Where(c => takingCourseId.Contains(c.courseId)).ToListAsync();
+
+            //    return View(homeVM);
+            //}
+            //else
+            //{
+            //    return RedirectToAction("Login", "Home");
+            //}
      
         }
 
@@ -83,43 +96,11 @@ namespace cReg_WebApp.Controllers
         }
 
 
-        [HttpGet]
-        public async Task<IActionResult> RateCourse(int id)
-        {
-            try
-            {
-                Enrolled enroll = await _context.Enrolled.FindAsync(id);
-                Course courseDetail = await _context.Courses.FindAsync(enroll.courseId);
-                var rateCourseVM = new RateCourseViewModel (enroll, courseDetail);
-
-                return View(rateCourseVM);
-            }catch (Exception ex)
-            {
-                return RedirectToAction("Error: "+ ex);
-            }
-
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> UpdateCourseRate(RateCourseViewModel courseRate)
-        {
-            try
-            {
-                Enrolled updated =await _context.Enrolled.FindAsync(courseRate.EnrollId);
-                updated.rating = courseRate.Rating;
-                updated.comment = courseRate.Comment;
-                _context.Enrolled.Update(updated);
-                _context.SaveChanges();
-                return RedirectToAction("Home/Index");
-
-            }
-            catch (Exception ex)
-            {
-                return RedirectToAction("Error: "+ex);
-            }
-        }
         public async Task<IActionResult> Complete(int id)
         {
+            StudentUser stu = await userManager.GetUserAsync(this.User);
+            List<Course> completedCourses = services.findAllCompletedCoursesForStudent(services.findStudentById())
+
             Student stu = await _context.Students.FindAsync(id);
             if (stu != null)
             {
