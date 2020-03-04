@@ -1,6 +1,7 @@
 ﻿using cReg_WebApp.Models;
 using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.entities;
+using cReg_WebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -61,7 +62,27 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
+        internal CourseViewModel createCourseViewModel(int cid, Enrolled enroll= null)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Task<ProfileViewModel> createProfileViewModel(int studentId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<List<Course>> findRecommendCoursesForStudent(Student student)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Task<bool> verifyRegistrationForStudent(Student stu, Course addedCourse)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Task registerCourseForStudent(Student stu, Course addedCourse)
         {
             throw new NotImplementedException();
         }
@@ -82,6 +103,10 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException(); 
         }
 
+        internal Task<List<Course>> findWishListCoursesForStudent(Student stu)
+        {
+            throw new NotImplementedException();
+        }
 
         public async Task<List<Enrolled>> findAllEnrollsForStudent(Student student)
         {
@@ -93,7 +118,22 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
+        internal Task<bool> verifyDropForStudent(Enrolled thisEnroll)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal Task dropCourseForStudent(Enrolled thisEnroll)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<Enrolled> updateEnroll(Enrolled newEnroll)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal CourseViewModel createCourseViewModel(int courseId, object p)
         {
             throw new NotImplementedException();
         }

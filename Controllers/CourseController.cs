@@ -10,292 +10,235 @@ using System.Collections.Generic;
 using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.ViewModels;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using cReg_WebApp.Services;
+using Microsoft.AspNetCore.Identity;
+using cReg_WebApp.Models;
 
 namespace cReg_WebApp.Controllers
 {
+    [Authorize(Roles = "Student")]
     public class CourseController : Controller
     {
-        private readonly DataContext _context;
-        private Functions functions;
 
-        public CourseController(DataContext context)
+        private readonly Service services;
+        private readonly UserManager<StudentUser> userManager;
+        private readonly SignInManager<StudentUser> signInManager;
+
+        public CourseController(DataContext context,
+                              UserManager<StudentUser> userManager,
+                              SignInManager<StudentUser> signInManager)
         {
-            _context = context;
-            functions = new Functions(context);
+            this.services = new Service(context, userManager);
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+        }
+    
+
+        [HttpGet]
+        public async Task<IActionResult> RegisterDetails(int cid)
+        {
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
+
+            CourseViewModel thisModel = services.createCourseViewModel(cid);
+            thisModel.user = stu;
+
+            return View(thisModel);
         }
 
-        // GET: Course
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Register(int cid)
         {
-            return View(await _context.Courses.ToListAsync());
-        }
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
+            Course addedCourse = await services.findCourseById(cid);
 
-        // GET: Course/Details/5
-        public async Task<IActionResult>Details(int? sid , int? cid)
-        {
-            if(sid!=null)
-            {
-                var stu = await _context.Students.FirstOrDefaultAsync(s => s.studentId == sid);
-                ViewData["studentId"] = sid;
-                ViewData["Name"] = stu.name;
-                if (cid == null)
+            if (await services.verifyRegistrationForStudent(stu,addedCourse))
                 {
-                    return NotFound();
+                   await services.registerCourseForStudent(stu, addedCourse);
+                   ViewBag.message = "<scipt>alert('Success Registration');</script>";
                 }
-
-                var course = await _context.Courses
-                    .FirstOrDefaultAsync(m => m.courseId == cid);
-                if (course == null)
+                else
                 {
-                    return NotFound();
+                   ViewBag.message = "<scipt>alert('Failed Registration');</script>";
                 }
-
-                return View(course);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+                return RedirectToAction("Register","Home");
         }
 
         [HttpGet]
-        public async Task<IActionResult> RegisterDetails(int? sid, int? cid)
+        public async Task<IActionResult> DropDetails(int eid)
         {
-            if (sid != null)
+            try
             {
-                var stu = await _context.Students.FirstOrDefaultAsync(s => s.studentId == sid);
-                if (cid == null)
-                {
-                    return NotFound();
-                }
+                Enrolled thisEnroll = await services.findEnrollById(eid);
 
-                CourseViewModel thisModel = new CourseViewModel(cid.GetValueOrDefault(), _context);
-                thisModel.user = stu;
-                if (thisModel == null)
-                {
-                    return NotFound();
-                }
+                CourseViewModel thisView = services.createCourseViewModel(thisEnroll.courseId, enroll:thisEnroll);
+                thisView.enrollId = eid;
+                return View(thisView);
+            }
+            catch (Exception e)
+            {
+                return NotFound();
+            }
+        }
 
-                return View(thisModel);
+        public async Task<IActionResult> Drop(int eid)
+        {
+            Enrolled thisEnroll = await services.findEnrollById(eid);
+            if (await services.verifyDropForStudent(thisEnroll))
+            {
+                ViewBag.message = "<scipt>alert('Success Drop');</script>";
+                await services.dropCourseForStudent(thisEnroll);
             }
             else
             {
-                return RedirectToAction("Login", "Home");
+                ViewBag.message = "<scipt>alert('Failed Drop');</script>";
             }
+            return RedirectToAction("Index", "Home");
         }
 
-        public async Task<IActionResult> Register(int? sid, int? cid)
-        {
-            if(sid!=null&&cid!=null)
-            {
-                if(await functions.registrationVerifierAsync(sid.GetValueOrDefault(), cid.GetValueOrDefault()))
-                {
-                    _context.Enrolled.Add(new Enrolled {  courseId = cid.GetValueOrDefault(), studentId = sid.GetValueOrDefault(), completed = false, grade = null, rating = null, comment = null });
-                    await _context.SaveChangesAsync();
-                    ViewBag.message = "<scipt>alert('Success Registration');</script>";
-                }
-                else
-                {
-                    ViewBag.message = "<scipt>alert('Failed Registration');</script>";
-                }
-                return RedirectToAction("Register","Home", new { id = sid });
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
+        //// GET: Course/Create
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
-        [HttpGet]
-        public IActionResult DropDetails(int? eid)
-        {
-            if (eid != null)
-            {
-                int? cid = _context.Enrolled.Find(eid).courseId;
-                if (cid == null)
-                {
-                    return NotFound();
-                }
+        //// POST: Course/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create([Bind("Id", "Name", "Description", "SectionId")] Course course)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(course);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(course);
+        //}
 
-                CourseViewModel thisView = new CourseViewModel(cid.GetValueOrDefault(), _context);
-                if(thisView.setEnrolled( eid.GetValueOrDefault(),_context))
-                {
-                    return View(thisView);
-                }
-                else
-                {
-                    return NotFound();
-                }
+        //// GET: Course/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
+        //    var course = await _context.Courses.FindAsync(id);
+        //    if (course == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(course);
+        //}
 
-        public async Task<IActionResult> Drop(int? sid, int? eid)
-        {
-            if (sid != null && eid != null)
-            {
-                if (await functions.dropCourse(eid.GetValueOrDefault()))
-                {
-                    ViewBag.message = "<scipt>alert('Success Drop');</script>";
-                }
-                else
-                {
-                    ViewBag.message = "<scipt>alert('Failed Drop');</script>";
-                }
-                return RedirectToAction("Index", "Home", new { id = sid });
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
-        }
+        //// POST: Course/Edit/5
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("Id", "Name", "Description", "SectionId")] Course course)
+        //{
+        //    if (id != course.courseId)
+        //    {
+        //        return NotFound();
+        //    }
 
-        // GET: Course/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(course);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            // TODO : Handle if incorrect info is passed (IE. Changing Primary Key is invalid)
+        //            if (!CourseExists(course.courseId))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(course);
+        //}
 
-        // POST: Course/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id","Name","Description","SectionId")] Course course)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(course);
-        }
+        //// GET: Course/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        // GET: Course/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //    var course = await _context.Courses
+        //        .FirstOrDefaultAsync(m => m.courseId == id);
+        //    if (course == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var course = await _context.Courses.FindAsync(id);
-            if (course == null)
-            {
-                return NotFound();
-            }
-            return View(course);
-        }
+        //    return View(course);
+        //}
 
-        // POST: Course/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id", "Name", "Description", "SectionId")] Course course)
-        {
-            if (id != course.courseId)
-            {
-                return NotFound();
-            }
+        //// POST: Course/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var course = await _context.Courses.FindAsync(id);
+        //    _context.Courses.Remove(course);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(course);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    // TODO : Handle if incorrect info is passed (IE. Changing Primary Key is invalid)
-                    if (!CourseExists(course.courseId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(course);
-        }
+        //private bool CourseExists(int id)
+        //{
+        //    return _context.Courses.Any(e => e.courseId == id);
+        //}
 
-        // GET: Course/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> RegisterPage(string searchString)
+        //{
+        //    var courses = await _context.Courses.ToListAsync();
+        //    courses = courses.GroupBy(course => course.courseName).Select(g => g.First()).ToList();
 
-            var course = await _context.Courses
-                .FirstOrDefaultAsync(m => m.courseId == id);
-            if (course == null)
-            {
-                return NotFound();
-            }
+        //    if (!string.IsNullOrEmpty(searchString))
+        //    {
+        //        courses = courses.FindAll(c => c.courseName.Contains(searchString));
+        //    }
 
-            return View(course);
-        }
+        //    return View(courses);
+        //}
 
-        // POST: Course/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var course = await _context.Courses.FindAsync(id);
-            _context.Courses.Remove(course);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //[HttpPost]
+        //public string RegisterPage(FormCollection fc, string searchString)
+        //{
+        //    return "<h3> From [HttpPost]RegisterPage: " + searchString + "</h3>";
+        //}
 
-        private bool CourseExists(int id)
-        {
-            return _context.Courses.Any(e => e.courseId == id);
-        }
+        //// GET: CourseInfo
+        //public async Task<IActionResult> CourseInfo(string name)
+        //{
+        //    if (name == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        public async Task<IActionResult> RegisterPage(string searchString)
-        {
-            var courses = await _context.Courses.ToListAsync();
-            courses = courses.GroupBy(course => course.courseName).Select(g => g.First()).ToList();
-
-            if (!string.IsNullOrEmpty(searchString))
-            {
-                courses = courses.FindAll(c => c.courseName.Contains(searchString));
-            }
-
-            return View(courses);
-        }
-
-        [HttpPost]
-        public string RegisterPage(FormCollection fc, string searchString)
-        {
-            return "<h3> From [HttpPost]RegisterPage: " + searchString + "</h3>";
-        }
-
-        // GET: CourseInfo
-        public async Task<IActionResult> CourseInfo(string name)
-        {
-            if (name == null)
-            {
-                return NotFound();
-            }
-
-            var courses = await _context.Courses.ToListAsync();
-            if (courses == null)
-            {
-                return NotFound();
-            }
-            return View(courses.FindAll(e => e.courseName == name));
-        }
+        //    var courses = await _context.Courses.ToListAsync();
+        //    if (courses == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(courses.FindAll(e => e.courseName == name));
+        //}
 
     }
 

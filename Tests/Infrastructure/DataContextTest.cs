@@ -28,13 +28,13 @@ namespace cReg_WebApp.Tests.Infrastructure
 
             modelBuilder.Entity<Enrolled>().HasData(
                 //John Brico's enrollments
-                new Enrolled { enrollId = 1, studentId = 1, courseId = 1, completed = false, grade = -1, rating = -1, comment = "" },
+                new Enrolled { enrollId = 1, studentId = 1, courseId = 1, completed = false, grade = null, rating = null, comment = null },
                 new Enrolled { enrollId = 2, studentId = 1, courseId = 2, completed = true, grade = 80, rating = 80, comment = "Very good" },
                 //Mike Zapp's enrollments
-                new Enrolled { enrollId = 3, studentId = 2, courseId = 1, completed = false, grade = -1, rating = -1, comment = "" },
-                new Enrolled { enrollId = 4, studentId = 2, courseId = 3, completed = true, grade = 50, rating = -1, comment = "" },
+                new Enrolled { enrollId = 3, studentId = 2, courseId = 1, completed = false, grade = null, rating = null, comment = null },
+                new Enrolled { enrollId = 4, studentId = 2, courseId = 3, completed = true, grade = 50, rating = null, comment = null },
                 //Peter Graham's enrollements
-                new Enrolled { enrollId = 5, studentId = 3, courseId = 2, completed = false, grade = -1, rating = -1, comment = "" },
+                new Enrolled { enrollId = 5, studentId = 3, courseId = 2, completed = false, grade = null, rating = null, comment = null },
                 new Enrolled { enrollId = 6, studentId = 3, courseId = 4, completed = true, grade = 70, rating = 90, comment = "Excellent" }
                 );
 

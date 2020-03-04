@@ -11,7 +11,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
-using cReg_WebApp.Mapping;
 
 namespace cReg_WebApp
 {
@@ -33,7 +32,7 @@ namespace cReg_WebApp
             services.AddIdentity<StudentUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<DataContext>();
-            services.AddAutoMapper(typeof(MappingProfile));
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

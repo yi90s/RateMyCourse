@@ -41,79 +41,41 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            try
-            {
                 //get instance of current StudentUser oboject
                 var curUser = await userManager.GetUserAsync(this.User);
                 Student student = await services.findStudentById(curUser.StudentId);
-                List<Enrolled> takingCourses = await services.findAllCurrentEnrollsForStudent(student);
                 ProfileViewModel thisView = await services.createProfileViewModel(student.studentId);
-                if (thisView.thisStudent != null)
-                {
-                    return View(thisView);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
-                }
+                return View(thisView);
+         }
 
 
-            }catch(Exception e)
-            {
-                return RedirectToAction("Error", "Home");
-            }
-            
 
         public async Task<IActionResult> Register()
         {
-                var curUser = await userManager.GetUserAsync(this.User);
-                Student stu = await services.findStudentById(curUser.StudentId);
-            if (stu!=null)
-            {
-                ViewData["studentId"] = stu.studentId;
-                @ViewData["Name"] = stu.name;
-                List<int> takingCourseId =await _context.Enrolled.Where(e => (e.studentId == stu.studentId && !e.completed)).Select(e => e.courseId).ToListAsync();
-                List<Course> courseList =await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync();
-                return View(courseList);
-            }
-            else
-            {
-                return RedirectToAction("Login", "Home");
-            }
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
+
+            List<Course> recomendCourses = await services.findRecommendCoursesForStudent(stu);
+            return View(recomendCourses);
         }
-            public async Task<IActionResult> Complete(int id)
-            {
-                Student stu = await _context.Students.FindAsync(id);
-                if (stu != null)
-                {
-                    ViewData["studentId"] = stu.studentId;
-                    @ViewData["Name"] = stu.name;
+        public async Task<IActionResult> Complete()
+        {
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
 
+            List<Course> completeCourses = await services.findAllCompletedCoursesForStudent(stu);
+            return View(completeCourses);
 
-                    List<int> takingCourseId = await _context.Enrolled.Where(c => c.studentId == stu.studentId && c.completed).Select(c => c.courseId).ToListAsync();
-                    List<Course> registeredCourses = await _context.Courses.Where(c => takingCourseId.Contains(c.courseId)).ToListAsync();
-                    return View(registeredCourses);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-            }
-            //TODO
-            public IActionResult WishList(int id)
-            {
-                Student stu = _context.Students.Find(id);
-                if (stu != null)
-                {
-                    ViewData["studentId"] = stu.studentId;
-                    @ViewData["Name"] = stu.name;
-                    return View(stu);
-                }
-                else
-                {
-                    return RedirectToAction("Login", "Home");
-                }
-            }
+        }
+
+        public async Task<IActionResult> WishList()
+        {
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
+
+            List<Course> wishListCourses = await services.findWishListCoursesForStudent(stu);
+            return View(wishListCourses);
+        }
 
 
 

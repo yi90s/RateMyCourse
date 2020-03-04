@@ -31,14 +31,12 @@ namespace cReg_WebApp.Tests.UnitTests.Models.ViewModels
             Assert.Equal("Database Implementation", result.thisCourse.courseDescription);
             Assert.True(result.thisCourse.creditHours == 3, "Credit hour shold be 3");
             Assert.True(result.thisCourse.space == 80, "Space should be 80");
-            Assert.Equal("2019 Winter", result.thisCourse.date);
 
             result = new CourseViewModel(3, _context);
             Assert.Equal("COMP 4490", result.thisCourse.courseName);
             Assert.Equal("Computer Graphics", result.thisCourse.courseDescription);
             Assert.True(result.thisCourse.creditHours == 3, "Credit hour shold be 3");
             Assert.True(result.thisCourse.space == 80, "Space should be 80");
-            Assert.Equal("2019 Winter", result.thisCourse.date);
         }
 
         [Fact]
@@ -81,24 +79,5 @@ namespace cReg_WebApp.Tests.UnitTests.Models.ViewModels
             Assert.Equal("Very good", result.keyParis.Values.ElementAt(0));
         }
 
-        [Fact]
-        public void setValidEnrolledId()
-        {
-            var result = new CourseViewModel(1, _context);
-            Assert.True(result.setEnrolled(1, _context), "courseId 1 should have enrolledId 1");
-            Assert.False(result.setEnrolled(2, _context), "courseId 1 should not have enrolledId 2");
-            Assert.True(result.setEnrolled(3, _context), "courseId 1 should not have enrolledId 3");
-            Assert.False(result.setEnrolled(4, _context), "courseId 1 should not have enrolledId 4");
-        }
-
-        [Fact]
-        public void setNullEnrolledId()
-        {
-            var result = new CourseViewModel(8, _context);
-            Assert.False(result.setEnrolled(1, _context), "Cannot set success when result failed");
-            Assert.True(result.enrollId ==-1, "enrollId should default be -1");
-            Assert.False(result.setEnrolled(2, _context), "Cannot set success when result failed");
-            Assert.True(result.enrollId ==-1, "enrollId should default be -1");
-        }
     }
 }

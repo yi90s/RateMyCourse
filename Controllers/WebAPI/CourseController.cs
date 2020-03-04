@@ -25,6 +25,5 @@ namespace cReg_WebApp.Controllers.WebAPI
             
         }
 
-        public async tas
     }
 }

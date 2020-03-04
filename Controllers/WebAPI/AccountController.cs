@@ -12,11 +12,11 @@ namespace cReg_WebApp.Controllers.WebAPI
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController : ControllerBase
+    public class AccountController : ControllerBase
     {
         private readonly SignInManager<StudentUser> _signInManager;
 
-        public AuthController(SignInManager<StudentUser> _signInManager)
+        public AccountController(SignInManager<StudentUser> _signInManager) 
         {
             _signInManager = _signInManager;
         }
@@ -25,7 +25,7 @@ namespace cReg_WebApp.Controllers.WebAPI
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
 
-
+            return Content("");
         }
     }
 }
