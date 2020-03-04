@@ -30,19 +30,19 @@ namespace cReg_WebApp.Controllers.Logic
             return true;
         }
 
-        //public async Task<bool> dropCourse(int sid, int cid)
-        //{
-        //    Enrolled row = _context.Enrolled.Where(e => e.studentId == sid && e.courseId == cid && !e.completed);
-        //    if (eId != -1)
-        //    {
-        //        Enrolled row = _context.Enrolled.Find(eId);
-        //        _context.Enrolled.Remove(row);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    else
-        //    {
-        //        ViewBag.message = "<scipt>alert('Failed Drop');</script>";
-        //    }
-        //}
+        public async Task<bool> dropCourse(int eid)
+        {
+            Enrolled row = _context.Enrolled.Find(eid);
+            if (row !=null)
+            {
+                _context.Enrolled.Remove(row);
+                await _context.SaveChangesAsync();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

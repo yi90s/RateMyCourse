@@ -2,13 +2,12 @@
 
 @{
     ViewData["Title"] = "RegisterDetails";
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Name"] = @Model.user.name;
     ViewData["studentId"] = @Model.user.studentId;
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Details</h1>
-@ViewBag.message
 <div>
     <h4>Course</h4>
     <hr />
@@ -30,18 +29,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.thisCourse.courseDescription)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.thisCourse.date)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.thisCourse.date)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.avaliableSpace)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.avaliableSpace)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.rate)
@@ -76,8 +63,9 @@
 
 </table>
 <div>
-    <h4><a asp-controller="Course" asp-action="Register" asp-route-sid="@Model.user.studentId" asp-route-cid="@Model.thisCourse.courseId">Register</a></h4>
+    <h4><a asp-controller="Course" asp-action="Drop" asp-route-sid="@Model.user.studentId" asp-route-eid="@Model.enrollId">Drop</a></h4>
 </div>
+
 
 
 

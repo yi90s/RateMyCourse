@@ -57,17 +57,10 @@ namespace cReg_WebApp.Controllers
 
         public async Task<IActionResult> Index(int id)
         {
-            Student stu = await _context.Students.FindAsync(id);
-            if (stu != null)
+            ProfileViewModel thisView = new ProfileViewModel(id, _context);
+            if (thisView.thisStudent != null)
             {
-                ViewData["studentId"] = stu.studentId;
-                ViewData["Name"] = stu.name;
-                Faculty major = _context.Faculties.Find(stu.majorId);
-                ViewData["majorName"] = major.facultyName;
-                List<int> takingCourseId = await _context.Enrolled.Where(c => c.studentId == stu.studentId && !c.completed).Select(c => c.courseId).ToListAsync();
-                List<Course> registeredCourses = await _context.Courses.Where(c => takingCourseId.Contains(c.courseId)).ToListAsync();
-
-                return View(registeredCourses);
+                return View(thisView);
             }
             else
             {
@@ -91,6 +84,8 @@ namespace cReg_WebApp.Controllers
                 return RedirectToAction("Login", "Home");
             }
         }
+
+
 
 
         [HttpGet]

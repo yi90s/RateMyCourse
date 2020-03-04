@@ -11,26 +11,69 @@ namespace cReg_WebApp.Models.ViewModels
     {
         public int enrollId { get; set; }
 
+        public string rate { get; set; }
+
         public int commentNum {get;set; }
+
+        public int avaliableSpace { get; set; }
         public Course thisCourse { get; set; }
-        public List<CommentsViewModel> comments { get; set; }
+
+        public Student user { get; set; }
+
+        public Dictionary<string, string> keyParis;
+
 
         public CourseViewModel(int courseId,DataContext context)
         {
-            comments = new List<CommentsViewModel>();
             enrollId = -1;
             this.thisCourse = context.Courses.Find(courseId);
-            var sIdAndComments = context.Enrolled.Where(e => e.courseId == courseId && e.completed && e.comment!=null).ToDictionary(e => e.studentId, e => e.comment);
-            int count = 0;
-            foreach(KeyValuePair<int,string> sAndc in sIdAndComments)
+            if(thisCourse!=null)
             {
-                int sid = sAndc.Key;
-                Student stu = context.Students.Find(sid);
-                CommentsViewModel newKeyPair = new CommentsViewModel(stu.name, sAndc.Value);
-                comments.Add(newKeyPair);
-                count++;
+                var sIdAndComments = context.Enrolled.Where(e => e.courseId == courseId && e.completed && (e.comment != null && !e.comment.Equals(""))).ToDictionary(e => e.studentId, e => e.comment);
+                int count = 0;
+                int totalRate = 0;
+                Array rating = context.Enrolled.Where(e => e.courseId == courseId && e.completed && e.rating != null).Select(e => e.rating).ToArray();
+                keyParis = new Dictionary<string, string>();
+                foreach (KeyValuePair<int, string> sAndc in sIdAndComments)
+                {
+                    int sid = sAndc.Key;
+                    Student stu = context.Students.Find(sid);
+                    keyParis.Add(stu.name, sAndc.Value);
+                    count++;
+                }
+                commentNum = count;
+                foreach (int singleRate in rating)
+                {
+                    if (singleRate > 0 && singleRate < 100)
+                    {
+                        totalRate += singleRate;
+                    }
+                }
+                if (count != 0)
+                {
+                    rate = (totalRate / count).ToString("0") + "/100";
+                }
+                else
+                {
+                    rate = "N/A";
+                }
+
+                avaliableSpace = thisCourse.space - context.Enrolled.Where(e => e.courseId == thisCourse.courseId).Count();
             }
-            commentNum = count;
         }
+
+        public bool setEnrolled(int id, DataContext context)
+        {
+            int? temp = context.Enrolled.Find(id).studentId;
+            int? courseId = context.Enrolled.Find(id).courseId;
+            if (temp != null && thisCourse!=null && courseId.GetValueOrDefault()==thisCourse.courseId)
+            {
+                enrollId = id;
+                user = context.Students.Find(temp.GetValueOrDefault());
+                return true;
+            }
+            return false;
+        }
+
     }
 }

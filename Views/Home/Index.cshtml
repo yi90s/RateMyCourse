@@ -1,8 +1,10 @@
-﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
+﻿@model cReg_WebApp.Models.ViewModels.ProfileViewModel
 @{
 
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["studentId"] = Model.thisStudent.studentId;
+    ViewData["Name"] = Model.thisStudent.name;
+    ViewData["majorName"] = Model.majorName;
 }
 
 <style>
@@ -53,20 +55,20 @@
         <p>Registered Courses</p>
 
         <table class="table">
-            @foreach (var item in Model)
+            @foreach (var item in Model.keyValues)
             {
                 <tr>
                     <td>
-                        @Html.DisplayFor(modelItem => item.courseId)
+                        @Html.DisplayFor(Model=> item.Value.courseId)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.courseName)
+                        @Html.DisplayFor(Model=> item.Value.courseName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.courseDescription)
+                        @Html.DisplayFor(Model=> item.Value.courseDescription)
                     </td>
                     <td>
-                        <a asp-controller="course" asp-action="details" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
+                        <a asp-controller="course" asp-action="DropDetails" asp-route-eid="@item.Key">View Course</a>
                     </td>
                 </tr>
             }
