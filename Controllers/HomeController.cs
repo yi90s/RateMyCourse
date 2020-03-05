@@ -22,7 +22,8 @@ using Microsoft.AspNetCore.Authorization;
 namespace cReg_WebApp.Controllers
 {
     [Authorize(Roles = "Student")]
-    public class HomeController : Controller
+    public class 
+        HomeController : Controller
     {
 
         private readonly Service services;
@@ -44,7 +45,7 @@ namespace cReg_WebApp.Controllers
                 //get instance of current StudentUser oboject
                 var curUser = await userManager.GetUserAsync(this.User);
                 Student student = await services.findStudentById(curUser.StudentId);
-                ProfileViewModel thisView = await services.createProfileViewModel(student.studentId);
+                ProfileViewModel thisView = await services.createProfileViewModel(student);
                 return View(thisView);
          }
 
@@ -79,15 +80,6 @@ namespace cReg_WebApp.Controllers
 
 
 
-
-
-        //TODO: Allow users to sign out
-        [HttpGet]
-        public IActionResult SignOut()
-        {
-            signInManager.SignOutAsync();
-            return RedirectToAction("Index", "Home");
-        }
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

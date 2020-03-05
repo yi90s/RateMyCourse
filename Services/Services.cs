@@ -4,6 +4,7 @@ using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,7 +28,7 @@ namespace cReg_WebApp.Services
 
         public async Task<Student> findStudentById(int studentId)
         {
-            throw new NotImplementedException();
+            return await _context.Students.FindAsync(studentId);
         }
 
         public async void updateStudent(Student newStudent)
@@ -37,13 +38,9 @@ namespace cReg_WebApp.Services
 
 
 
-
-
-
-
         public async Task<Course> findCourseById(int courseId)
         {
-            throw new NotImplementedException();
+            return await _context.Courses.FindAsync(courseId);
         }
 
         public async Task<List<Course>> findCoursesByKeyWords(string keywords)
@@ -67,9 +64,27 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
-        internal Task<ProfileViewModel> createProfileViewModel(int studentId)
+        internal async Task<ProfileViewModel> createProfileViewModel(Student student)
         {
-            throw new NotImplementedException();
+            if(student == null)
+            {
+                return null;
+            }
+
+            string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
+            var keyValues = new Dictionary<int, Course>();
+            Dictionary<int, int> temp = _context.Enrolled.Where(e => e.studentId == student.studentId && !e.completed).ToDictionary(e => e.enrollId, e => e.courseId);
+            foreach (KeyValuePair<int, int> pair in temp)
+            {
+                Course value = _context.Courses.Find(pair.Value);
+                keyValues.Add(pair.Key, value);
+            }
+
+            
+            ProfileViewModel vmodel = new ProfileViewModel(student, majorName, keyValues);
+
+            return vmodel;
+           
         }
 
         public async Task<List<Course>> findRecommendCoursesForStudent(Student student)
@@ -128,9 +143,17 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Enrolled> updateEnroll(Enrolled newEnroll)
+        //this function only update an existing object
+        public async void updateEnroll(Enrolled newEnroll)
         {
-            throw new NotImplementedException();
+            if(newEnroll != null)
+            {
+                var change = _context.Enrolled.Update(newEnroll);
+                if(change.State == EntityState.Modified)
+                {
+                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                }
+            }
         }
 
         internal CourseViewModel createCourseViewModel(int courseId, object p)
@@ -145,7 +168,7 @@ namespace cReg_WebApp.Services
 
         public async Task<Enrolled> findEnrollById(int enrollId)
         {
-            throw new NotImplementedException();
+            return await _context.Enrolled.FindAsync(enrollId);
         }
 
 

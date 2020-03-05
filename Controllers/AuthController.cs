@@ -52,5 +52,19 @@ namespace cReg_WebApp.Controllers
             return RedirectToAction("Index");
 
         }
+
+        
+        [HttpGet]
+        public async Task<IActionResult> SignOut()
+        {
+            signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AccessDenied()
+        {
+            return await AccessDenied();
+        }
     }
 }

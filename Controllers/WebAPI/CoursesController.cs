@@ -15,15 +15,16 @@ namespace cReg_WebApp.Controllers.WebAPI
     [Route("api/[controller]")]
     [ApiController]
     [Authorize("Student")]
-    public class CourseController : ControllerBase
+    public class CoursesController : ControllerBase
     {
         private readonly Service _services;
 
-        public CourseController(DataContext context, UserManager<StudentUser> userManager)
+        public CoursesController(DataContext context, UserManager<StudentUser> userManager)
         {
             _services = new Service(context, userManager);
             
         }
+
 
     }
 }

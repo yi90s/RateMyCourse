@@ -48,7 +48,7 @@ namespace cReg_WebApp.Controllers
             Enrolled newRating = await services.findEnrollById(courseRate.EnrollId);
             newRating.rating = courseRate.Rating;
             newRating.comment = courseRate.Comment;
-            await services.updateEnroll(newRating);
+            services.updateEnroll(newRating);
 
             return RedirectToAction("Home/Index");
 

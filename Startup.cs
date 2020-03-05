@@ -32,6 +32,12 @@ namespace cReg_WebApp
             services.AddIdentity<StudentUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
                     .AddEntityFrameworkStores<DataContext>();
+            services.ConfigureApplicationCookie(options =>
+                {
+                    options.AccessDeniedPath = "/Auth/AccessDenied";
+                    options.LoginPath = "/Auth/Index";
+                }
+            );
 
         }
 
