@@ -42,27 +42,24 @@ namespace cReg_WebApp.Controllers
             Student stu = await services.findStudentById(curUser.StudentId);
 
             CourseViewModel thisModel = services.createCourseViewModel(cid);
-            thisModel.user = stu;
 
             return View(thisModel);
         }
 
-        public async Task<IActionResult> Register(int cid)
+        public async Task<IActionResult> Register(CourseViewModel model)
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
-            Course addedCourse = await services.findCourseById(cid);
-
-            if (await services.verifyRegistrationForStudent(stu,addedCourse))
-                {
-                   await services.registerCourseForStudent(stu, addedCourse);
-                   ViewBag.message = "<scipt>alert('Success Registration');</script>";
-                }
-                else
-                {
-                   ViewBag.message = "<scipt>alert('Failed Registration');</script>";
-                }
-                return RedirectToAction("Register","Home");
+            if (await services.verifyRegistrationForStudent(stu,model))
+            {
+                await services.registerCourseForStudent(stu, model);
+                ViewBag.message = "<scipt>alert('Success Registration');</script>";
+            }
+            else
+            {
+                ViewBag.message = "<scipt>alert('Failed Registration');</script>";
+            }
+            return RedirectToAction("Register","Home");
         }
 
         [HttpGet]
@@ -82,17 +79,21 @@ namespace cReg_WebApp.Controllers
             }
         }
 
-        public async Task<IActionResult> Drop(int eid)
+        public async Task<IActionResult> Drop(CourseViewModel model)
         {
-            Enrolled thisEnroll = await services.findEnrollById(eid);
-            if (await services.verifyDropForStudent(thisEnroll))
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
+            if (model!=null && model.enrollId!=-1)
             {
-                ViewBag.message = "<scipt>alert('Success Drop');</script>";
-                await services.dropCourseForStudent(thisEnroll);
-            }
-            else
-            {
-                ViewBag.message = "<scipt>alert('Failed Drop');</script>";
+                if (await services.verifyDropForStudent(stu,model))
+                {
+                    ViewBag.message = "<scipt>alert('Success Drop');</script>";
+                    await services.dropCourseForStudent(stu,model);
+                }
+                else
+                {
+                    ViewBag.message = "<scipt>alert('Failed Drop');</script>";
+                }
             }
             return RedirectToAction("Index", "Home");
         }

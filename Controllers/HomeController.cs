@@ -64,7 +64,7 @@ namespace cReg_WebApp.Controllers
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
 
-            List<Course> completeCourses = await services.findAllCompletedCoursesForStudent(stu);
+            CompleteCourseViewModel completeCourses = await services.createCompleteCourseViewModel(stu);
             return View(completeCourses);
 
         }

@@ -54,14 +54,55 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
-        public async Task<List<Course>> findAllCompletedCoursesForStudent(Student student)
+        internal CourseViewModel createCourseViewModel(int cid, Enrolled enroll = null)
         {
-            throw new NotImplementedException();
-        }
+            Course thisCourse = _context.Courses.Find(cid);
+            if (thisCourse != null)
+            {
+                var sIdAndComments = _context.Enrolled.Where(e => e.courseId == cid && e.completed && e.comment != null ).ToDictionary(e => e.studentId, e => e.comment);
+                int count = 0;
+                int totalRate = 0;
+                Array rating = _context.Enrolled.Where(e => e.courseId == cid && e.completed && e.rating != null).Select(e => e.rating).ToArray();
+                Dictionary<string,string> keyParis = new Dictionary<string, string>();
+                foreach (KeyValuePair<int, string> sAndc in sIdAndComments)
+                {
+                    int sid = sAndc.Key;
+                    Student stu = _context.Students.Find(sid);
+                    keyParis.Add(stu.name, sAndc.Value);
+                    count++;
+                }
+                foreach (int singleRate in rating)
+                {
+                    if (singleRate > 0 && singleRate < 100)
+                    {
+                        totalRate += singleRate;
+                    }
+                }
+                string rate;
+                if (count != 0)
+                {
+                    rate = (totalRate / count).ToString("0") + "/100";
+                }
+                else
+                {
+                    rate = "N/A";
+                }
 
-        internal CourseViewModel createCourseViewModel(int cid, Enrolled enroll= null)
-        {
-            throw new NotImplementedException();
+                int avaliableSpace = thisCourse.space - _context.Enrolled.Where(e => e.courseId == thisCourse.courseId).Count();
+
+                if(enroll==null)
+                {
+                    return new CourseViewModel(rate, count, avaliableSpace, thisCourse, keyParis);
+                }
+                else
+                {
+                    return new CourseViewModel(enroll.enrollId,rate, count, avaliableSpace, thisCourse, keyParis);
+                }
+            }
+            else
+            {
+                return null;
+            }
         }
 
         internal async Task<ProfileViewModel> createProfileViewModel(Student student)
@@ -87,19 +128,77 @@ namespace cReg_WebApp.Services
            
         }
 
+        internal async Task<CompleteCourseViewModel> createCompleteCourseViewModel(Student student)
+        {
+
+            if (student == null)
+            {
+                return null;
+            }
+
+            string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
+            var keyValues = new Dictionary<int, Course>();
+            Dictionary<int, int> temp = _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).ToDictionary(e => e.enrollId, e => e.courseId);
+            foreach (KeyValuePair<int, int> pair in temp)
+            {
+                Course value = _context.Courses.Find(pair.Value);
+                keyValues.Add(pair.Key, value);
+            }
+
+
+            CompleteCourseViewModel vmodel = new CompleteCourseViewModel(student, majorName, keyValues);
+
+            return vmodel;
+        }
+
         public async Task<List<Course>> findRecommendCoursesForStudent(Student student)
         {
-            throw new NotImplementedException();
+            if(student !=null)
+            {
+                int sid = student.studentId;
+                List<int> takingCourseId = await _context.Enrolled.Where(e => (e.studentId == sid && !e.completed)).Select(e => e.courseId).ToListAsync().ConfigureAwait(false);
+                List<Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
+                return courseList;
+            }
+            else
+            {
+                return null;
+            }
+
         }
 
-        internal Task<bool> verifyRegistrationForStudent(Student stu, Course addedCourse)
+        internal async Task<bool> verifyRegistrationForStudent(Student stu, CourseViewModel model)
         {
-            throw new NotImplementedException();
+            if(stu==null || model == null)
+            {
+                return false;
+            }
+            bool result = true;
+            int cid = model.thisCourse.courseId;
+            int sid = stu.studentId;
+            List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
+            foreach(Prerequisite require in prerequisiteList)
+            {
+                if(_context.Enrolled.Where(e=>e.studentId==sid && e.courseId == cid && e.completed && e.grade>require.grade)==null)
+                {
+                    result = false;
+                }
+            }
+            if(model.avaliableSpace<=0)
+            {
+                result = false;
+            }
+            return result;
         }
 
-        internal Task registerCourseForStudent(Student stu, Course addedCourse)
+        internal async Task registerCourseForStudent(Student stu, CourseViewModel model)
         {
-            throw new NotImplementedException();
+            if(stu!=null && model!=null)
+            {
+                Enrolled newEnroll = new Enrolled { courseId = model.thisCourse.courseId, studentId = stu.studentId, completed = false, grade = null, rating = null, comment = null };
+                _context.Enrolled.Add(newEnroll);
+                await _context.SaveChangesAsync().ConfigureAwait(false);
+            }
         }
 
         public async Task<List<Course>> findAllRegisteredCoursesForStudent(Student student)
@@ -133,14 +232,22 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
-        internal Task<bool> verifyDropForStudent(Enrolled thisEnroll)
+        internal async Task<bool> verifyDropForStudent(Student student, CourseViewModel model)
         {
-            throw new NotImplementedException();
+            Enrolled thisEnroll =  _context.Enrolled.Find(model.enrollId);
+
+            bool result = (student.studentId == thisEnroll.studentId && model.thisCourse.courseId == thisEnroll.courseId);
+
+            return result;
         }
 
-        internal Task dropCourseForStudent(Enrolled thisEnroll)
+        internal async Task dropCourseForStudent(Student student, CourseViewModel model)
         {
-            throw new NotImplementedException();
+            Enrolled thisEnroll = _context.Enrolled.Find(model.enrollId);
+
+            _context.Enrolled.Remove(thisEnroll);
+
+            await _context.SaveChangesAsync().ConfigureAwait(false);
         }
 
         //this function only update an existing object
