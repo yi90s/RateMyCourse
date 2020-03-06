@@ -1,6 +1,9 @@
-﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
+﻿@model cReg_WebApp.Models.ViewModels.HomeViewModels.FindCourseViewModel
 @{
     ViewData["Title"] = "Register Page";
+    ViewData["studentId"] = Model.thisStudent.studentId;
+    ViewData["Name"] = Model.thisStudent.name;
+    ViewData["majorName"] = Model.majorName;
 }
 <html>
 @ViewBag.message
@@ -28,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model)
+            @foreach (var item in Model.courseList)
             {
                 <tr>
                     <td>
@@ -38,7 +41,7 @@
                         @Html.DisplayFor(modelItem => item.courseDescription)
                     </td>
                     <td>
-                        <a asp-controller="Course" asp-action="RegisterDetails" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
+                        <a asp-controller="course" asp-action="RegisterDetails" asp-route-cid="@item.courseId">View Course</a>
                     </td>
                 </tr>
             }

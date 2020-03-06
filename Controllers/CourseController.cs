@@ -46,13 +46,13 @@ namespace cReg_WebApp.Controllers
             return View(thisModel);
         }
 
-        public async Task<IActionResult> Register(CourseViewModel model)
+        public async Task<IActionResult> Register(int cid)
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
-            if (await services.verifyRegistrationForStudent(stu,model))
+            if (await services.verifyRegistrationForStudent(stu,cid))
             {
-                await services.registerCourseForStudent(stu, model);
+                await services.registerCourseForStudent(stu, cid);
                 ViewBag.message = "<scipt>alert('Success Registration');</script>";
             }
             else
@@ -79,21 +79,18 @@ namespace cReg_WebApp.Controllers
             }
         }
 
-        public async Task<IActionResult> Drop(CourseViewModel model)
+        public async Task<IActionResult> Drop(int eid)
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
-            if (model!=null && model.enrollId!=-1)
+            if (await services.verifyDropForStudent(stu, eid))
             {
-                if (await services.verifyDropForStudent(stu,model))
-                {
-                    ViewBag.message = "<scipt>alert('Success Drop');</script>";
-                    await services.dropCourseForStudent(stu,model);
-                }
-                else
-                {
-                    ViewBag.message = "<scipt>alert('Failed Drop');</script>";
-                }
+                ViewBag.message = "<scipt>alert('Success Drop');</script>";
+                await services.dropCourseForStudent(eid);
+            }
+            else
+            {
+                ViewBag.message = "<scipt>alert('Failed Drop');</script>";
             }
             return RedirectToAction("Index", "Home");
         }

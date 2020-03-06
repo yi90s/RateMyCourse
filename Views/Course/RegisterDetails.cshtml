@@ -2,8 +2,7 @@
 
 @{
     ViewData["Title"] = "RegisterDetails";
-    ViewData["Name"] = @Model.user.name;
-    ViewData["studentId"] = @Model.user.studentId;
+    ViewData["Name"] = @Model.thisCourse.courseName;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -76,7 +75,7 @@
 
 </table>
 <div>
-    <h4><a asp-controller="Course" asp-action="Register" asp-route-sid="@Model.user.studentId" asp-route-cid="@Model.thisCourse.courseId">Register</a></h4>
+    <h4><a asp-controller="Course" asp-action="Register" asp-route-cid="@Model.thisCourse.courseId">Register</a></h4>
 </div>
 
 

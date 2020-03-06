@@ -1,23 +1,16 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Services;
-using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.context;
 using System.Collections.Generic;
-using System.Linq;
 using cReg_WebApp.Models.ViewModels;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using cReg_WebApp.Models.ViewModels.HomeViewModels;
 
 namespace cReg_WebApp.Controllers
 {
@@ -56,8 +49,8 @@ namespace cReg_WebApp.Controllers
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
 
-            List<Course> recomendCourses = await services.findRecommendCoursesForStudent(stu);
-            return View(recomendCourses);
+            FindCourseViewModel thisView = await services.createFindCourseViewModel(stu);
+            return View(thisView);
         }
         public async Task<IActionResult> Complete()
         {
@@ -73,9 +66,10 @@ namespace cReg_WebApp.Controllers
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
+            return View(stu);
 
-            List<Course> wishListCourses = await services.findWishListCoursesForStudent(stu);
-            return View(wishListCourses);
+            //WishListViewModel thisView = await services.createWishListViewModel(stu);
+            //return View(thisView);
         }
 
 

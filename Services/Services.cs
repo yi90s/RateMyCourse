@@ -2,6 +2,7 @@
 using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.ViewModels;
+using cReg_WebApp.Models.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -105,6 +106,28 @@ namespace cReg_WebApp.Services
             }
         }
 
+        internal Task<WishListViewModel> createWishListViewModel(Student stu)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal async Task<FindCourseViewModel> createFindCourseViewModel(Student student)
+        {
+            if (student != null)
+            {
+                int sid = student.studentId;
+                List<int> takingCourseId = await _context.Enrolled.Where(e => (e.studentId == sid && !e.completed)).Select(e => e.courseId).ToListAsync().ConfigureAwait(false);
+                List<Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
+                string majorName = _context.Faculties.Find(student.majorId).facultyName;
+                FindCourseViewModel result = new FindCourseViewModel(student,majorName,courseList);
+                return result;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         internal async Task<ProfileViewModel> createProfileViewModel(Student student)
         {
             if(student == null)
@@ -151,30 +174,14 @@ namespace cReg_WebApp.Services
             return vmodel;
         }
 
-        public async Task<List<Course>> findRecommendCoursesForStudent(Student student)
-        {
-            if(student !=null)
-            {
-                int sid = student.studentId;
-                List<int> takingCourseId = await _context.Enrolled.Where(e => (e.studentId == sid && !e.completed)).Select(e => e.courseId).ToListAsync().ConfigureAwait(false);
-                List<Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
-                return courseList;
-            }
-            else
-            {
-                return null;
-            }
 
-        }
-
-        internal async Task<bool> verifyRegistrationForStudent(Student stu, CourseViewModel model)
+        internal async Task<bool> verifyRegistrationForStudent(Student stu,int cid)
         {
-            if(stu==null || model == null)
+            if(stu==null)
             {
                 return false;
             }
             bool result = true;
-            int cid = model.thisCourse.courseId;
             int sid = stu.studentId;
             List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
             foreach(Prerequisite require in prerequisiteList)
@@ -184,18 +191,14 @@ namespace cReg_WebApp.Services
                     result = false;
                 }
             }
-            if(model.avaliableSpace<=0)
-            {
-                result = false;
-            }
             return result;
         }
 
-        internal async Task registerCourseForStudent(Student stu, CourseViewModel model)
+        internal async Task registerCourseForStudent(Student stu, int cid)
         {
-            if(stu!=null && model!=null)
+            if(stu!=null)
             {
-                Enrolled newEnroll = new Enrolled { courseId = model.thisCourse.courseId, studentId = stu.studentId, completed = false, grade = null, rating = null, comment = null };
+                Enrolled newEnroll = new Enrolled { courseId =  cid, studentId = stu.studentId, completed = false, grade = null, rating = null, comment = null };
                 _context.Enrolled.Add(newEnroll);
                 await _context.SaveChangesAsync().ConfigureAwait(false);
             }
@@ -232,18 +235,18 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
-        internal async Task<bool> verifyDropForStudent(Student student, CourseViewModel model)
+        internal async Task<bool> verifyDropForStudent(Student student, int eid)
         {
-            Enrolled thisEnroll =  _context.Enrolled.Find(model.enrollId);
+            Enrolled thisEnroll =  _context.Enrolled.Find(eid);
 
-            bool result = (student.studentId == thisEnroll.studentId && model.thisCourse.courseId == thisEnroll.courseId);
+            bool result = (student.studentId == thisEnroll.studentId );
 
             return result;
         }
 
-        internal async Task dropCourseForStudent(Student student, CourseViewModel model)
+        internal async Task dropCourseForStudent(int eid)
         {
-            Enrolled thisEnroll = _context.Enrolled.Find(model.enrollId);
+            Enrolled thisEnroll = _context.Enrolled.Find(eid);
 
             _context.Enrolled.Remove(thisEnroll);
 
