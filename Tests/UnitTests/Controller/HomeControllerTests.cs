@@ -22,7 +22,7 @@
 //        {
 //            controller = new HomeController(_context, mockUserManager, mockSignInManager, mockHasher);
 //        }
-        
+
 
 //        [Fact]
 //        public async Task PostLogin_ReturnsHomePage()
@@ -31,8 +31,8 @@
 //            // Arrange 
 //            //var controller = new HomeController(_context, mockUserManager, mockSignInManager);
 
-//            LoginViewModel viewModel = new LoginViewModel { UserName = "jb", Password="Password!"};
-//            var result = (RedirectToActionResult) await controller.Login(viewModel);
+//            LoginViewModel viewModel = new LoginViewModel { UserName = "jb", Password = "Password!" };
+//            var result = (RedirectToActionResult)await controller.Login(viewModel);
 //            // Assert
 //            Assert.NotNull(result);
 //            Assert.Equal("Index", result.ActionName);
@@ -48,7 +48,7 @@
 
 //            LoginViewModel viewModel = new LoginViewModel { UserName = "jb", Password = "Password!" };
 //            ViewResult result = (ViewResult)await controller.Login(viewModel);
-            
+
 //            // Assert 
 //            Assert.NotNull(result);
 //            Assert.Equal("Login", result.ViewName);
@@ -80,7 +80,7 @@
 //            int STUDENT_ID = 1;
 //            ViewResult result = (ViewResult)await controller.Register(STUDENT_ID);
 //            List<Course> registeredCourses = (List<Course>)result.Model;
-//            var expectedIds = new List<int>(){ 2, 3, 4 };
+//            var expectedIds = new List<int>() { 2, 3, 4 };
 
 //            // Assert 
 //            Assert.NotNull(result);
@@ -97,7 +97,7 @@
 //            //var controller = new HomeController(_context);
 
 //            // Act (enrollId = 1)
-//            ViewResult result = (ViewResult) await controller.RateCourse(1);
+//            ViewResult result = (ViewResult)await controller.RateCourse(1);
 //            RateCourseViewModel model = (RateCourseViewModel)result.Model;
 
 //            // Assert 

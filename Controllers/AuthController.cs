@@ -24,7 +24,7 @@ namespace cReg_WebApp.Controllers
             bool loggedIn = this.User.Identity.IsAuthenticated;
             if (loggedIn)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
 
             return await Task.Run(() => View());

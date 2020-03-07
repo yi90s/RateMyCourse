@@ -21,7 +21,7 @@ namespace cReg_WebApp.Controllers.WebAPI
 
         public CoursesController(DataContext context, UserManager<StudentUser> userManager)
         {
-            _services = new Service(context, userManager);
+            _services = new Service(context);
             
         }
 

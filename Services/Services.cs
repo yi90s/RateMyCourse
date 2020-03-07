@@ -17,13 +17,11 @@ namespace cReg_WebApp.Services
     public class Service
     {
         private readonly DataContext _context;
-        private readonly UserManager<StudentUser> _userManager;
 
-        public Service(DataContext context, UserManager<StudentUser> userManager)
+
+        public Service(DataContext context)
         {
             this._context = context;
-            this._userManager = userManager;
-
         }
 
 
@@ -285,16 +283,17 @@ namespace cReg_WebApp.Services
         public async Task<Student> findCurrentStudent(ClaimsPrincipal user)
         {
 
-            try
-            {
+            //try
+            //{
 
-                StudentUser curUser = await _userManager.GetUserAsync(user);
-                return await findStudentById(curUser.StudentId);
-            }
-            catch (Exception e)
-            {
-                return null;
-            }
+            //    StudentUser curUser = await _userManager.GetUserAsync(user);
+            //    return await findStudentById(curUser.StudentId);
+            //}
+            //catch (Exception e)
+            //{
+            //    return null;
+            //}
+            throw new NotImplementedException();
         }
             
 

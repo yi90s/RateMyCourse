@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
+
 using cReg_WebApp.Models;
 using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.entities;
@@ -23,7 +23,7 @@ namespace cReg_WebApp.Controllers
 
         public RateCourseController(DataContext context, UserManager<StudentUser> userManager)
         {
-            this.services = new Service(context, userManager);
+            this.services = new Service(context);
             this.userManager= userManager;
         }
 

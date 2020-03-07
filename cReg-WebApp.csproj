@@ -8,28 +8,26 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Mapping\**" />
     <Compile Remove="Models\Pages\**" />
     <Compile Remove="Views\NewFolder1\**" />
     <Compile Remove="Views\NewFolder\**" />
+    <Content Remove="Mapping\**" />
     <Content Remove="Models\Pages\**" />
     <Content Remove="Views\NewFolder1\**" />
     <Content Remove="Views\NewFolder\**" />
+    <EmbeddedResource Remove="Mapping\**" />
     <EmbeddedResource Remove="Models\Pages\**" />
     <EmbeddedResource Remove="Views\NewFolder1\**" />
     <EmbeddedResource Remove="Views\NewFolder\**" />
+    <None Remove="Mapping\**" />
     <None Remove="Models\Pages\**" />
     <None Remove="Views\NewFolder1\**" />
     <None Remove="Views\NewFolder\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="automapper" Version="9.0.0" />
-    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="7.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.0-preview1.19506.2" />
@@ -53,10 +51,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Mapping\" />
   </ItemGroup>
 
   <ProjectExtensions><VisualStudio><UserProperties appsettings_1json__JsonSchema="http://json.schemastore.org/bower" /></VisualStudio></ProjectExtensions>

@@ -27,7 +27,7 @@ namespace cReg_WebApp.Controllers
                               UserManager<StudentUser> userManager, 
                               SignInManager<StudentUser> signInManager)
         {
-            this.services = new Service(context, userManager);
+            this.services = new Service(context);
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
@@ -35,6 +35,7 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            
                 //get instance of current StudentUser oboject
                 var curUser = await userManager.GetUserAsync(this.User);
                 Student student = await services.findStudentById(curUser.StudentId);

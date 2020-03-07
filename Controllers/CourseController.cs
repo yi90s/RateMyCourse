@@ -29,7 +29,7 @@ namespace cReg_WebApp.Controllers
                               UserManager<StudentUser> userManager,
                               SignInManager<StudentUser> signInManager)
         {
-            this.services = new Service(context, userManager);
+            this.services = new Service(context);
             this.userManager = userManager;
             this.signInManager = signInManager;
         }

@@ -4,6 +4,7 @@ using cReg_WebApp.Services;
 using System.Linq;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.ViewModels;
+using System;
 
 namespace cReg_WebApp.Tests.UnitTests.Services
 {
@@ -12,8 +13,52 @@ namespace cReg_WebApp.Tests.UnitTests.Services
         private Service services;
         public ServicesTests()
         {
-            services = new Service(_context, mockUserManager);
+            services = new Service(_context);
         }
+
+        [Fact]
+        public async void normalFindStudentByIdTest()
+        {
+            Student stu  = await services.findStudentById(1);
+
+            Assert.NotNull(stu);
+            Assert.Equal(1, stu.studentId);
+            Assert.Equal("John Braico", stu.name);
+            Assert.Equal(1, stu.majorId);
+
+        }
+
+        [Fact]
+        public async void nullFindStudentByIdTest()
+        {
+            Student stu = await services.findStudentById(-1);
+
+            Assert.Null(stu);
+        }
+
+        [Fact]
+        public async void normalFindCourseById()
+        {
+            Course c = await services.findCourseById(1);
+
+            Assert.NotNull(c);
+            Assert.Equal(1, c.courseId);
+            Assert.Equal("COMP 4380", c.courseName);
+            Assert.Equal("Database Implementation", c.courseDescription);
+            Assert.Equal(3, c.creditHours);
+            Assert.Equal(80, c.space);
+            Assert.Equal(new DateTime(2019, 9, 6), c.date);
+
+        }
+
+        [Fact]
+        public async void nullFindCourseById()
+        {
+            Course c = await services.findCourseById(-1);
+
+            Assert.Null(c);
+        }
+
         [Fact]
         public void normalCreateCourseViewModelTest()
         {
@@ -80,6 +125,7 @@ namespace cReg_WebApp.Tests.UnitTests.Services
             Assert.True(result.keyValues.Values.ElementAt(0).courseId == 2, "first course should be 2");
         }
 
+        [Fact]
         public async void nullCreateProfileViewModelTest()
         {
             ProfileViewModel result = await services.createProfileViewModel(null).ConfigureAwait(false);
@@ -87,6 +133,12 @@ namespace cReg_WebApp.Tests.UnitTests.Services
 
             result = await services.createProfileViewModel(new Student { studentId = 5, name = "test", majorId = 1 }).ConfigureAwait(false);
             Assert.True(result.thisStudent == null, "Student should not be found");
+        }
+
+        [Fact]
+        public async void verifyDropForStudentTest()
+        {
+
         }
     }
 }
