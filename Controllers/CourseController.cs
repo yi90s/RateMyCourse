@@ -36,17 +36,23 @@ namespace cReg_WebApp.Controllers
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
+            if(services.verifyRegisterDetailForStudents(stu,cid))
+            {
+                CourseViewModel thisModel = services.createCourseViewModel(cid);
 
-            CourseViewModel thisModel = services.createCourseViewModel(cid);
-
-            return View(thisModel);
+                return View(thisModel);
+            }
+            else
+            {
+                TempData["alertMessage"] = "Url Error: Redirect to Find Course page";
+                return RedirectToAction("Register", "Home");
+            }
         }
 
         public async Task<IActionResult> Register(int cid)
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
-            string message;
             if (await services.verifyRegistrationForStudent(stu,cid))
             {
                 await services.registerCourseForStudent(stu, cid);
@@ -62,7 +68,9 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> DropDetails(int eid)
         {
-            try
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student stu = await services.findStudentById(curUser.StudentId);
+            if (services.verifyDropDetailForStudents(stu, eid))
             {
                 Enrolled thisEnroll = await services.findEnrollById(eid);
 
@@ -70,9 +78,10 @@ namespace cReg_WebApp.Controllers
                 thisView.enrollId = eid;
                 return View(thisView);
             }
-            catch (Exception e)
+            else
             {
-                return NotFound();
+                TempData["alertMessage"] = "Url Error: Redirect to Profile page";
+                return RedirectToAction("Index", "Home");
             }
         }
 
