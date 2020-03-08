@@ -73,8 +73,18 @@
     }
 
 </table>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function Confirm(){
+        if (confirm("Do you want to drop course?")){
+            location.href = "/Course/Drop?eid=@Model.enrollId";//@Url.Action("Drop", "course", new { eid = @Model.enrollId });
+        }else{
+            return false;
+        }
+    }
+</script>
 <div>
-    <h4><a asp-controller="course" asp-action="Drop" asp-route-eid="@Model.enrollId">Drop</a></h4>
+    <input type="button" onclick="Confirm()" class="btn btn-primary" value="Drop" />
 </div>
 
 

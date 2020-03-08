@@ -1,13 +1,9 @@
 ﻿
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 using System.Threading.Tasks;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.context;
-using System.Collections.Generic;
-using cReg_WebApp.Controllers.Logic;
 using cReg_WebApp.Models.ViewModels;
 using System;
 using Microsoft.AspNetCore.Authorization;
@@ -50,14 +46,15 @@ namespace cReg_WebApp.Controllers
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
+            string message;
             if (await services.verifyRegistrationForStudent(stu,cid))
             {
                 await services.registerCourseForStudent(stu, cid);
-                ViewBag.message = "<scipt>alert('Success Registration');</script>";
+                TempData["alertMessage"] = "Success Registration";
             }
             else
             {
-                ViewBag.message = "<scipt>alert('Failed Registration');</script>";
+                TempData["alertMessage"]  = "Failed Registration";
             }
             return RedirectToAction("Register","Home");
         }
@@ -85,12 +82,12 @@ namespace cReg_WebApp.Controllers
             Student stu = await services.findStudentById(curUser.StudentId);
             if (await services.verifyDropForStudent(stu, eid))
             {
-                ViewBag.message = "<scipt>alert('Success Drop');</script>";
+                TempData["alertMessage"] = "Success Drop";
                 await services.dropCourseForStudent(eid);
             }
             else
             {
-                ViewBag.message = "<scipt>alert('Failed Drop');</script>";
+                TempData["alertMessage"] = "Failed Drop";
             }
             return RedirectToAction("Index", "Home");
         }
