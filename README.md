@@ -55,10 +55,15 @@ cReg™ is an application that enables university students to efficiently and ef
   - Intergration Test: In Progress
   - System Test: In Progress
 
-# Login Information
-- Website Link: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
-- Username: **1**  
-- Password: **password**
+# Running Instance
+- Production (ver 1.0)
+	- URL: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
+	- Username: **1**  
+	- Password: **password**
+- Development (ver 1.5) (newest progress)
+	- URL: http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/
+	- userName: **jb**
+	- Password: **Password1!**
   
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
