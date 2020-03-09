@@ -11,9 +11,9 @@ namespace cReg_WebApp.Models.ViewModels
     {
         public Student thisStudent { get; set; }
         public string majorName { get; set; }
-        public Dictionary<int, Course> keyValues { get; }
+        public Dictionary<int, entities.Course> keyValues { get; }
 
-        public ProfileViewModel(Student thisStudent, string majorName, Dictionary<int, Course> keyValues)
+        public ProfileViewModel(Student thisStudent, string majorName, Dictionary<int, entities.Course> keyValues)
         {
             this.thisStudent = thisStudent;
             this.majorName = majorName;

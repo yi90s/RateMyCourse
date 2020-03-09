@@ -29,11 +29,11 @@ namespace cReg_WebApp.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Index(int id)
+        public async Task<IActionResult> Index(int cid)
         {
            
-            Enrolled rate = await services.findEnrollById(id);
-            Course course = await services.findCourseById(rate.courseId);
+            Enrolled rate = await services.findEnrollById(cid);
+            Models.entities.Course course = await services.findCourseById(rate.courseId);
             RateCourseViewModel vm = new RateCourseViewModel(rate, course);
 
             return View(vm);

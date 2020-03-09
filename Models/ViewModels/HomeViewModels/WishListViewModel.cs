@@ -7,9 +7,9 @@ namespace cReg_WebApp.Models.ViewModels.HomeViewModels
     {
         public Student thisStudent { get; set; }
         public string majorName { get; set; }
-        public List<Course> courseList { get;  }
+        public List<entities.Course> courseList { get;  }
 
-        public WishListViewModel(Student thisStudent, string majorName, List<Course> list)
+        public WishListViewModel(Student thisStudent, string majorName, List<entities.Course> list)
         {
             this.thisStudent = thisStudent;
             this.majorName = majorName;

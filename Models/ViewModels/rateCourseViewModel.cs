@@ -26,7 +26,7 @@ namespace cReg_WebApp.Models.ViewModels
         public string Instructor { get; set; }
         public string date { get; set; }
 
-        public RateCourseViewModel(Enrolled rate, Course course)
+        public RateCourseViewModel(Enrolled rate, entities.Course course)
         {
 
         }

@@ -1,18 +1,20 @@
 ﻿@model cReg_WebApp.Models.ViewModels.HomeViewModels.FindCourseViewModel
 @{
     ViewData["Title"] = "Register Page";
-    ViewData["studentId"] = Model.thisStudent.studentId;
-    ViewData["Name"] = Model.thisStudent.name;
-    ViewData["majorName"] = Model.majorName;
+}
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/@@tarekraafat/autocomplete.js@@7.2.0/dist/js/autoComplete.min.js"></script>
+    <script src="~/js/searchCourses.js"></script>
 }
 <html>
 @ViewBag.message
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tarekraafat/autocomplete.js@@7.2.0/dist/css/autoComplete.min.css">
+</head>
 <body>
     <div>
-        <ul style="list-style-type: none">
-            <li>Student's Name:  @ViewData["Name"]</li>
-            <li>Student's ID:  @ViewData["studentId"]</li>
-        </ul>
+        <input id="autoComplete" tabindex="1" />
     </div>
 
 
@@ -47,5 +49,7 @@
             }
         </tbody>
     </table>
+
+
 </body>
 </html>

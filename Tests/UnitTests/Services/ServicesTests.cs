@@ -39,7 +39,7 @@ namespace cReg_WebApp.Tests.UnitTests.Services
         [Fact]
         public async void normalFindCourseById()
         {
-            Course c = await services.findCourseById(1);
+            Models.entities.Course c = await services.findCourseById(1);
 
             Assert.NotNull(c);
             Assert.Equal(1, c.courseId);
@@ -54,7 +54,7 @@ namespace cReg_WebApp.Tests.UnitTests.Services
         [Fact]
         public async void nullFindCourseById()
         {
-            Course c = await services.findCourseById(-1);
+            Models.entities.Course c = await services.findCourseById(-1);
 
             Assert.Null(c);
         }

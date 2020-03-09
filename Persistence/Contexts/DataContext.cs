@@ -65,7 +65,14 @@ namespace cReg_WebApp.Models.context
             new Course { courseId = 1, courseName = "COMP 4380", courseDescription = "Database Implementation", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
             new Course { courseId = 2, courseName = "COMP 4350", courseDescription = "Software Engineering", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
             new Course { courseId = 3, courseName = "COMP 4490", courseDescription = "Computer Graphics", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
-            new Course { courseId = 4, courseName = "COMP 4360", courseDescription = "Machine Learning", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) }
+            new Course { courseId = 4, courseName = "COMP 4360", courseDescription = "Machine Learning", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 5, courseName = "MATH 1700", courseDescription = "Calculus 2", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 6, courseName = "STAT 1000", courseDescription = "Basic Statistical Analysis 1", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 7, courseName = "MATH 1500", courseDescription = "Introduction to Calculus", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 8, courseName = "STAT 2000", courseDescription = "Basic Statistical Analysis 2", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 9, courseName = "ECON 1010", courseDescription = "Introduction to Microeconomic Principles", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 10, courseName = "ECON 1020", courseDescription = "Introduction to Macroeconomic Principles", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) },
+            new Course { courseId = 11, courseName = "HIST 1380", courseDescription = "An Introduction to Modern World History: 1800 - Present(M)", creditHours = 3, space = 80, date = new DateTime(2019, 9, 6) }
             );
 
             modelBuilder.Entity<Enrolled>().HasData(
@@ -90,7 +97,8 @@ namespace cReg_WebApp.Models.context
             modelBuilder.Entity<Faculty>().HasData(
                 new Faculty { facultyId = 1, facultyName = "Computer Science" },
                 new Faculty { facultyId = 2, facultyName = "Engineering" },
-                new Faculty { facultyId = 3, facultyName = "Arts" }
+                new Faculty { facultyId = 3, facultyName = "Arts" },
+                new Faculty { facultyId = 4, facultyName = "Mathematics"}
                 );
 
             var studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };

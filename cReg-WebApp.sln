@@ -8,6 +8,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3E7A504C-E952-4E96-AE24-F2A5A6E38B1C}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		autoSearch.js = autoSearch.js
 	EndProjectSection
 EndProject
 Global

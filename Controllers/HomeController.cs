@@ -35,12 +35,13 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            
-                //get instance of current StudentUser oboject
-                var curUser = await userManager.GetUserAsync(this.User);
-                Student student = await services.findStudentById(curUser.StudentId);
-                ProfileViewModel thisView = await services.createProfileViewModel(student);
-                return View(thisView);
+
+            //get instance of current StudentUser oboject
+            var curUser = await userManager.GetUserAsync(this.User);
+            Student student = await services.findStudentById(curUser.StudentId);
+            ProfileViewModel thisView = await services.createProfileViewModel(student);
+            ViewData["StudentName"] = student.name;
+            return View(thisView);
          }
 
 

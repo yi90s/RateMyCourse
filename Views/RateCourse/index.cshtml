@@ -5,12 +5,12 @@
 
 
 <h1>@Model.Title</h1>
-<h4>@Model.CourseName + " - " + @Model.courseDescription</h4>
+<h4>@(Model.CourseName + " - " + Model.courseDescription)</h4>
 
 <div class="row">
     <div class="col-md-4">
         <form asp-action="UpdateCourseRate" method="post">
-            <input type="hidden" asp-for="EnrollId"/>
+            <input type="hidden" asp-for="EnrollId" />
             <div class="form-group">
                 <label asp-for="Rating" class="control-label"></label>
                 <input asp-for="Rating" class="form-control" />

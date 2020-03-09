@@ -4,7 +4,6 @@ using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.ViewModels;
 using cReg_WebApp.Models.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,6 +21,7 @@ namespace cReg_WebApp.Services
         public Service(DataContext context)
         {
             this._context = context;
+
         }
 
 
@@ -37,25 +37,27 @@ namespace cReg_WebApp.Services
 
 
 
-        public async Task<Course> findCourseById(int courseId)
+        public async Task<Models.entities.Course> findCourseById(int courseId)
         {
             return await _context.Courses.FindAsync(courseId);
         }
 
-        public async Task<List<Course>> findCoursesByKeyWords(string keywords)
+        public async Task<List<Models.entities.Course>> findCoursesByKeyWords(string keywords)
         {
-            throw new NotImplementedException(); 
+            List<Models.entities.Course> result = _context.Courses.Where(c => c.courseName.Contains(keywords) || c.courseDescription.Contains(keywords)).ToList();
+
+            return result;
         }
 
 
-        public async Task<List<Course>> findAllEligibleCoursesForStudent(Student student)
+        public async Task<List<Models.entities.Course>> findAllEligibleCoursesForStudent(Student student)
         {
             throw new NotImplementedException();
         }
 
         internal CourseViewModel createCourseViewModel(int cid, Enrolled enroll = null)
         {
-            Course thisCourse = _context.Courses.Find(cid);
+            Models.entities.Course thisCourse = _context.Courses.Find(cid);
             if (thisCourse != null)
             {
                 var sIdAndComments = _context.Enrolled.Where(e => e.courseId == cid && e.completed && e.comment != null ).ToDictionary(e => e.studentId, e => e.comment);
@@ -115,7 +117,7 @@ namespace cReg_WebApp.Services
             {
                 int sid = student.studentId;
                 List<int> takingCourseId = await _context.Enrolled.Where(e => (e.studentId == sid && !e.completed)).Select(e => e.courseId).ToListAsync().ConfigureAwait(false);
-                List<Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
+                List<Models.entities.Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
                 string majorName = _context.Faculties.Find(student.majorId).facultyName;
                 FindCourseViewModel result = new FindCourseViewModel(student,majorName,courseList);
                 return result;
@@ -134,11 +136,11 @@ namespace cReg_WebApp.Services
             }
 
             string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
-            var keyValues = new Dictionary<int, Course>();
+            var keyValues = new Dictionary<int, Models.entities.Course>();
             Dictionary<int, int> temp = _context.Enrolled.Where(e => e.studentId == student.studentId && !e.completed).ToDictionary(e => e.enrollId, e => e.courseId);
             foreach (KeyValuePair<int, int> pair in temp)
             {
-                Course value = _context.Courses.Find(pair.Value);
+                Models.entities.Course value = _context.Courses.Find(pair.Value);
                 keyValues.Add(pair.Key, value);
             }
 
@@ -158,11 +160,11 @@ namespace cReg_WebApp.Services
             }
 
             string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
-            var keyValues = new Dictionary<int, Course>();
+            var keyValues = new Dictionary<int, Models.entities.Course>();
             Dictionary<int, int> temp = _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).ToDictionary(e => e.enrollId, e => e.courseId);
             foreach (KeyValuePair<int, int> pair in temp)
             {
-                Course value = _context.Courses.Find(pair.Value);
+                Models.entities.Course value = _context.Courses.Find(pair.Value);
                 keyValues.Add(pair.Key, value);
             }
 
@@ -202,23 +204,23 @@ namespace cReg_WebApp.Services
             }
         }
 
-        public async Task<List<Course>> findAllRegisteredCoursesForStudent(Student student)
+        public async Task<List<Models.entities.Course>> findAllRegisteredCoursesForStudent(Student student)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<List<Course>> findCurrentTakingCoursesForStudent(Student student)
+        public async Task<List<Models.entities.Course>> findCurrentTakingCoursesForStudent(Student student)
         {
             throw new NotImplementedException();
         }
 
         
-        public async Task<List<Enrolled>> findAllRatingForCourse(Course course)
+        public async Task<List<Enrolled>> findAllRatingForCourse(Models.entities.Course course)
         {
             throw new NotImplementedException(); 
         }
 
-        internal Task<List<Course>> findWishListCoursesForStudent(Student stu)
+        internal Task<List<Models.entities.Course>> findWishListCoursesForStudent(Student stu)
         {
             throw new NotImplementedException();
         }
@@ -228,7 +230,7 @@ namespace cReg_WebApp.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Enrolled> findTakenCourseForStudent(Student student, Course course)
+        public async Task<Enrolled> findTakenCourseForStudent(Student student, Models.entities.Course course)
         {
             throw new NotImplementedException();
         }

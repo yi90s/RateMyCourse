@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using cReg_WebApp.Models;
+using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.ViewModels;
+using cReg_WebApp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,11 +15,16 @@ namespace cReg_WebApp.Controllers
     public class AuthController : Controller
     {
         private readonly SignInManager<StudentUser>  signInManager;
-        public AuthController(SignInManager<StudentUser> signInManager)
+        private readonly UserManager<StudentUser>  userManager;
+        private readonly Service services;
+
+        public AuthController(SignInManager<StudentUser> signInManager, UserManager<StudentUser> userManager, DataContext context)
         {
+            this.services = new Service(context);
             this.signInManager = signInManager;
+            this.userManager = userManager;
         }
-        
+       
         [HttpGet]
         public async Task<IActionResult> Index()
         {
@@ -41,8 +49,9 @@ namespace cReg_WebApp.Controllers
                 return RedirectToAction("Index");
             }
 
+            
             var result = await signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
-
+            
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
@@ -57,7 +66,7 @@ namespace cReg_WebApp.Controllers
         [HttpGet]
         public async Task<IActionResult> SignOut()
         {
-            signInManager.SignOutAsync();
+            await signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
 
