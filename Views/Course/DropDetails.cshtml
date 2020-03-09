@@ -2,12 +2,11 @@
 
 @{
     ViewData["Title"] = "RegisterDetails";
-    ViewData["Name"] = @Model.thisCourse.courseName;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Name"] = @Model.thisCourse.courseName;
 }
 
 <h1>Details</h1>
-@ViewBag.message
 <div>
     <h4>Course</h4>
     <hr />
@@ -74,9 +73,20 @@
     }
 
 </table>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript">
+    function Confirm(){
+        if (confirm("Do you want to drop course?")){
+            location.href = "/Course/Drop?eid=@Model.enrollId";//@Url.Action("Drop", "course", new { eid = @Model.enrollId });
+        }else{
+            return false;
+        }
+    }
+</script>
 <div>
-    <input type="button" class="btn btn-primary" value="Register" onclick="location.href='@Url.Action("Register", "Course",new { cid = @Model.thisCourse.courseId})'">
+    <input type="button" onclick="Confirm()" class="btn btn-primary" value="Drop" />
 </div>
+
 
 
 

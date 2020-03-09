@@ -1,4 +1,4 @@
-﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
+﻿@model cReg_WebApp.Models.ViewModels.CompleteCourseViewModel
 @{
     ViewData["Title"] = "Complete";
 }
@@ -21,17 +21,17 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.keyValues)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.courseName)
+                    @Html.DisplayFor(modelItem => item.Value.courseName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.courseDescription)
+                    @Html.DisplayFor(modelItem => item.Value.courseDescription)
                 </td>
                 <td>
-                    <a asp-controller="course" asp-action="details" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
+                    <a asp-controller="RateCourse" asp-action="index" asp-route-cid="@Model.">Rate</a>
                 </td>
             </tr>
         }

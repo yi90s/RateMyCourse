@@ -1,138 +1,61 @@
-﻿@model IEnumerable<cReg_WebApp.Models.entities.Course>
+﻿@model cReg_WebApp.Models.ViewModels.ProfileViewModel
 @{
 
     ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["studentId"] = Model.thisStudent.studentId;
+    ViewData["Name"] = Model.thisStudent.name;
+    ViewData["majorName"] = Model.majorName;
+    if (null != TempData["alertMessage"])
+    {
+        <script type="text/javascript">
+       alert('@TempData["alertMessage"]');
+        </script>
+    }
 }
 
-<style>
-    table, th {
-        border: 1px solid black;
-    }
-</style>
+<h1>Welcome, @Model.thisStudent.name</h1>
+<div class="container">
+    
+    <ul class="list-group">
+        <li class="list-group-item">Student Name : @Model.thisStudent.name</li>
+        <li class="list-group-item">Student Id : @Model.thisStudent.studentId</li>
+        <li class="list-group-item">Major : @Model.majorName</li>
+        <li class="list-group-item">Credit hours remaining : 120</li>
+    </ul>
 
-<div class=" = container">
-    <div style="float : left;">
-        <h1 class="display-4" align="left">Welcome</h1>
-        <table class="table">
-            <tr>
-                <td>
-                    <h5>Student Name</h5>
-                </td>
-                <td>
-                    @ViewData["Name"]
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h5>Student Id</h5>
-                </td>
-                <td>
-                    @ViewData["studentId"]
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <h5>Major</h5>
-                </td>
-                <td>
-                    @ViewData["majorName"]
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    <h5>Credit hours remaining</h5>
-                </td>
-                <td>
-                    <p>120</p>
-                </td>
-            </tr>
-        </table>
-
-        <p>Registered Courses</p>
-
-        <table class="table">
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.courseId)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.courseName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.courseDescription)
-                    </td>
-                    <td>
-                        <a asp-controller="course" asp-action="details" asp-route-sid="@ViewData["studentId"]" asp-route-cid="@item.courseId">View Course</a>
-                    </td>
-                </tr>
-            }
-        </table>
+    <div>
 
     </div>
+    <h3>Registered Courses</h3>
 
-    <div style="float : left; ">
-        <h1 class="display-4" align="left">Your Schedule</h1>
-        @*Calendar element to be imported*@
-        <table style="border: 1px solid black;">
-            <tr>
-                <th>Monday</th>
-                <th>Tuesday</th>
-                <th>Wednesday</th>
-                <th>Thursday</th>
-                <th>Friday</th>
-                <th>Saturday</th>
-                <th>Sunday</th>
-            </tr>
-            <tr>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-                <th>6</th>
-                <th>7</th>
-            </tr>
-            <tr>
-                <th>8</th>
-                <th>9</th>
-                <th>10</th>
-                <th>11</th>
-                <th>12</th>
-                <th>13</th>
-                <th>14</th>
-            </tr>
-            <tr>
-                <th>15</th>
-                <th>16</th>
-                <th>17</th>
-                <th>18</th>
-                <th>19</th>
-                <th>20</th>
-                <th>21</th>
-            </tr>
-            <tr>
-                <th>22</th>
-                <th>23</th>
-                <th>24</th>
-                <th>25</th>
-                <th>26</th>
-                <th>27</th>
-                <th>28</th>
-            </tr>
-            <tr>
-                <th>29</th>
-                <th>30</th>
-                <th>31</th>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th></th>
-            </tr>
-        </table>
+    <div class="container">
+
+        @foreach (var item in Model.keyValues)
+        {
+            <div class="card row mt-3">
+                <div class="card-header col-12">
+                    @Html.DisplayFor(Model => item.Value.courseName)
+                </div>
+                <div class="card-body col-12">
+                    <div class="row">
+                        <div class="col-8">
+                            <h5 class="card-title">@Html.DisplayFor(Model => item.Value.courseDescription)</h5>
+                            <p class="card-text">Description is under development</p>
+                        </div>
+                        <div class="col-4 align-self-center">
+                            <div class="row justify-content-end">
+                                <div class="col-6">
+                                    <a class="btn btn-primary" asp-controller="course" asp-action="DropDetails" asp-route-eid="@item.Key">View Course</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        }
+
     </div>
 
 </div>

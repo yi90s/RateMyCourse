@@ -10,7 +10,7 @@ namespace cReg_WebApp.Models.entities
     {
         [Key]
         public int studentId { get; set; }
-        public string password { get; set; }
+
         public int majorId { get; set; }
         public string name { get; set; }
 
