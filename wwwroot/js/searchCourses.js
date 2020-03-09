@@ -1,8 +1,8 @@
 // JavaScript source code
 $(document).ready(function () {
 
-    const domain = 'https://localhost:44353';
-
+    var domain = LOCAL_DOMAIN;
+    
     var autocomplete = new autoComplete({
         data: {                              // Data src [Array, Function, Async] | (REQUIRED)
             src: async () => {
