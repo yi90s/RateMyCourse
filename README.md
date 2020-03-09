@@ -56,11 +56,11 @@ cReg™ is an application that enables university students to efficiently and ef
   - System Test: In Progress
 
 # Running Instance
-- Production (ver 1.0)
+- Production instance (ver 1.0)
 	- URL: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
 	- Username: **1**  
 	- Password: **password**
-- Development (ver 1.5) (newest progress)
+- Test instance (ver 1.5) (newest progress)
 	- URL: http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/
 	- userName: **jb**
 	- Password: **Password1!**
