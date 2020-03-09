@@ -1,7 +1,16 @@
 ﻿@model cReg_WebApp.Models.ViewModels.ProfileViewModel
 @{
 
-    ViewData["Title"] = "Profile";
+    ViewData["Title"] = "Index";
+    ViewData["studentId"] = Model.thisStudent.studentId;
+    ViewData["Name"] = Model.thisStudent.name;
+    ViewData["majorName"] = Model.majorName;
+    if (null != TempData["alertMessage"])
+    {
+        <script type="text/javascript">
+       alert('@TempData["alertMessage"]');
+        </script>
+    }
 }
 
 <h1>Welcome, @Model.thisStudent.name</h1>

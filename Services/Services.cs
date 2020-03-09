@@ -49,6 +49,11 @@ namespace cReg_WebApp.Services
             return result;
         }
 
+        internal bool verifyRegisterDetailForStudents(Student stu, int cid)
+        {
+            List<int> registeringCourse = _context.Enrolled.Where(e => stu.studentId == e.studentId && !e.completed).Select(e=> e.courseId).ToList();
+            return (!registeringCourse.Contains(cid));
+        }
 
         public async Task<List<Models.entities.Course>> findAllEligibleCoursesForStudent(Student student)
         {
@@ -104,6 +109,12 @@ namespace cReg_WebApp.Services
             {
                 return null;
             }
+        }
+
+        internal bool verifyDropDetailForStudents(Student stu, int eid)
+        {
+            Enrolled thisEnroll = _context.Enrolled.Find(eid);
+            return ( stu.studentId == thisEnroll.studentId && !thisEnroll.completed);
         }
 
         internal Task<WishListViewModel> createWishListViewModel(Student stu)

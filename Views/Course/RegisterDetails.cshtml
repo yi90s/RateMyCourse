@@ -75,7 +75,7 @@
 
 </table>
 <div>
-    <h4><a asp-controller="Course" asp-action="Register" asp-route-cid="@Model.thisCourse.courseId">Register</a></h4>
+    <input type="button" class="btn btn-primary" value="Register" onclick="location.href='@Url.Action("Register", "Course",new { cid = @Model.thisCourse.courseId})'">
 </div>
 
 
