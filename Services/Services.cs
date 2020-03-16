@@ -1,7 +1,9 @@
 ﻿using cReg_WebApp.Models;
 using cReg_WebApp.Models.context;
+using cReg_WebApp.Models.DomainModels;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.ViewModels;
+using cReg_WebApp.Models.ViewModels.CourseViewModels;
 using cReg_WebApp.Models.ViewModels.HomeViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -55,9 +57,14 @@ namespace cReg_WebApp.Services
             return (!registeringCourse.Contains(cid));
         }
 
-        public async Task<List<Models.entities.Course>> findAllEligibleCoursesForStudent(Student student)
+        public async Task<List<Course>> findAllEligibleCoursesForStudent(Student student)
         {
-            throw new NotImplementedException();
+            List<Course> allCourses = await _context.Courses.ToListAsync();
+            List<Course> takingCourses = await findCurrentTakingCoursesForStudent(student);
+            List<Course> takenCourses = await findAllTakenCoursesForStudent(student);
+            allCourses.RemoveAll(c => takingCourses.Contains(c) && takenCourses.Contains(c));
+
+            return allCourses;
         }
 
         internal CourseViewModel createCourseViewModel(int cid, Enrolled enroll = null)
@@ -124,19 +131,93 @@ namespace cReg_WebApp.Services
 
         internal async Task<FindCourseViewModel> createFindCourseViewModel(Student student)
         {
-            if (student != null)
-            {
-                int sid = student.studentId;
-                List<int> takingCourseId = await _context.Enrolled.Where(e => (e.studentId == sid && !e.completed)).Select(e => e.courseId).ToListAsync().ConfigureAwait(false);
-                List<Models.entities.Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
-                string majorName = _context.Faculties.Find(student.majorId).facultyName;
-                FindCourseViewModel result = new FindCourseViewModel(student,majorName,courseList);
-                return result;
-            }
-            else
+            //if (student != null)
+            //{
+            //    int sid = student.studentId;
+            //    List<int> takingCourseId = await _context.Enrolled.Where(e => (e.studentId == sid && !e.completed)).Select(e => e.courseId).ToListAsync().ConfigureAwait(false);
+            //    List<Models.entities.Course> courseList = await _context.Courses.Where(c => !takingCourseId.Contains(c.courseId)).ToListAsync().ConfigureAwait(false);
+            //    string majorName = _context.Faculties.Find(student.majorId).facultyName;
+            //    FindCourseViewModel result = new FindCourseViewModel(student,majorName,courseList);
+            //    return result;
+            //}
+            //else
+            //{
+            //    return null;
+            //}
+
+            if (student == null)
             {
                 return null;
             }
+
+            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse };
+            List<Course> eligibleCourses = await findAllEligibleCoursesForStudent(student);
+
+            foreach (Course c in eligibleCourses)
+            {
+                var ccvm = new CourseContainerViewModel(c, actions, student);
+                ccvms.Add(ccvm);
+            }
+
+            FindCourseViewModel vmodel = new FindCourseViewModel(ccvms);
+
+            return vmodel;
+
+
+        }
+
+        public async Task<CourseDetailViewModel> createCourseDetailViewModel(int cid)
+        {
+            Course c = await findCourseById(cid);
+            CourseDetailViewModel vm;
+
+            if(c == null)
+            {
+                return null;
+            }
+
+            List<Comment> comments = await findAllCommentsForCourse(c);
+
+            if(comments.Count <= 0)
+            {
+                vm = new CourseDetailViewModel(c, null);
+            }
+            else
+            {
+                List<CourseCommentViewModel> commentsVM = new List<CourseCommentViewModel>();
+
+                float? ratingSum = 0;
+                foreach(var cmt in comments)
+                {
+                    ratingSum += cmt.ratingScore;
+                    commentsVM.Add(new CourseCommentViewModel(cmt));
+                }
+                float? avgRating = ratingSum / comments.Count;
+
+                vm = new CourseDetailViewModel(c, avgRating.ToString() + "/100", commentsVM);
+            }
+
+            return vm;
+
+        }
+
+        public async Task<List<Comment>> findAllCommentsForCourse(Course c)
+        {
+            
+            if(c == null)
+            {
+                return null;
+            }
+
+            List<Comment> comments = new List<Comment>();
+            List<Enrolled> enrolls = await _context.Enrolled.Where(e => e.courseId == c.courseId).ToListAsync();
+            foreach(var e in enrolls)
+            {
+                comments.Add(new Comment(e));
+            }
+
+            return comments;
         }
 
         internal async Task<ProfileViewModel> createProfileViewModel(Student student)
@@ -147,22 +228,39 @@ namespace cReg_WebApp.Services
             }
 
             string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
-            var keyValues = new Dictionary<int, Models.entities.Course>();
-            Dictionary<int, int> temp = _context.Enrolled.Where(e => e.studentId == student.studentId && !e.completed).ToDictionary(e => e.enrollId, e => e.courseId);
-            foreach (KeyValuePair<int, int> pair in temp)
+            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            ISet<CourseActions> actions = new HashSet<CourseActions>();
+            actions.Add(CourseActions.ViewDetail);
+            List<Course>  regCourses = await findCurrentTakingCoursesForStudent(student);
+
+            foreach(Course c in regCourses)
             {
-                Models.entities.Course value = _context.Courses.Find(pair.Value);
-                keyValues.Add(pair.Key, value);
+                var ccvm = new CourseContainerViewModel(c, actions);
+                ccvms.Add(ccvm);
             }
 
-            
-            ProfileViewModel vmodel = new ProfileViewModel(student, majorName, keyValues);
+            ProfileViewModel vmodel = new ProfileViewModel(student, majorName, ccvms);
 
             return vmodel;
            
         }
 
-        internal async Task<CompleteCourseViewModel> createCompleteCourseViewModel(Student student)
+        public async Task<CourseContainerViewModel> createCourseContainerViewModel(Course c, ISet<CourseActions> actions, Enrolled e)
+        {
+            try
+            {
+                CourseContainerViewModel ccvm = new CourseContainerViewModel(c,actions, e);
+
+                return ccvm;
+
+            }catch(Exception)
+            {
+                return null;
+            }
+            
+        }
+
+        internal async Task<HistoryViewModel> createHistoryViewModel(Student student)
         {
 
             if (student == null)
@@ -170,17 +268,18 @@ namespace cReg_WebApp.Services
                 return null;
             }
 
-            string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
-            var keyValues = new Dictionary<int, Models.entities.Course>();
-            Dictionary<int, int> temp = _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).ToDictionary(e => e.enrollId, e => e.courseId);
-            foreach (KeyValuePair<int, int> pair in temp)
+            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.RateCourse, CourseActions.ViewDetail };
+            List<Enrolled> takens = await findAllTakensForStudent(student);
+
+            foreach (Enrolled enroll in takens)
             {
-                Models.entities.Course value = _context.Courses.Find(pair.Value);
-                keyValues.Add(pair.Key, value);
+                Course course = await findCourseById(enroll.courseId);
+                var ccvm = new CourseContainerViewModel(course, actions, enroll);
+                ccvms.Add(ccvm);
             }
 
-
-            CompleteCourseViewModel vmodel = new CompleteCourseViewModel(student, majorName, keyValues);
+            HistoryViewModel vmodel = new HistoryViewModel(student, ccvms);
 
             return vmodel;
         }
@@ -215,14 +314,30 @@ namespace cReg_WebApp.Services
             }
         }
 
-        public async Task<List<Models.entities.Course>> findAllRegisteredCoursesForStudent(Student student)
+        public async Task<List<Course>> findAllRegisteredCoursesForStudent(Student student)
         {
-            throw new NotImplementedException();
+            if (student == null)
+                return null;
+            List<Enrolled> enrolls = await findAllEnrollsForStudent(student);
+            List<Course> enrolledCourses = new List<Course>();
+            enrolls.ForEach(
+                e => enrolledCourses.Add( _context.Courses.Find(e.courseId))
+                );
+
+            return enrolledCourses;
         }
 
-        public async Task<List<Models.entities.Course>> findCurrentTakingCoursesForStudent(Student student)
+        public async Task<List<Course>> findCurrentTakingCoursesForStudent(Student student)
         {
-            throw new NotImplementedException();
+            if (student == null)
+                return null;
+            List<Enrolled> enrolls = (await findAllEnrollsForStudent(student)).Where(e => !e.completed).ToList();
+            List<Course> enrolledCourses = new List<Course>();
+            enrolls.ForEach(
+                e => enrolledCourses.Add(_context.Courses.Find(e.courseId))
+                );
+
+            return enrolledCourses;
         }
 
         
@@ -238,12 +353,26 @@ namespace cReg_WebApp.Services
 
         public async Task<List<Enrolled>> findAllEnrollsForStudent(Student student)
         {
-            throw new NotImplementedException();
+            return await _context.Enrolled.Where(e => e.studentId == student.studentId).ToListAsync();
         }
 
-        public async Task<Enrolled> findTakenCourseForStudent(Student student, Models.entities.Course course)
+        public async Task<List<Course>> findAllTakenCoursesForStudent(Student student)
         {
-            throw new NotImplementedException();
+            List<Enrolled> allRegs = await findAllEnrollsForStudent(student);
+            List<Enrolled> takens = allRegs.Where(allRegs => allRegs.completed).ToList();
+            List<int> takenCourseIds = takens.Select(taken => taken.courseId).ToList();
+            List<Course> takenCourses = _context.Courses.Where(c => takenCourseIds.Contains(c.courseId)).ToList();
+
+            return takenCourses;
+            
+        }
+
+        public async Task<List<Enrolled>> findAllTakensForStudent(Student student)
+        {
+            List<Enrolled> allRegs = await findAllEnrollsForStudent(student);
+            List<Enrolled> takens = allRegs.Where(allRegs => allRegs.completed).ToList();
+
+            return takens;
         }
 
         internal async Task<bool> verifyDropForStudent(Student student, int eid)

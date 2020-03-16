@@ -1,10 +1,7 @@
 ﻿@model cReg_WebApp.Models.ViewModels.ProfileViewModel
 @{
+    ViewData["Title"] = "Profile";
 
-    ViewData["Title"] = "Index";
-    ViewData["studentId"] = Model.thisStudent.studentId;
-    ViewData["Name"] = Model.thisStudent.name;
-    ViewData["majorName"] = Model.majorName;
     if (null != TempData["alertMessage"])
     {
         <script type="text/javascript">
@@ -30,30 +27,9 @@
 
     <div class="container">
 
-        @foreach (var item in Model.keyValues)
+        @foreach (var courseVM in Model.cViewModels)
         {
-            <div class="card row mt-3">
-                <div class="card-header col-12">
-                    @Html.DisplayFor(Model => item.Value.courseName)
-                </div>
-                <div class="card-body col-12">
-                    <div class="row">
-                        <div class="col-8">
-                            <h5 class="card-title">@Html.DisplayFor(Model => item.Value.courseDescription)</h5>
-                            <p class="card-text">Description is under development</p>
-                        </div>
-                        <div class="col-4 align-self-center">
-                            <div class="row justify-content-end">
-                                <div class="col-6">
-                                    <a class="btn btn-primary" asp-controller="course" asp-action="DropDetails" asp-route-eid="@item.Key">View Course</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
+            @await Html.PartialAsync("_courseContainer", courseVM);
         }
 
     </div>

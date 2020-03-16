@@ -1,4 +1,4 @@
-﻿@model cReg_WebApp.Models.ViewModels.CourseDetailViewModel
+﻿@model cReg_WebApp.Models.ViewModels.CourseViewModels.CourseDetailViewModel
 
 <div>
     <h4>Course Details</h4>
@@ -29,10 +29,10 @@
             @Html.DisplayFor(model => model.date)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ratingScore)
+            @Html.DisplayNameFor(model => model.avgRating)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ratingScore)
+            @Html.DisplayFor(model => model.avgRating)
         </dd>
     </dl>
 </div>

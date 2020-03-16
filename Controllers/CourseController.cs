@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using cReg_WebApp.Models.entities;
 using cReg_WebApp.Models.context;
 using cReg_WebApp.Models.ViewModels;
+using cReg_WebApp.Models.ViewModels.CourseViewModels;
 using System;
 using Microsoft.AspNetCore.Authorization;
 using cReg_WebApp.Services;
@@ -99,6 +100,41 @@ namespace cReg_WebApp.Controllers
                 TempData["alertMessage"] = "Failed Drop";
             }
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Rate(int eid)
+        {
+
+            Enrolled rate = await services.findEnrollById(eid);
+            Course course = await services.findCourseById(rate.courseId);
+            RateCourseViewModel vm = new RateCourseViewModel(rate, course);
+
+            return View(vm);
+
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Rate(RateCourseViewModel courseRate)
+        {
+
+            Enrolled newRating = await services.findEnrollById(courseRate.EnrollId);
+            newRating.rating = courseRate.Rating;
+            newRating.comment = courseRate.Comment;
+            services.updateEnroll(newRating);
+
+            return RedirectToAction("Home/Index");
+
+
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Detail(int cid)
+        {
+            CourseDetailViewModel vm = await services.createCourseDetailViewModel(cid);
+
+            return View(vm);
         }
 
         //// GET: Course/Create

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace cReg_WebApp.Models.ViewModels
 {
-    public class RateCourseViewModel : ViewModelBase
+    public class RateCourseViewModel
     {
         
         public int EnrollId { get; set; }
@@ -26,9 +26,13 @@ namespace cReg_WebApp.Models.ViewModels
         public string Instructor { get; set; }
         public string date { get; set; }
 
-        public RateCourseViewModel(Enrolled rate, entities.Course course)
+        public RateCourseViewModel(Enrolled rate, Course course)
         {
-
+            EnrollId = rate.enrollId;
+            Rating = rate.rating;
+            Comment = rate.comment;
+            CourseName = course.courseName;
+            courseDescription = course.courseDescription;
         }
         
     }

@@ -40,12 +40,11 @@ namespace cReg_WebApp.Controllers
             var curUser = await userManager.GetUserAsync(this.User);
             Student student = await services.findStudentById(curUser.StudentId);
             ProfileViewModel thisView = await services.createProfileViewModel(student);
-            ViewData["StudentName"] = student.name;
             return View(thisView);
          }
 
 
-
+        [HttpGet]
         public async Task<IActionResult> Register()
         {
             var curUser = await userManager.GetUserAsync(this.User);
@@ -54,16 +53,19 @@ namespace cReg_WebApp.Controllers
             FindCourseViewModel thisView = await services.createFindCourseViewModel(stu);
             return View(thisView);
         }
-        public async Task<IActionResult> Complete()
+
+        [HttpGet]
+        public async Task<IActionResult> History()
         {
             var curUser = await userManager.GetUserAsync(this.User);
             Student stu = await services.findStudentById(curUser.StudentId);
 
-            CompleteCourseViewModel completeCourses = await services.createCompleteCourseViewModel(stu);
+            HistoryViewModel completeCourses = await services.createHistoryViewModel(stu);
             return View(completeCourses);
 
         }
 
+        [HttpGet]
         public async Task<IActionResult> WishList()
         {
             var curUser = await userManager.GetUserAsync(this.User);
@@ -77,7 +79,7 @@ namespace cReg_WebApp.Controllers
 
 
 
-
+        [HttpGet]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Error()
         {

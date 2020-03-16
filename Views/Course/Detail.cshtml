@@ -1,0 +1,24 @@
+﻿@model cReg_WebApp.Models.ViewModels.CourseViewModels.CourseDetailViewModel
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<h1>@String.Format("{0} - {1}",Model.courseName, Model.courseDescription)</h1>
+
+<div class="container">
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item">Available Space: @Model.availableSpace</li>
+            <li class="list-group-item">Date : @Model.date</li>
+            <li class="list-group-item">Average Rating: @Model.avgRating</li>
+            <li class="list-group-item">Instructor : TBA</li>
+            <li class="list-group-item">Location : TBA</li>
+        </ul>
+    </div>
+    <div class="card-columns">
+        @foreach(var commentVM in Model.comments){
+            @await Html.PartialAsync("_courseComment", commentVM);
+        }
+    </div>
+</div>
+

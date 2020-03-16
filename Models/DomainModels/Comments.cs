@@ -1,4 +1,5 @@
-﻿using System;
+﻿using cReg_WebApp.Models.entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,12 +9,17 @@ namespace cReg_WebApp.Models.DomainModels
 {
     public class Comment
     {
-        [DisplayName("Score")]
-        public string ratingScore { get; set; }
-        [DisplayName("Comment")]
+      
+        public int? ratingScore { get; set; }
         public string comment { get; set; }
-        [DisplayName("Time Rated")]
-        public DateTime date { get; set; }
+        public DateTime takenDate { get; set; }
+
+        public Comment(Enrolled enroll)
+        {
+            this.ratingScore = enroll.rating;
+            this.comment = enroll.comment;
+            this.takenDate = enroll.course.date;
+        }
 
     }
 }
