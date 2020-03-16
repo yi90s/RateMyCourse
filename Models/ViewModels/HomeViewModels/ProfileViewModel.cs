@@ -13,12 +13,14 @@ namespace cReg_WebApp.Models.ViewModels
         public Student thisStudent { get; set; }
         public string majorName { get; set; }
         public IEnumerable<CourseContainerViewModel> cViewModels { get; set; }
+        public int remainingCreditHours { get; set; }
 
-        public ProfileViewModel(Student thisStudent, string majorName, IEnumerable <CourseContainerViewModel> cViewModels)
+        public ProfileViewModel(Student thisStudent, IEnumerable <CourseContainerViewModel> cViewModels, int credHrs)
         {
             this.thisStudent = thisStudent;
             this.majorName = majorName;
             this.cViewModels = cViewModels;
+            remainingCreditHours = credHrs;
         }
     }
 }

@@ -124,7 +124,8 @@ namespace cReg_WebApp.Controllers
             newRating.comment = courseRate.Comment;
             services.updateEnroll(newRating);
 
-            return RedirectToAction("Home/Index");
+
+            return RedirectToAction("Index", "Home");
 
 
         }

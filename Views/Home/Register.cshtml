@@ -2,6 +2,12 @@
 @using cReg_WebApp.Models.entities;
 @{
     ViewData["Title"] = "Register Page";
+    if (null != TempData["alertMessage"])
+    {
+        <script type="text/javascript">
+       alert('@TempData["alertMessage"]');
+        </script>
+    }
 }
 
 @section Scripts{
@@ -9,7 +15,6 @@
     <script src="~/js/searchCourses.js"></script>
 }
 <html>
-@ViewBag.message
 <head>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@@tarekraafat/autocomplete.js@@7.2.0/dist/css/autoComplete.min.css">
 </head>

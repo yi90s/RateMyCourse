@@ -39,7 +39,7 @@ namespace cReg_WebApp.Services
 
 
 
-        public async Task<Models.entities.Course> findCourseById(int courseId)
+        public async Task<Course> findCourseById(int courseId)
         {
             return await _context.Courses.FindAsync(courseId);
         }
@@ -67,6 +67,10 @@ namespace cReg_WebApp.Services
             return allCourses;
         }
 
+        public int findAvaliableSpaceForCourse(int cid)
+        {
+            return   _context.Courses.Find(cid).space - _context.Enrolled.Where(e => e.courseId == cid && !e.completed).Count();
+        }
         internal CourseViewModel createCourseViewModel(int cid, Enrolled enroll = null)
         {
             Models.entities.Course thisCourse = _context.Courses.Find(cid);
@@ -101,7 +105,7 @@ namespace cReg_WebApp.Services
                     rate = "N/A";
                 }
 
-                int avaliableSpace = thisCourse.space - _context.Enrolled.Where(e => e.courseId == thisCourse.courseId).Count();
+                int avaliableSpace = findAvaliableSpaceForCourse(thisCourse.courseId);
 
                 if(enroll==null)
                 {
@@ -211,7 +215,7 @@ namespace cReg_WebApp.Services
             }
 
             List<Comment> comments = new List<Comment>();
-            List<Enrolled> enrolls = await _context.Enrolled.Where(e => e.courseId == c.courseId).ToListAsync();
+            List<Enrolled> enrolls = await _context.Enrolled.Where(e => e.courseId == c.courseId && e.completed).ToListAsync();
             foreach(var e in enrolls)
             {
                 comments.Add(new Comment(e));
@@ -220,17 +224,79 @@ namespace cReg_WebApp.Services
             return comments;
         }
 
+        public async Task<int> findRemainingCreditHourForStudent(Student student)
+        {
+            int creditHourNeed = _context.Faculties.Find(student.majorId).graduateCreditHours;
+            int creditHourTook = 0;
+            List<int> finshedCourseId = await _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToListAsync();
+            foreach (int courseId in finshedCourseId)
+            {
+                creditHourTook += _context.Courses.Find(courseId).creditHours;
+            }
+            return creditHourNeed - creditHourTook;
+        }
+
+        private async Task<List<Course>> getRecomendedCourseForStudents(Student student)
+        { 
+            Dictionary<int, int?> finishedCourseIdAndGrade = await _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).ToDictionaryAsync(e=>e.courseId,e=>e.grade) ;
+            List<int> requiredCourseId = await _context.Required.Where(r => r.facultyId == student.majorId).Select(r => r.courseId).ToListAsync();
+            List<int> completedAndTakingCourseId = await _context.Enrolled.Where(e => e.studentId == student.studentId).Select(e => e.courseId).ToListAsync();
+            List<int> allCourseList = await _context.Courses.Where(c=> !completedAndTakingCourseId.Contains(c.courseId)).Select(c=>c.courseId).ToListAsync();
+            List<Course> resultList = new List<Course>();
+            List<Course> otherList = new List<Course>();
+            int rightNowCreditHours = await findRemainingCreditHourForStudent(student);
+            foreach(int courseId in allCourseList)
+            {
+                Dictionary<int, int> preRequisiteCourseIdAndGrade = await _context.Prerequisites.Where(p => p.courseId == courseId).ToDictionaryAsync(r => r.prerequisiteId, r => r.grade);
+                bool completeAllPreRequisite = true;
+                foreach (KeyValuePair<int, int> preIdAndGrade in preRequisiteCourseIdAndGrade)
+                {
+                    if (!finishedCourseIdAndGrade.ContainsKey(preIdAndGrade.Key))
+                    {
+                        completeAllPreRequisite = false;
+                    }
+                    else
+                    {
+                        int? grade = finishedCourseIdAndGrade[preIdAndGrade.Key];
+                        if (grade < preIdAndGrade.Value)
+                        {
+                            completeAllPreRequisite = false;
+                        }
+                    }
+                }
+                if (completeAllPreRequisite && requiredCourseId.Contains(courseId))
+                {
+                    Course thisCourse = _context.Courses.Find(courseId);
+                    rightNowCreditHours -= thisCourse.creditHours;
+                    resultList.Add(thisCourse);
+                }
+                else if(completeAllPreRequisite)
+                {
+                    Course thisCourse = _context.Courses.Find(courseId);
+                    otherList.Add(thisCourse);
+                }
+            }
+            foreach(Course course in otherList)
+            {
+                if(rightNowCreditHours>0)
+                {
+                    rightNowCreditHours -= course.creditHours;
+                    resultList.Add(course);
+                }
+            }
+            return resultList;
+        }
+
         internal async Task<ProfileViewModel> createProfileViewModel(Student student)
         {
             if(student == null)
             {
                 return null;
             }
-
+            int remainCreditHours = await findRemainingCreditHourForStudent(student);
             string majorName = (await _context.Faculties.FindAsync(student.majorId)).facultyName;
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
-            ISet<CourseActions> actions = new HashSet<CourseActions>();
-            actions.Add(CourseActions.ViewDetail);
+            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.DropCourse };
             List<Course>  regCourses = await findCurrentTakingCoursesForStudent(student);
 
             foreach(Course c in regCourses)
@@ -239,7 +305,7 @@ namespace cReg_WebApp.Services
                 ccvms.Add(ccvm);
             }
 
-            ProfileViewModel vmodel = new ProfileViewModel(student, majorName, ccvms);
+            ProfileViewModel vmodel = new ProfileViewModel(student, ccvms, remainCreditHours);
 
             return vmodel;
            
@@ -287,7 +353,7 @@ namespace cReg_WebApp.Services
 
         internal async Task<bool> verifyRegistrationForStudent(Student stu,int cid)
         {
-            if(stu==null)
+            if(stu==null || findAvaliableSpaceForCourse(cid)<=0)
             {
                 return false;
             }
@@ -296,7 +362,22 @@ namespace cReg_WebApp.Services
             List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
             foreach(Prerequisite require in prerequisiteList)
             {
-                if(_context.Enrolled.Where(e=>e.studentId==sid && e.courseId == cid && e.completed && e.grade>require.grade)==null)
+                List<Enrolled> thisEnrolls = await _context.Enrolled.Where(e => e.studentId == sid && e.courseId == cid && e.completed).ToListAsync();
+                if(thisEnrolls!=null)
+                {
+                    int grade = -1;
+                    foreach(Enrolled enroll in thisEnrolls)
+                    {
+                        if(enroll.grade!=null && enroll.grade>grade)
+                        {
+                            grade = enroll.grade.GetValueOrDefault();
+                        }
+                    }
+                    if(grade<require.grade)
+                    {
+                        result = false;
+                    }
+                }else
                 {
                     result = false;
                 }
@@ -401,7 +482,7 @@ namespace cReg_WebApp.Services
                 var change = _context.Enrolled.Update(newEnroll);
                 if(change.State == EntityState.Modified)
                 {
-                    await _context.SaveChangesAsync().ConfigureAwait(false);
+                    _context.SaveChanges();
                 }
             }
         }

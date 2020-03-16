@@ -34,6 +34,11 @@ namespace cReg_WebApp.Models.ViewModels
             CourseName = course.courseName;
             courseDescription = course.courseDescription;
         }
+
+        public RateCourseViewModel()
+        {
+
+        }
         
     }
 }
