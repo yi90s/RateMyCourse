@@ -12,5 +12,7 @@ namespace cReg_WebApp.Models.entities
         public int facultyId { get; set; }
         public string facultyName { get; set; }
 
+        public int graduateCreditHours { get; set; }
+
     }
 }
