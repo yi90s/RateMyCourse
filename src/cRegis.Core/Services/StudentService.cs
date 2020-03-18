@@ -78,8 +78,8 @@ namespace cRegis.Core.Services
             List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
             foreach (Prerequisite require in prerequisiteList)
             {
-                List<Enrolled> thisEnrolls = await _context.Enrolled.Where(e => e.studentId == sid && e.courseId == cid && e.completed).ToListAsync();
-                if (thisEnrolls != null)
+                List<Enrolled> thisEnrolls = await _context.Enrolled.Where(e => e.studentId == sid && e.courseId == require.prerequisiteId && e.completed).ToListAsync();
+                if (thisEnrolls.Count>0)
                 {
                     int grade = -1;
                     foreach (Enrolled enroll in thisEnrolls)

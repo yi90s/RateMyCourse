@@ -17,8 +17,12 @@
     </div>
     <div class="mt-2">
         <div class="card-columns">
-            @foreach(var commentVM in Model.comments){
-                @await Html.PartialAsync("_courseComment", commentVM);
+            @if (Model.comments != null)
+            {
+                @foreach (var commentVM in Model.comments)
+                {
+                    @await Html.PartialAsync("_courseComment", commentVM);
+                }
             }
         </div>
     </div>

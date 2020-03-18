@@ -24,11 +24,20 @@
                     }
                     @if (Model.actions.Contains(CourseActions.DropCourse))
                     {
-                        <a class="btn btn-danger" asp-controller="course" asp-action="drop" asp-route-eid="@Model.enrollId">Drop</a>
+                        <script type="text/javascript">
+                            function Confirm(){
+                                if (confirm("Do you want to drop course?")){
+                                     location.href = "/Course/Drop?eid=@Model.enrollId";
+                                }else{
+                                          return false;
+                                }
+                            }
+                        </script>
+                        <button class="btn btn-danger" onclick="Confirm()">Drop</button>
                     }
                     @if (Model.actions.Contains(CourseActions.RegisterCourse))
                     {
-                        <a class="btn btn-danger" asp-controller="course" asp-action="register" asp-route-cid="@Model.studentId">Register</a>
+                        <a class="btn btn-danger" asp-controller="course" asp-action="register" asp-route-cid="@Model.courseId">Register</a>
                     }
 
                 </div>

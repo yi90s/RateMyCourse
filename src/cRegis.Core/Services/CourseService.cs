@@ -61,14 +61,14 @@ namespace cRegis.Core.Services
         public async Task<List<Course>> getEligibleCoursesForStudentAsync(Student stu)
         {
             List<Course> allCourses = await _context.Courses.ToListAsync();
-            List<Course> takingCourses = await getTakingCoursesForStudentAsync(stu);
+            List<Course> takingCourses = await getTakingEnrollsForStudentAsync(stu);
             List<Course> takenCourses = getCompletedCoursesForStudent(stu);
             allCourses.RemoveAll(c => takingCourses.Contains(c) && takenCourses.Contains(c));
 
             return allCourses;
         }
 
-        public async Task<List<Course>> getTakingCoursesForStudentAsync(Student student)
+        public async Task<List<Course>> getTakingEnrollsForStudentAsync(Student student)
         {
             if (student == null)
                 return null;
@@ -84,7 +84,7 @@ namespace cRegis.Core.Services
         public List<Course> getCompletedCoursesForStudent(Student stu)
         {
             List<Enrolled> allRegs = _context.Enrolled.Where(e => e.studentId == stu.studentId).ToList();
-            List<Enrolled> takens = allRegs.Where(allRegs => allRegs.completed).ToList();
+            List<Enrolled> takens = allRegs.Where(e => e.completed).ToList();
             List<int> takenCourseIds = takens.Select(taken => taken.courseId).ToList();
             List<Course> takenCourses = _context.Courses.Where(c => takenCourseIds.Contains(c.courseId)).ToList();
 
@@ -167,7 +167,7 @@ namespace cRegis.Core.Services
             }
 
             List<Comment> comments = new List<Comment>();
-            List<Enrolled> enrolls =  _context.Enrolled.Where(e => e.courseId == c.courseId && e.completed).ToList();
+            List<Enrolled> enrolls =  _context.Enrolled.Where(e => e.courseId == c.courseId && e.completed && e.comment!=null).ToList();
             foreach (var e in enrolls)
             {
                 comments.Add(new Comment(e));

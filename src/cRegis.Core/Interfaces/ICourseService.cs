@@ -21,7 +21,7 @@ namespace cRegis.Core.Interfaces
 
         Task<List<Course>> getEligibleCoursesForStudentAsync(Student stu);
 
-        Task<List<Course>> getTakingCoursesForStudentAsync(Student stu);
+        Task<List<Course>> getTakingEnrollsForStudentAsync(Student stu);
 
         List<Course> getCompletedCoursesForStudent(Student stu);
         List<Comment> getCommentsForCourse(int cid);

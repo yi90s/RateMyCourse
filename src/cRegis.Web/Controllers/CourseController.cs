@@ -39,25 +39,6 @@ namespace cRegis.Web.Controllers
             _signInManager = signInManager;
         }
 
-
-        //[HttpGet]
-        //public async Task<IActionResult> RegisterDetails(int cid)
-        //{
-        //    var curUser = await _userManager.GetUserAsync(this.User);
-        //    Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
-        //    if(_studentSerivce.verifyRegistrationForStudent(stu,cid))
-        //    {
-        //        CourseViewModel thisModel = services.createCourseViewModel(cid);
-
-        //        return View(thisModel);
-        //    }
-        //    else
-        //    {
-        //        TempData["alertMessage"] = "Url Error: Redirect to Find Course page";
-        //        return RedirectToAction("Register", "Home");
-        //    }
-        //}
-
         public async Task<IActionResult> Register(int cid)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
@@ -66,34 +47,14 @@ namespace cRegis.Web.Controllers
             {
                 var course = await _courseService.getCourseAsync(cid);
                  _studentSerivce.registerCourseForStudent(stu, course);
-                ViewData["alertMessage"] = "Success Registration";
+                TempData["alertMessage"] = "Success Registration";
             }
             else
             {
-                ViewData["alertMessage"] = "Failed Registration";
+                TempData["alertMessage"] = "Failed Registration";
             }
             return RedirectToAction("Register", "Home");
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> DropDetails(int eid)
-        //{
-        //    var curUser = await userManager.GetUserAsync(this.User);
-        //    Student stu = await services.findStudentById(curUser.StudentId);
-        //    if (services.verifyDropDetailForStudents(stu, eid))
-        //    {
-        //        Enrolled thisEnroll = await services.findEnrollById(eid);
-
-        //        CourseViewModel thisView = services.createCourseViewModel(thisEnroll.courseId, enroll:thisEnroll);
-        //        thisView.enrollId = eid;
-        //        return View(thisView);
-        //    }
-        //    else
-        //    {
-        //        TempData["alertMessage"] = "Url Error: Redirect to Profile page";
-        //        return RedirectToAction("Index", "Home");
-        //    }
-        //}
 
         public async Task<IActionResult> Drop(int eid)
         {
@@ -101,12 +62,12 @@ namespace cRegis.Web.Controllers
             Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
             if ( _studentSerivce.verifyDropForStudent(stu, eid))
             {
-                ViewData["alertMessage"] = "Success Drop";
+                TempData["alertMessage"] = "Success Drop";
                 _enrollSerivce.drop(eid);
             }
             else
             {
-                ViewData["alertMessage"] = "Failed Drop";
+                TempData["alertMessage"] = "Failed Drop";
             }
             return RedirectToAction("Index", "Home");
         }
@@ -133,7 +94,7 @@ namespace cRegis.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Detail(int cid)
+        public IActionResult Detail(int cid)
         {
             CourseDetailViewModel vm = _viewModelSerivce.buildCourseDetailViewModel(cid);
 

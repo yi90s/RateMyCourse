@@ -61,7 +61,7 @@ $(document).ready(function () {
         },
         onSelection: feedback => {             // Action script onSelection event | (Optional)
             var id = feedback.selection.value['id'];
-            var url = domain + `/course/RegisterDetails?cid=${id}`;
+            var url = domain + `/course/Detail?cid=${id}`;
             window.location.replace(url);
         }
     });

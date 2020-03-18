@@ -58,7 +58,7 @@ namespace cRegis.Web.Services
             Course c = _courseService.getCourse(cid);
             CourseDetailViewModel vm = null;
             List<CourseCommentViewModel> commentsVM = null;
-            string avgRating = null;
+            string avgRating = "N/A";
 
             if (c == null)
             {
@@ -104,7 +104,7 @@ namespace cRegis.Web.Services
 
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse };
-            List<Course> eligibleCourses = await _courseService.getEligibleCoursesForStudentAsync(student);
+            List<Course> eligibleCourses = await _courseService.getRecCoursesForStudentAsync(student);
 
             foreach (Course c in eligibleCourses)
             {
@@ -151,11 +151,12 @@ namespace cRegis.Web.Services
             string majorName =  _facultyService.getFaculty(student.majorId).facultyName;
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.DropCourse };
-            List<Course> regCourses = await _courseService.getTakingCoursesForStudentAsync(student);
+            List<Enrolled> regCourses = _enrollService.getCurrentEnrollsForStudent(student);
             
-            foreach (Course c in regCourses)
+            foreach (Enrolled e in regCourses)
             {
-                var ccvm = buildCourseContainerViewModel(c, actions);
+                Course thisCourse = _courseService.getCourse(e.courseId);
+                var ccvm = buildCourseContainerViewModel(thisCourse, actions,e);
                 ccvms.Add(ccvm);
             }
 
