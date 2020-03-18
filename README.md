@@ -1,9 +1,11 @@
 # cReg™
-cReg™ is an application that enables university students to efficiently and effectively register for courses and view their courses over the internet.
+cReg™ is an application that enables university students to efficiently and effectively register for courses and view their courses over the internet. 
+
 
 # Progress
 - Right now, we are focusing on building our website. You can check out our progress in [here](https://github.com/MQuizzle/Gr8Group/projects/1)
 - [Milestone-1](https://github.com/MQuizzle/Gr8Group/milestone/1)
+- [Milestone-2](https://github.com/MQuizzle/Gr8Group/milestone/2)
 
 # Design
 - MVC pattern
@@ -12,27 +14,32 @@ cReg™ is an application that enables university students to efficiently and ef
 - [Page Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/page_diagram.png)
 - [System Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/system_diagram.png)
 
-# File Route
-
 
 # Installing Environment
 - [.NET Core 3.1](https://dotnet.microsoft.com/download)
+- [Visual Studio 2019 Community Edition](https://visualstudio.microsoft.com/vs/)
 
-# Tools:
-- Technologies
-  - ASP.NET Core
-  - AWS EC2
-  - AWS RDS
+# Tools
+- Deploy platform
+  - Amazon Web Service (AWS)
+    - EC2
+    - RDS
+    - Elastic Beanstalk
   
 - Testing Tools
-  - Unit Test: xUnit
+  - Unit Test: xUnit, Moq
   - Intergration Test: In Progress
   - System Test: In Progress
 
-# Login Information
-- Website Link: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
-- Username: **1**  
-- Password: **password**
+# Running Instance
+- Production instance (ver 1.0)
+	- URL: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
+	- Username: **1**  
+	- Password: **password**
+- Test instance (ver 1.5) (newest progress)
+	- URL: http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/
+	- userName: **jb**
+	- Password: **Password1!**
   
 # Related Documents
 - [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
