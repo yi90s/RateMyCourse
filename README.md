@@ -33,13 +33,13 @@ cReg™ is an application that enables university students to efficiently and ef
   - System Test: In Progress
 
 # Running Instance
-- [Login Info](docc/loginInfo.md)
+- [Login Info](docs/loginInfo.md)
 - [Production Instance](http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/)
-- [Testing Instance](https://github.com/MQuizzle/Gr8Group/blob/master/docs/loginInfo.md)
+- [Testing Instance](http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/)
 
   
 # Related Documents
 - [Vision Statement](docs/Vision-Statement.md)
 - [Function Documents](docs/FunctionDoc.md)
-- [Server Information](docss/Server-README.md)
+- [Server Information](docs/Server-README.md)
 - [Proposal Document](docs/Proposal%20Document.pdf)
