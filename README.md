@@ -1,72 +1,45 @@
 # cReg™
-cReg™ is an application that enables university students to efficiently and effectively register for courses and view their courses over the internet.
+cReg™ is an application that enables university students to efficiently and effectively register for courses and view their courses over the internet. 
+
 
 # Progress
 - Right now, we are focusing on building our website. You can check out our progress in [here](https://github.com/MQuizzle/Gr8Group/projects/1)
 - [Milestone-1](https://github.com/MQuizzle/Gr8Group/milestone/1)
 - [Milestone-2](https://github.com/MQuizzle/Gr8Group/milestone/2)
+- [Milestone-3](https://github.com/MQuizzle/Gr8Group/milestone/3)
 
 # Design
-- MVC pattern
-- [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/entity%20diagram.PNG)
-- [DFD](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/DFD.png)
-- [Page Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/page_diagram.png)
-- [System Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/system_diagram.png)
+- Model View ViewModel pattern (MVVM)
+- [ER Diagram](docs/entity%20diagram.PNG)
+- [DFD](docs/DFD.png)
+- [Page Diagram](docs/page_diagram.png)
+- [System Diagram](docs/system_diagram.png)
 
-# Code File Route
-- Controllers
-     - Logic
-         - [Advisor.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Controllers/Logic/Advisor.cs)
-     - [CourseController.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Controllers/CourseController.cs)
-     - [HomeController.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Controllers/HomeController.cs)
-- Models
-     - ViewModels
-         - [ErrorViewModel.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/ViewModels/ErrorViewModel.cs)
-	 - [ViewModelBase.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/ViewModels/ViewModelBase.cs)
-	 - [rateCourseViewModel.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/ViewModels/rateCourseViewModel.cs)
-     - entities
-         - [Course.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Course.cs)
-	 - [Enrolled.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Enrolled.cs)
-	 - [Faculty.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Faculty.cs)
-	 - [Prerequisite.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Prerequisite.cs)
-	 - [Required.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Required.cs)
-	 - [Student.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Models/entities/Student.cs)
-- Persistence/Contexts
-     - [DataContext.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Persistence/Contexts/DataContext.cs)
-- Test
-     - Infrastructure
-         - [DataContextTest.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/Infrastructure/DataContextTest.cs)
-	 - [TestBase.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/Infrastructure/TestBase.cs)
-     - UnitTests/Controller
-         - [HomeControllerTests.cs](https://github.com/MQuizzle/Gr8Group/blob/master/Tests/UnitTests/Controller/HomeControllerTests.cs)
-	 
-  
+
 # Installing Environment
 - [.NET Core 3.1](https://dotnet.microsoft.com/download)
+- [Visual Studio 2019 Community Edition](https://visualstudio.microsoft.com/vs/)
 
-# Tools:
-- Technologies
-  - ASP.NET Core
-  - AWS EC2
-  - AWS RDS
+# Tools
+- Deploy platform
+  - Amazon Web Service (AWS)
+    - EC2
+    - RDS
+    - Elastic Beanstalk
   
 - Testing Tools
-  - Unit Test: xUnit
+  - Unit Test: xUnit, Moq
   - Intergration Test: In Progress
   - System Test: In Progress
 
 # Running Instance
-- Production instance (ver 1.0)
-	- URL: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
-	- Username: **1**  
-	- Password: **password**
-- Test instance (ver 1.5) (newest progress)
-	- URL: http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/
-	- userName: **jb**
-	- Password: **Password1!**
+- [Login Info](docs/loginInfo.md)
+- [Production Instance](http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/)
+- [Testing Instance](http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/)
+
   
 # Related Documents
-- [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Vision-Statement.md)
-- [Function Documents](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/FunctionDoc.md)
-- [Server Information](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Server-README.md)
-- [Proposal Document](https://github.com/MQuizzle/Gr8Group/blob/master/Documents/Proposal%20Document.pdf)
+- [Vision Statement](docs/Vision-Statement.md)
+- [Function Documents](docs/FunctionDoc.md)
+- [Server Information](docs/Server-README.md)
+- [Proposal Document](docs/Proposal%20Document.pdf)

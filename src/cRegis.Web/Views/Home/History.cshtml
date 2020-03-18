@@ -1,0 +1,14 @@
+﻿@model cRegis.Web.ViewModels.HistoryViewModel
+@{
+    ViewData["Title"] = "History";
+}
+<h1>Registration History</h1>
+
+<div class="container">
+
+    @foreach (var courseVM in Model.courses)
+    {
+        @await Html.PartialAsync("_courseContainer", courseVM);
+    }
+
+</div>
