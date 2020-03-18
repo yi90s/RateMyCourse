@@ -9,11 +9,11 @@ cReg™ is an application that enables university students to efficiently and ef
 - [Milestone-3](https://github.com/MQuizzle/Gr8Group/milestone/3)
 
 # Design
-- MVC pattern
-- [ER Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/docs/entity%20diagram.PNG)
-- [DFD](https://github.com/MQuizzle/Gr8Group/blob/master/docs/DFD.png)
-- [Page Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/docs/page_diagram.png)
-- [System Diagram](https://github.com/MQuizzle/Gr8Group/blob/master/docs/system_diagram.png)
+- Model View ViewModel pattern (MVVM)
+- [ER Diagram](docs/entity%20diagram.PNG)
+- [DFD](docs/DFD.png)
+- [Page Diagram](docs/page_diagram.png)
+- [System Diagram](docs/system_diagram.png)
 
 
 # Installing Environment
@@ -33,15 +33,13 @@ cReg™ is an application that enables university students to efficiently and ef
   - System Test: In Progress
 
 # Running Instance
-- Production instance (ver 2.0)
-	- URL: http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/
-	- [Login Info](https://github.com/MQuizzle/Gr8Group/blob/master/docs/loginInfo.md)
-- Test instance (ver 2.0)
-	- URL:  http://CregDev-env.eba-rmfem4vf.ca-central-1.elasticbeanstalk.com 
-	- [Login Info](https://github.com/MQuizzle/Gr8Group/blob/master/docs/loginInfo.md)
+- [Login Info](docc/loginInfo.md)
+- [Production Instance](http://cregwebapp-dev.ca-central-1.elasticbeanstalk.com/)
+- [Testing Instance](https://github.com/MQuizzle/Gr8Group/blob/master/docs/loginInfo.md)
+
   
 # Related Documents
-- [Vision Statement](https://github.com/MQuizzle/Gr8Group/blob/master/docs/Vision-Statement.md)
-- [Function Documents](https://github.com/MQuizzle/Gr8Group/blob/master/docs/FunctionDoc.md)
-- [Server Information](https://github.com/MQuizzle/Gr8Group/blob/master/docss/Server-README.md)
-- [Proposal Document](https://github.com/MQuizzle/Gr8Group/blob/master/docs/Proposal%20Document.pdf)
+- [Vision Statement](docs/Vision-Statement.md)
+- [Function Documents](docs/FunctionDoc.md)
+- [Server Information](docss/Server-README.md)
+- [Proposal Document](docs/Proposal%20Document.pdf)
