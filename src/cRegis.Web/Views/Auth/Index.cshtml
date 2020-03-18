@@ -1,0 +1,21 @@
+﻿@model cRegis.Web.ViewModels.LoginViewModel
+@{
+    Layout = null;
+}
+<link rel="stylesheet" type="text/css" href="~/css/login.css">
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <div>
+            <h1>cReg</h1>
+        </div>
+        <form id="form1" asp-action="index"  method="post">
+            <label asp-for="UserName"></label>
+            <input asp-for="UserName">
+            <label asp-for="Password"></label>
+            <input type="password" asp-for="Password">
+            <div>@ViewBag.Message</div>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+</div>
