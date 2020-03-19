@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace cReg_Mobile.Objects
+namespace cReg_Mobile.ViewModels
 {
-    public class MasterPageContent
+    public class MasterPageModel
     {
         public string Title { get; set; }
         public Type TargetType { get; set; }
