@@ -12,13 +12,13 @@ namespace cRegis.Core.Interfaces
 
         void updateStudent(Student student);
 
-        void registerCourseForStudent(Student student, Course course);
+        void registerCourseForStudent(int sid, int cid);
 
-        int getRemainingCredithoursForStudent(Student student);
+        int getRemainingCredithoursForStudent(int sid);
 
-        Task<bool> verifyRegistrationForStudent(Student student, int cid);
+        Task<bool> verifyRegistrationForStudent(int sid, int cid);
 
-        bool verifyDropForStudent(Student student, int eid);
+        bool verifyDropForStudent(int sid, int eid);
 
 
     }

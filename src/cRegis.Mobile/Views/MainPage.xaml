@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="cReg_Mobile.Views.MainPage"
+             NavigationPage.HasNavigationBar="False">
+    <StackLayout x:Name="PageLayout">
+
+        <StackLayout x:Name="TopLayout" VerticalOptions="FillAndExpand">
+        <Label Text="C-Reg" HorizontalTextAlignment="Center" Margin="0,60,0,0" FontSize="Large"/>
+        <Label Text="Please login with UofM account" HorizontalTextAlignment="Center" FontSize="Medium"/>
+    </StackLayout>
+
+    <StackLayout x:Name="MainLayout" VerticalOptions="StartAndExpand">
+        <StackLayout.Padding>
+                <OnIdiom x:TypeArguments="Thickness" Phone="40,0,40,0" Tablet="140,150,140,0"/>
+            </StackLayout.Padding>
+
+        <ActivityIndicator x:Name="ActivitySpinner" Color="Blue" IsRunning="true"/>
+
+        <Label x:Name="Label_StudentID" Text="StudentID"/>
+            <Entry x:Name="Entry_StudentID" Placeholder="Enter your student ID"/>
+            <Label x:Name="Label_StudentPassword" Text="Password"/>
+            <Entry x:Name="Entry_StudentPassword" Placeholder="Enter your password" IsPassword="True"/>
+
+            <Button x:Name="Btn_SignIn" Text="Sign In" Clicked="ValidateStudent"/>
+
+
+        </StackLayout>
+
+
+    </StackLayout>
+
+</ContentPage>

@@ -24,8 +24,9 @@ namespace cRegis.Core.Services
             return await _context.Students.FindAsync(sid);
         }
 
-        public int getRemainingCredithoursForStudent(Student student)
+        public int getRemainingCredithoursForStudent(int sid)
         {
+            Student student = _context.Students.Find(sid);
             int creditHourNeed = _context.Faculties.Find(student.majorId).graduateCreditHours;
             int creditHourTook = 0;
             List<int> finshedCourseId =  _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToList();
@@ -36,15 +37,11 @@ namespace cRegis.Core.Services
             return creditHourNeed - creditHourTook;
         }
 
-        public void registerCourseForStudent(Student student, Course course)
+        public void registerCourseForStudent(int sid, int cid)
         {
-            int cid = course.courseId;
-            if (student != null)
-            {
-                Enrolled newEnroll = new Enrolled { courseId = cid, studentId = student.studentId, completed = false, grade = null, rating = null, comment = null };
-                _context.Enrolled.Add(newEnroll);
-                 _context.SaveChanges();
-            }
+            Enrolled newEnroll = new Enrolled { courseId = cid, studentId = sid, completed = false, grade = null, rating = null, comment = null };
+            _context.Enrolled.Add(newEnroll);
+            _context.SaveChanges();
         }
 
         public void updateStudent(Student student)
@@ -52,17 +49,19 @@ namespace cRegis.Core.Services
             throw new NotImplementedException();
         }
 
-        public bool verifyDropForStudent(Student student, int eid)
+        public bool verifyDropForStudent(int sid, int eid)
         {
             Enrolled thisEnroll = _context.Enrolled.Find(eid);
 
-            bool result = (student.studentId == thisEnroll.studentId);
+            bool result = (sid == thisEnroll.studentId);
 
             return result;
         }
 
-        public async Task<bool> verifyRegistrationForStudent(Student student, int cid)
+        public async Task<bool> verifyRegistrationForStudent(int sid, int cid)
         {
+            Student student = _context.Students.Find(sid);
+
             //************************************************************************
             int totalSpace = _context.Courses.Find(cid).space;
             int occupied = _context.Enrolled.Where(e => e.courseId == cid && !e.completed).Count();
@@ -74,7 +73,6 @@ namespace cRegis.Core.Services
                 return false;
             }
             bool result = true;
-            int sid = student.studentId;
             List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
             foreach (Prerequisite require in prerequisiteList)
             {

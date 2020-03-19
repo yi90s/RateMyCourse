@@ -8,7 +8,7 @@
 
 //namespace cRegis.Web.Tests.UnitTests.Services
 //{
-//    public class ServicesTests: TestBase
+//    public class ServicesTests : TestBase
 //    {
 //        private Service services;
 //        public ServicesTests()
@@ -19,7 +19,7 @@
 //        [Fact]
 //        public async void normalFindStudentByIdTest()
 //        {
-//            Student stu  = await services.findStudentById(1);
+//            Student stu = await services.findStudentById(1);
 
 //            Assert.NotNull(stu);
 //            Assert.Equal(1, stu.studentId);
@@ -88,8 +88,8 @@
 //            Assert.True(result.enrollId == -1, "should not have enroll id");
 
 //            Enrolled newEnroll = _context.Enrolled.Find(1);
-//            result = services.createCourseViewModel(1,newEnroll);
-//            Assert.True(result.enrollId==1,"should have enroll id");
+//            result = services.createCourseViewModel(1, newEnroll);
+//            Assert.True(result.enrollId == 1, "should have enroll id");
 //        }
 //        [Fact]
 //        public void nullCreateCourseViewModelTest()
