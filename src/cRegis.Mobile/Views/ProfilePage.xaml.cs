@@ -26,6 +26,14 @@ namespace cReg_Mobile.Views
             BindingContext = test;
         }
 
+        public async void ViewCourseDetail(object sender, EventArgs e)
+        {
+            //var chosenCourse = (Course)registeredCourseList.SelectedItem;
 
+            var menuItem = sender as Button;
+            var chosenCourse = menuItem.CommandParameter as Course;
+
+            await Navigation.PushAsync(new CourseDetailPage(chosenCourse));
+        }
     }
 }

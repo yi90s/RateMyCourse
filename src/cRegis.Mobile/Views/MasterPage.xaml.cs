@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using cReg_Mobile.Objects;
+using cReg_Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using System.Collections.Generic;
@@ -13,19 +13,19 @@ namespace cReg_Mobile.Views
 	[XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class MasterPage : MasterDetailPage
     {
-        public List<MasterPageContent> menuList { get; set; }
+        public List<MasterPageModel> menuList { get; set; }
 
 
         public MasterPage()
         {
             InitializeComponent();
-            menuList = new List<MasterPageContent>();
+            menuList = new List<MasterPageModel>();
             // Adding menu items to menuList and you can define title ,page and icon
-            menuList.Add(new MasterPageContent() { Title = "Profile", TargetType = typeof(ProfilePage) });
-            menuList.Add(new MasterPageContent() { Title = "Course", TargetType = typeof(CoursePage) });
-            menuList.Add(new MasterPageContent() { Title = "History", TargetType = typeof(HistoryPage) });
-            menuList.Add(new MasterPageContent() { Title = "Wishlist", TargetType = typeof(WishlistPage) });
-            menuList.Add(new MasterPageContent() { Title = "LogOut", TargetType = typeof(MainPage) });
+            menuList.Add(new MasterPageModel() { Title = "Profile", TargetType = typeof(ProfilePage) });
+            menuList.Add(new MasterPageModel() { Title = "Course", TargetType = typeof(CoursePage) });
+            menuList.Add(new MasterPageModel() { Title = "History", TargetType = typeof(HistoryPage) });
+            menuList.Add(new MasterPageModel() { Title = "Wishlist", TargetType = typeof(WishlistPage) });
+            menuList.Add(new MasterPageModel() { Title = "LogOut", TargetType = typeof(MainPage) });
             // Setting our list to be ItemSource for ListView in MainPage.xaml
 
             navigationDrawerList.ItemsSource = menuList;
@@ -36,7 +36,7 @@ namespace cReg_Mobile.Views
 
         private void OnMenuItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            var item = (MasterPageContent)e.SelectedItem;
+            var item = (MasterPageModel)e.SelectedItem;
             Type page = item.TargetType;
             if (item.Title != "LogOut")
                 Detail = new NavigationPage((Page)Activator.CreateInstance(page));
