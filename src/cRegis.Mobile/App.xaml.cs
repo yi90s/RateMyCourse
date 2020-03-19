@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using cReg_Mobile.Views;
 
 namespace cReg_Mobile
 {
@@ -23,6 +24,11 @@ namespace cReg_Mobile
 
         protected override void OnResume()
         {
+        }
+
+        public void LogOut()
+        {
+            MainPage = new NavigationPage(new MainPage());
         }
     }
 }

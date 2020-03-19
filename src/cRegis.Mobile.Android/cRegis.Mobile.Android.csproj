@@ -88,9 +88,9 @@
     <Folder Include="Resources\drawable\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\cReg-Mobile\cReg-Mobile.csproj">
-      <Project>{470DEDB4-5B20-4EAA-92F8-C33A72BEC27D}</Project>
-      <Name>cReg-Mobile</Name>
+    <ProjectReference Include="..\cRegis.Mobile\cRegis.Mobile.csproj">
+      <Project>{f9ce0305-0e72-4dfe-aa5c-a73b1907f84d}</Project>
+      <Name>cRegis.Mobile</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
