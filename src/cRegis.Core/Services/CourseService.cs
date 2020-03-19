@@ -58,21 +58,19 @@ namespace cRegis.Core.Services
             return result;
         }
 
-        public async Task<List<Course>> getEligibleCoursesForStudentAsync(Student stu)
+        public async Task<List<Course>> getEligibleCoursesForStudentAsync(int sid)
         {
             List<Course> allCourses = await _context.Courses.ToListAsync();
-            List<Course> takingCourses = await getTakingEnrollsForStudentAsync(stu);
-            List<Course> takenCourses = getCompletedCoursesForStudent(stu);
+            List<Course> takingCourses = await getTakingEnrollsForStudentAsync(sid);
+            List<Course> takenCourses = getCompletedCoursesForStudent(sid);
             allCourses.RemoveAll(c => takingCourses.Contains(c) && takenCourses.Contains(c));
 
             return allCourses;
         }
 
-        public async Task<List<Course>> getTakingEnrollsForStudentAsync(Student student)
+        public async Task<List<Course>> getTakingEnrollsForStudentAsync(int sid)
         {
-            if (student == null)
-                return null;
-            List<Enrolled> enrolls = _context.Enrolled.Where(e => !e.completed && e.studentId == student.studentId).ToList();
+            List<Enrolled> enrolls = _context.Enrolled.Where(e => !e.completed && e.studentId == sid).ToList();
             List<Course> enrolledCourses = new List<Course>();
             enrolls.ForEach(
                 e => enrolledCourses.Add(_context.Courses.Find(e.courseId))
@@ -81,9 +79,9 @@ namespace cRegis.Core.Services
             return enrolledCourses;
         }
 
-        public List<Course> getCompletedCoursesForStudent(Student stu)
+        public List<Course> getCompletedCoursesForStudent(int sid)
         {
-            List<Enrolled> allRegs = _context.Enrolled.Where(e => e.studentId == stu.studentId).ToList();
+            List<Enrolled> allRegs = _context.Enrolled.Where(e => e.studentId == sid).ToList();
             List<Enrolled> takens = allRegs.Where(e => e.completed).ToList();
             List<int> takenCourseIds = takens.Select(taken => taken.courseId).ToList();
             List<Course> takenCourses = _context.Courses.Where(c => takenCourseIds.Contains(c.courseId)).ToList();

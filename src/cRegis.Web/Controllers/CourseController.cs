@@ -8,8 +8,6 @@ using cRegis.Core.Interfaces;
 using cRegis.Core.Entities;
 using cRegis.Web.Interfaces;
 using cRegis.Web.ViewModels;
-using System.Collections.Generic;
-using cRegis.Core.DTOs;
 
 namespace cRegis.Web.Controllers
 {
@@ -42,11 +40,11 @@ namespace cRegis.Web.Controllers
         public async Task<IActionResult> Register(int cid)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
-            Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
-            if (await _studentSerivce.verifyRegistrationForStudent(stu, cid))
+            int sid = curUser.StudentId;
+
+            if (await _studentSerivce.verifyRegistrationForStudent(sid, cid))
             {
-                var course = await _courseService.getCourseAsync(cid);
-                 _studentSerivce.registerCourseForStudent(stu, course);
+                 _studentSerivce.registerCourseForStudent(sid, cid);
                 TempData["alertMessage"] = "Success Registration";
             }
             else
@@ -59,8 +57,8 @@ namespace cRegis.Web.Controllers
         public async Task<IActionResult> Drop(int eid)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
-            Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
-            if ( _studentSerivce.verifyDropForStudent(stu, eid))
+
+            if ( _studentSerivce.verifyDropForStudent(curUser.StudentId, eid))
             {
                 TempData["alertMessage"] = "Success Drop";
                 _enrollSerivce.drop(eid);

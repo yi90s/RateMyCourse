@@ -48,7 +48,7 @@ namespace cRegis.Web
             services.AddScoped<IFacultyService, FacultyService>();
 
             //injecting custom Web services
-            services.AddScoped<IViewModelService, ViewModelSerivce>();
+            services.AddScoped<IViewModelService, ViewModelService>();
 
         }
 
