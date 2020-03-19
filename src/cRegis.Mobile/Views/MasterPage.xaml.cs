@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using cReg_Mobile.ViewModels;
 using cReg_Mobile.Objects;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
