@@ -31,9 +31,9 @@ namespace cRegis.Core.Services
             return completed;
         }
 
-        public List<Enrolled> getCurrentEnrollsForStudent(Student student)
+        public List<Enrolled> getCurrentEnrollsForStudent(int sid)
         {
-            return _context.Enrolled.Where(e => e.studentId == student.studentId && !e.completed).ToList();
+            return _context.Enrolled.Where(e => e.studentId == sid && !e.completed).ToList();
         }
 
         public async Task<Enrolled> getEnrollAsync(int eid)
@@ -41,9 +41,9 @@ namespace cRegis.Core.Services
             return await _context.Enrolled.FindAsync(eid);
         }
 
-        public List<Enrolled> getEnrollsForStudent(Student student)
+        public List<Enrolled> getEnrollsForStudent(int sid)
         {
-            return _context.Enrolled.Where(e => e.studentId == student.studentId).ToList();
+            return _context.Enrolled.Where(e => e.studentId == sid).ToList();
         }
 
         public void updateEnroll(Enrolled newEnroll)

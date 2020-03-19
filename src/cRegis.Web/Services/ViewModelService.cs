@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace cRegis.Web.Services
 {
-    public class ViewModelSerivce : IViewModelService
+    public class ViewModelService : IViewModelService
     {
         private readonly ICourseService _courseService;
         private readonly IEnrollService _enrollService;
         private readonly IStudentService _studentService;
         private readonly IFacultyService _facultyService;
 
-        public ViewModelSerivce(ICourseService courseService, 
+        public ViewModelService(ICourseService courseService, 
             IEnrollService enrollService, 
             IStudentService studentService,
             IFacultyService facultyService)
@@ -147,11 +147,11 @@ namespace cRegis.Web.Services
                 return null;
             }
 
-            int remainCreditHours = _studentService.getRemainingCredithoursForStudent(student);
+            int remainCreditHours = _studentService.getRemainingCredithoursForStudent(student.studentId);
             string majorName =  _facultyService.getFaculty(student.majorId).facultyName;
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.DropCourse };
-            List<Enrolled> regCourses = _enrollService.getCurrentEnrollsForStudent(student);
+            List<Enrolled> regCourses = _enrollService.getCurrentEnrollsForStudent(student.studentId);
             
             foreach (Enrolled e in regCourses)
             {
