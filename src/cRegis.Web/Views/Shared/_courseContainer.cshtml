@@ -39,6 +39,18 @@
                     {
                         <a class="btn btn-danger" asp-controller="course" asp-action="register" asp-route-cid="@Model.courseId">Register</a>
                     }
+                    @if (Model.actions.Contains(CourseActions.WishlistAdd))
+                    {
+                        <a class="btn btn-danger" asp-controller="course" asp-action="register" asp-route-cid="@Model.courseId">Add To Wishlist</a>
+                    }
+                    @if (Model.actions.Contains(CourseActions.WishlistPriority))
+                    {
+                        <a class="btn btn-danger" asp-controller="course" asp-action="register" asp-route-cid="@Model.courseId">Priority</a>
+                    }
+                    @if (Model.actions.Contains(CourseActions.WishlistRemove))
+                    {
+                        <a class="btn btn-danger" asp-controller="course" asp-action="register" asp-route-cid="@Model.courseId">Remove</a>
+                    }
 
                 </div>
              </div>

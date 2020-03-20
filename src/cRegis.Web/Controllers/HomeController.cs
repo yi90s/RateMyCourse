@@ -77,10 +77,10 @@ namespace cRegis.Web.Controllers
         {
             var curUser = await _userManager.GetUserAsync(this.User);
             Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
-            return View(stu);
 
-            //WishListViewModel thisView = await services.createWishListViewModel(stu);
-            //return View(thisView);
+
+            WishListViewModel thisView = _viewModelSerivce.buildWishListViewModel(stu);
+            return View(thisView);
         }
 
 

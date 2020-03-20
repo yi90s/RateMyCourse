@@ -140,6 +140,29 @@ namespace cRegis.Web.Services
             return vmodel;
         }
 
+        public WishListViewModel buildWishListViewModel(Student student)
+        {
+            if (student == null)
+            {
+                return null;
+            }
+
+            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            ISet<CourseActions> actions = new HashSet<CourseActions> {CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.WishlistPriority, CourseActions.WishlistRemove};
+            List<Enrolled> completed = _enrollService.getCompletedEnrollsForStudent(student.studentId);
+
+            foreach (Enrolled enroll in completed)
+            {
+                Course course = _courseService.getCourse(enroll.courseId);
+                var ccvm = buildCourseContainerViewModel(course, actions, enroll: enroll);
+                ccvms.Add(ccvm);
+            }
+
+            WishListViewModel vmodel = new WishListViewModel { thisStudent = student, courses = ccvms };
+
+            return vmodel;
+        }
+
         public async Task<ProfileViewModel> buildProfileViewModel(Student student)
         {
             if (student == null)
