@@ -26,4 +26,7 @@
     <ProjectReference Include="..\..\src\cRegis.Web\cRegis.Web.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="UnitTests\Web\Controller\HomeControllerTests.cs" />
+  </ItemGroup>
 </Project>
