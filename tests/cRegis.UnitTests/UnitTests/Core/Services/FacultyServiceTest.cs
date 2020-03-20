@@ -23,12 +23,14 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
 
         //TODO : writting test against all the methods in cRegis.Core.Service.FacultyService
 
-        public async void getFacultyTest()
+        [Fact]
+        public void GetFacultyTest()
         {
-            Faculty faculty1 = await _facultyService.getFaculty(1);
-            Faculty faculty2 = await _facultyService.getFaculty(2);
-            Assert.NotNull(faculty1);
-            Assert.NotNull(faculty2);
+            Faculty faculty = _facultyService.getFaculty(1);
+            Assert.NotNull(faculty);
+            Assert.True(faculty.facultyId == 1);
+            Assert.Equal("Computer Science", faculty.facultyName);
+            Assert.True(faculty.graduateCreditHours == 60);
         }
     }
 }
