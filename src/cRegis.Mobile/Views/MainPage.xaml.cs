@@ -32,7 +32,7 @@ namespace cReg_Mobile.Views
 
             if (id == "123" && password == "password")
             {
-                DisplayAlert("Login", "Login Success", "Okay");
+                //await DisplayAlert("Login", "Login Success", "Okay");
                 if (Device.OS == TargetPlatform.Android)
                 {
                     Application.Current.MainPage = new NavigationPage(new MasterPage());
@@ -40,6 +40,9 @@ namespace cReg_Mobile.Views
                 {
                     await Navigation.PushModalAsync(new NavigationPage(new MasterPage()));
                 }
+            } else
+            {
+                await DisplayAlert("Login", "Wrong username or password", "Retry");
             }
         }
     }
