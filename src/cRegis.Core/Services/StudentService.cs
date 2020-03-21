@@ -44,11 +44,6 @@ namespace cRegis.Core.Services
             _context.SaveChanges();
         }
 
-        public void updateStudent(Student student)
-        {
-            throw new NotImplementedException();
-        }
-
         public bool verifyDropForStudent(int sid, int eid)
         {
             Enrolled thisEnroll = _context.Enrolled.Find(eid);

@@ -8,7 +8,6 @@
 //     the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-
 [assembly: global::Android.Runtime.ResourceDesignerAttribute("cReg_Mobile.Droid.Resource", IsApplication=true)]
 
 namespace cReg_Mobile.Droid
