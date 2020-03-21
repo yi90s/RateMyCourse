@@ -29,7 +29,7 @@ namespace cRegis.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Development")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Local")));
             services.AddControllersWithViews();
             services.AddIdentity<StudentUser, IdentityRole>()
                     .AddRoles<IdentityRole>()

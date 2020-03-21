@@ -16,7 +16,6 @@ namespace cRegis.Core.Services
         {
             _context = context;
         }
-
         public void drop(int eid)
         {
             Enrolled thisEnroll = _context.Enrolled.Find(eid);
