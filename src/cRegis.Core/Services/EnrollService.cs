@@ -49,10 +49,12 @@ namespace cRegis.Core.Services
         {
             if (newEnroll != null)
             {
-                var change = _context.Enrolled.Update(newEnroll);
-                if (change.State == EntityState.Modified)
-                {
-                    _context.SaveChanges();
+                if (_context.Enrolled.Contains(newEnroll)) {
+                    var change = _context.Enrolled.Update(newEnroll);
+                    if (change.State == EntityState.Modified)
+                    {
+                        _context.SaveChanges();
+                    }
                 }
             }
         }
