@@ -38,9 +38,10 @@ namespace cRegis.Core.Services
             return result;
         }
 
-        public List<Course> getCoursesInYear(List<Course> courses, int year)
+        public List<Course> getCoursesInYear(int year)
         {
-            List<Course> result = new List<Course>();
+            var courses = _context.Courses;
+            var result = new List<Course>();
             if (year == -1)
             {
                 result.AddRange(courses);
@@ -49,7 +50,8 @@ namespace cRegis.Core.Services
             {
                 foreach (var cor in courses)
                 {
-                    if (cor.courseId >= year * 1000 && cor.courseId < (year + 1) * 1000)
+                    var courseNumber = int.Parse(cor.courseName.Substring(5));
+                    if (courseNumber >= year * 1000 && courseNumber < (year + 1) * 1000)
                     {
                         result.Add(cor);
                     }
@@ -70,10 +72,10 @@ namespace cRegis.Core.Services
 
         public async Task<List<Course>> getTakingEnrollsForStudentAsync(int sid)
         {
-            List<Enrolled> enrolls = _context.Enrolled.Where(e => !e.completed && e.studentId == sid).ToList();
+            List<Enrolled> enrolls = await _context.Enrolled.Where(e => !e.completed && e.studentId == sid).ToListAsync(); 
             List<Course> enrolledCourses = new List<Course>();
             enrolls.ForEach(
-                e => enrolledCourses.Add(_context.Courses.Find(e.courseId))
+                async e => enrolledCourses.Add(await _context.Courses.FindAsync(e.courseId))
                 );
 
             return enrolledCourses;
