@@ -73,13 +73,12 @@ namespace cRegis.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> WishList()
+        public async Task<IActionResult> Wishlist()
         {
             var curUser = await _userManager.GetUserAsync(this.User);
             Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
 
-
-            WishListViewModel thisView = _viewModelSerivce.buildWishListViewModel(stu);
+            WishlistViewModel thisView = _viewModelSerivce.buildWishlistViewModel(stu);
             return View(thisView);
         }
 

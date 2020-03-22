@@ -12,9 +12,9 @@ namespace cRegis.Web.Interfaces
         RateCourse,
         DropCourse,
         RegisterCourse,
-        WishlistAdd,
+        AddToWishlist,
         WishlistPriority,
-        WishlistRemove
+        RemoveFromWishlist
     }
 
     public interface IViewModelService
@@ -29,7 +29,7 @@ namespace cRegis.Web.Interfaces
 
         HistoryViewModel buildHistoryViewModel(Student student);
 
-        WishListViewModel buildWishListViewModel(Student student);
+        WishlistViewModel buildWishlistViewModel(Student student);
 
         CourseCommentViewModel buildCourseCommentViewModel(Comment comment);
 

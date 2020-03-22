@@ -19,7 +19,8 @@ namespace cRegis.UnitTests.UnitTests.Web.Services
             _viewModelSerivce = new ViewModelService(new CourseService(_context), 
                 new EnrollService(_context),
                 new StudentService(_context),
-                new FacultyService(_context));
+                new FacultyService(_context),
+                new WishlistService(_context));
         }
 
         //TODO: write test against all method in cRegis.Web.Service.ViewModelService

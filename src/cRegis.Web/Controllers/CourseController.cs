@@ -20,6 +20,7 @@ namespace cRegis.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IStudentService _studentSerivce;
         private readonly IEnrollService _enrollSerivce;
+        private readonly IWishlistService _wishlistService;
         private readonly IViewModelService _viewModelSerivce;
 
         public CourseController(UserManager<StudentUser> userManager,
@@ -27,12 +28,14 @@ namespace cRegis.Web.Controllers
                               ICourseService courserSerivce,
                               IStudentService studentSerivce,
                               IEnrollService enrollSerivce,
+                              IWishlistService wishlistService,
                               IViewModelService viewModelSerivce)
         {
             _viewModelSerivce = viewModelSerivce;
             _enrollSerivce = enrollSerivce;
             _studentSerivce = studentSerivce;
             _courseService = courserSerivce;
+            _wishlistService = wishlistService;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -99,6 +102,40 @@ namespace cRegis.Web.Controllers
             return View(vm);
         }
 
+        public async Task<IActionResult> AddToWishlist(int cid)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
+
+            if (_wishlistService.isInWishlist(sid, cid))
+            {
+                TempData["alertMessage"] = "Course is Already in Wishlist";
+            }
+            else
+            {
+                _wishlistService.addCoursetoStudentWishlist(sid, cid, 1);
+                TempData["alertMessage"] = "Added to Wishlist";
+
+            }
+            return RedirectToAction("Register", "Home");
+        }
+
+        public async Task<IActionResult> RemoveFromWishlist(int cid)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
+
+            if (_wishlistService.isInWishlist(sid, cid))
+            {
+                _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+                TempData["alertMessage"] = "Course was Removed From Wishlist";
+            }
+            else
+            {
+                TempData["alertMessage"] = "Course is Not in Wishlist";
+            }
+            return RedirectToAction("Wishlist", "Home");
+        }
         //// GET: Course/Create
         //public IActionResult Create()
         //{
