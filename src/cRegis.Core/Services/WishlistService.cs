@@ -72,6 +72,10 @@ namespace cRegis.Core.Services
             {
                 destinationEntryPriority = sourceEntryPriority + 1;
             }
+            else
+            {
+                return;
+            }
                     
             Wishlist destinationEntry = _context.Wishlist.FirstOrDefault(w => w.studentId == sid && w.priority == destinationEntryPriority);
 

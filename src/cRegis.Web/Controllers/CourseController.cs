@@ -48,7 +48,8 @@ namespace cRegis.Web.Controllers
 
             if (await _studentSerivce.verifyRegistrationForStudent(sid, cid))
             {
-                 _studentSerivce.registerCourseForStudent(sid, cid);
+                _studentSerivce.registerCourseForStudent(sid, cid);
+                _wishlistService.removeCourseFromStudentWishlist(sid, cid);
                 TempData["alertMessage"] = "Success Registration";
             }
             else
