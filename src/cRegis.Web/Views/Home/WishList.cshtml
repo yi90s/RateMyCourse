@@ -1,6 +1,13 @@
 ﻿@model cRegis.Web.ViewModels.WishlistViewModel
 @{
     ViewData["Title"] = "Wishlist";
+
+    if (null != TempData["alertMessage"])
+    {
+        <script type="text/javascript">
+       alert('@TempData["alertMessage"]');
+        </script>
+    }
 }
 <h1>Wishlist</h1>
 

@@ -5,7 +5,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-
 namespace cRegis.Core.Entities
 {
     public class Wishlist
@@ -20,6 +19,7 @@ namespace cRegis.Core.Entities
         public Student student { get; set; }
         public Course course { get; set; }
 
+        [Index]
         public int priority { get; set; }
 
     }

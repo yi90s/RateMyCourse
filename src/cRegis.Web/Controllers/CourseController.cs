@@ -1,5 +1,6 @@
 ﻿
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -113,7 +114,7 @@ namespace cRegis.Web.Controllers
             }
             else
             {
-                _wishlistService.addCoursetoStudentWishlist(sid, cid, 1);
+                _wishlistService.addCoursetoStudentWishlist(sid, cid);
                 TempData["alertMessage"] = "Added to Wishlist";
 
             }
@@ -133,6 +134,21 @@ namespace cRegis.Web.Controllers
             else
             {
                 TempData["alertMessage"] = "Course is Not in Wishlist";
+            }
+            return RedirectToAction("Wishlist", "Home");
+        }
+
+        public async Task<IActionResult> moveInWishlist(int cid, CourseActions direction)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
+
+            if(direction == CourseActions.WishlistPriorityUp)
+            {
+                _wishlistService.movePriority(sid, cid, MoveDirection.MoveUp);
+            } else if (direction == CourseActions.WishlistPriorityDown)
+            {
+                _wishlistService.movePriority(sid, cid, MoveDirection.MoveDown);
             }
             return RedirectToAction("Wishlist", "Home");
         }

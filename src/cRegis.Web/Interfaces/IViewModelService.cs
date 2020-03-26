@@ -13,7 +13,8 @@ namespace cRegis.Web.Interfaces
         DropCourse,
         RegisterCourse,
         AddToWishlist,
-        WishlistPriority,
+        WishlistPriorityUp,
+        WishlistPriorityDown,
         RemoveFromWishlist
     }
 

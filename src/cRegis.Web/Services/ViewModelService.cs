@@ -5,6 +5,7 @@ using cRegis.Web.Interfaces;
 using cRegis.Web.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace cRegis.Web.Services
 {
@@ -150,9 +151,9 @@ namespace cRegis.Web.Services
             }
 
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
-            ISet<CourseActions> actions = new HashSet<CourseActions> {CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.WishlistPriority, CourseActions.RemoveFromWishlist};
-            List<Wishlist> wishlist = _wishlistService.getStudentWishlist(student.studentId);
-
+            ISet<CourseActions> actions = new HashSet<CourseActions> {CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.WishlistPriorityUp, CourseActions.WishlistPriorityDown, CourseActions.RemoveFromWishlist};
+            IOrderedEnumerable<Wishlist> wishlist = _wishlistService.getStudentWishlist(student.studentId);
+     
             foreach (Wishlist entry in wishlist)
             {
                 Course course = _courseService.getCourse(entry.courseId);
