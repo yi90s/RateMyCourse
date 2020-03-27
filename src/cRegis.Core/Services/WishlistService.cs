@@ -21,7 +21,11 @@ namespace cRegis.Core.Services
 
         public void addCoursetoStudentWishlist(int sid, int cid)
         {
-            int lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
+            int lastPriorityNum = 0;
+            if (_context.Wishlist.Any(w => w.studentId == sid))
+            {
+                lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
+            }
             Wishlist newWishlistEntry = new Wishlist {studentId = sid, courseId = cid, priority = lastPriorityNum+1};
             _context.Wishlist.Add(newWishlistEntry);
             _context.SaveChanges();
