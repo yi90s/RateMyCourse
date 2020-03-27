@@ -100,8 +100,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         [InlineData(3)]
         public async Task GetRecCoursesForStudentAsync(int studentId)
         {
-            var student = await _studentService.getStudentAsync(studentId);
-            var courseList = await _courseService.getRecCoursesForStudentAsync(student);
+            var courseList = await _courseService.getRecCoursesForStudentAsync(studentId);
             Assert.NotEmpty(courseList);
             // we could check to see if the number of recommended courses for each student matches a certain amount
             // or if a certain course exists in the recommendations but those might yet change
@@ -126,7 +125,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         [InlineData(3, 1)]
         public async Task GetEnrolledCourseByStudentIdAsync(int studentId, int numEnrolledCourses)
         {
-            var courseList = await _courseService.getTakingEnrollsForStudentAsync(studentId);
+            var courseList = await _courseService.getTakingCoursesForStudentAsync(studentId);
             var enrolledCourseCount = courseList.Count;
             Assert.Equal(numEnrolledCourses, enrolledCourseCount);
             // only issue here is if the number of enrolled courses changes then this test will fail... What else can we test here?

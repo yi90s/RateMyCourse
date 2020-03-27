@@ -1,8 +1,11 @@
 ﻿using cReg_Mobile.Views;
+using cRegis.Mobile.Config;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -27,23 +30,42 @@ namespace cReg_Mobile.Views
 
         async void ValidateStudent(object sender, EventArgs e)
         {
-            String id = Entry_StudentID.Text;
-            String password = Entry_StudentPassword.Text;
+            string authHeader64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Entry_userName.Text, Entry_password.Text)));
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeader64);
+            var stringContent = new StringContent("");
+            var response = await client.PostAsync("http://ec2-15-223-82-164.ca-central-1.compute.amazonaws.com/auth", stringContent);
 
-            if (id == "123" && password == "password")
+            if (response.IsSuccessStatusCode)
             {
-                //await DisplayAlert("Login", "Login Success", "Okay");
                 if (Device.OS == TargetPlatform.Android)
                 {
                     Application.Current.MainPage = new NavigationPage(new MasterPage());
-                } else if (Device.OS == TargetPlatform.iOS)
+                }
+                else if (Device.OS == TargetPlatform.iOS)
                 {
                     await Navigation.PushModalAsync(new NavigationPage(new MasterPage()));
                 }
-            } else
+            }
+            else
             {
                 await DisplayAlert("Login", "Wrong username or password", "Retry");
             }
+
+            //if (id == "123" && password == "password")
+            //{
+            //    //await DisplayAlert("Login", "Login Success", "Okay");
+            //    if (Device.OS == TargetPlatform.Android)
+            //    {
+            //        Application.Current.MainPage = new NavigationPage(new MasterPage());
+            //    } else if (Device.OS == TargetPlatform.iOS)
+            //    {
+            //        await Navigation.PushModalAsync(new NavigationPage(new MasterPage()));
+            //    }
+            //} else
+            //{
+            //    await DisplayAlert("Login", "Wrong username or password", "Retry");
+            //}
         }
     }
 }
