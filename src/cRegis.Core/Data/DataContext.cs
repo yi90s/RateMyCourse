@@ -8,9 +8,7 @@ using System.Linq;
 
 namespace cRegis.Core.Data
 {
-    public class 
-        
-        DataContext : IdentityDbContext{
+    public class DataContext : IdentityDbContext{
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
