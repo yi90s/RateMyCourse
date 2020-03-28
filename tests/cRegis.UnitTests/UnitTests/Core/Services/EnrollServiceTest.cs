@@ -24,8 +24,10 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         //TODO : writting test against all the methods in cRegis.Core.Service.EnrollService
+
+        //GetEnrollAsyncTest()
         [Fact]
-        public async void GetEnrollAsyncTest()
+        public async void GetEnrollAsyncTest_HappyPath()
         {
             Enrolled enrolled = await _enrollService.getEnrollAsync(1);
             Assert.NotNull(enrolled);
@@ -42,7 +44,15 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public void GetCompletedEnrollsForStudentTest()
+        public async void GetEnrollAsyncTest_NonExistantEnroll()
+        {
+            Enrolled enrolled = await _enrollService.getEnrollAsync(-1);
+            Assert.Null(enrolled);
+        }
+
+        //GetCompletedEnrollsForStudentTest()
+        [Fact]
+        public void GetCompletedEnrollsForStudentTest_HappyPath()
         {
             List<Enrolled> enrolledList = _enrollService.getCompletedEnrollsForStudent(5);
             Assert.NotNull(enrolledList);
@@ -64,7 +74,24 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public void GetCurrentEnrollsForStudentTest()
+        public void GetCompletedEnrollsForStudentTest_NonExistantStudent()
+        {
+            List<Enrolled> enrolledList = _enrollService.getCompletedEnrollsForStudent(-1);
+            Assert.NotNull(enrolledList);
+            Assert.True(enrolledList.Count == 0);
+        }
+
+        [Fact]
+        public void GetCompletedEnrollsForStudentTest_StudentWithoutEnrolls()
+        {
+            List<Enrolled> enrolledList = _enrollService.getCompletedEnrollsForStudent(8);
+            Assert.NotNull(enrolledList);
+            Assert.True(enrolledList.Count == 0);
+        }
+
+        //GetCurrentEnrollsForStudentTest()
+        [Fact]
+        public void GetCurrentEnrollsForStudentTest_HappyPath()
         {
             List<Enrolled> enrolledList = _enrollService.getCurrentEnrollsForStudent(5);
             Assert.NotNull(enrolledList);
@@ -75,7 +102,24 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public void GetEnrollsForStudentTest()
+        public void GetCurrentEnrollsForStudentTest_NonExistantStudent()
+        {
+            List<Enrolled> enrolledList = _enrollService.getCurrentEnrollsForStudent(-1);
+            Assert.NotNull(enrolledList);
+            Assert.True(enrolledList.Count == 0);
+        }
+
+        [Fact]
+        public void GetCurrentEnrollsForStudentTest_StudentWithoutCurrentEnrolls()
+        {
+            List<Enrolled> enrolledList = _enrollService.getCurrentEnrollsForStudent(8);
+            Assert.NotNull(enrolledList);
+            Assert.True(enrolledList.Count == 0);
+        }
+
+        //GetEnrollsForStudentTest()
+        [Fact]
+        public void GetEnrollsForStudentTest_HappyPath()
         {
             List<Enrolled> enrolledList = _enrollService.getEnrollsForStudent(1);
             Assert.NotNull(enrolledList);
@@ -120,10 +164,28 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void UpdateEnrollTest()
+        public void GetEnrollsForStudentTest_NonExistantStudent()
+        {
+            List<Enrolled> enrolledList = _enrollService.getEnrollsForStudent(-1);
+            Assert.NotNull(enrolledList);
+            Assert.True(enrolledList.Count == 0);
+        }
+
+        [Fact]
+        public void GetEnrollsForStudentTest_StudentWithoutCurrentEnrolls()
+        {
+            List<Enrolled> enrolledList = _enrollService.getEnrollsForStudent(8);
+            Assert.NotNull(enrolledList);
+            Assert.True(enrolledList.Count == 0);
+        }
+
+        //UpdateEnrollTest()
+        [Fact]
+        public async void UpdateEnrollTest_HappyPath()
         {
             int enrollNum = 1;
             Enrolled enrolled = await _enrollService.getEnrollAsync(enrollNum);
+            Assert.NotNull(enrolled);
             //Make changes
             enrolled.courseId = 99;
             enrolled.studentId = 99;
@@ -149,7 +211,29 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void dropTest()
+        public async void UpdateEnrollTest_NullEnroll()
+        {
+            int enrollNum = -1;
+            Enrolled enrolled = await _enrollService.getEnrollAsync(enrollNum);
+            Assert.Null(enrolled);
+            //Update the enrolled
+            int outcome = _enrollService.updateEnroll(enrolled);
+            Assert.True(outcome == 1);
+        }
+
+        [Fact]
+        public void UpdateEnrollTest_NonExistantEnroll()
+        {
+            Enrolled enrolled = new Enrolled { enrollId = 99, studentId = 8, courseId = 0, completed = true, grade = 99, rating = 99, comment = "" };
+            Assert.NotNull(enrolled);
+            //Update the enrolled
+            int outcome = _enrollService.updateEnroll(enrolled);
+            Assert.True(outcome == 2);
+        }
+
+        //dropTest()
+        [Fact]
+        public async void dropTest_HappyPath()
         {
             int enrollNum = 1;
             //Get the enroll at the enrollNum
@@ -170,6 +254,13 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
             Enrolled enrolledTemp = await _enrollService.getEnrollAsync(enrollNum);
             //Check if that enrollNum exists
             Assert.Null(enrolledTemp);
+        }
+
+        [Fact]
+        public void dropTest_NonExistantEnroll()
+        {
+            Enrolled outcome = _enrollService.drop(-1);
+            Assert.Null(outcome);
         }
     }
 }
