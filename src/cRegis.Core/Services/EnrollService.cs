@@ -1,11 +1,11 @@
-﻿using cRegis.Core.Entities;
+﻿using cRegis.Core.Data;
+using cRegis.Core.Entities;
 using cRegis.Core.Interfaces;
-using cRegis.Core.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace cRegis.Core.Services
 {
@@ -16,11 +16,15 @@ namespace cRegis.Core.Services
         {
             _context = context;
         }
-        public void drop(int eid)
+        public Enrolled drop(int eid)
         {
             Enrolled thisEnroll = _context.Enrolled.Find(eid);
-            _context.Enrolled.Remove(thisEnroll);
-            _context.SaveChanges();
+            if (thisEnroll != null)
+            {
+                _context.Enrolled.Remove(thisEnroll);
+                _context.SaveChanges();
+            }
+            return thisEnroll;
         }
 
         public List<Enrolled> getCompletedEnrollsForStudent(int sid)
@@ -45,18 +49,22 @@ namespace cRegis.Core.Services
             return _context.Enrolled.Where(e => e.studentId == sid).ToList();
         }
 
-        public void updateEnroll(Enrolled newEnroll)
+        public int updateEnroll(Enrolled newEnroll)
         {
-            if (newEnroll != null)
+            if (newEnroll == null)
             {
-                if (_context.Enrolled.Contains(newEnroll)) {
-                    var change = _context.Enrolled.Update(newEnroll);
-                    if (change.State == EntityState.Modified)
-                    {
-                        _context.SaveChanges();
-                    }
-                }
+                return 1;
             }
+            if (!_context.Enrolled.Contains(newEnroll))
+            {
+                return 2;
+            }
+            if (_context.Enrolled.Update(newEnroll).State != EntityState.Modified)
+            {
+                return 3;
+            }
+            _context.SaveChanges();
+            return 0;
         }
     }
 }
