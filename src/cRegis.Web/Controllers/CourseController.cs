@@ -42,9 +42,9 @@ namespace cRegis.Web.Controllers
             var curUser = await _userManager.GetUserAsync(this.User);
             int sid = curUser.StudentId;
 
-            if (await _studentSerivce.verifyRegistrationForStudent(sid, cid))
+            if (await _studentSerivce.verifyRegistrationForStudent(sid, cid) == 0)
             {
-                 _studentSerivce.registerCourseForStudent(sid, cid);
+                await _studentSerivce.registerCourseForStudent(sid, cid);
                 TempData["alertMessage"] = "Success Registration";
             }
             else
@@ -58,7 +58,7 @@ namespace cRegis.Web.Controllers
         {
             var curUser = await _userManager.GetUserAsync(this.User);
 
-            if ( _studentSerivce.verifyDropForStudent(curUser.StudentId, eid))
+            if (_studentSerivce.verifyDropForStudent(curUser.StudentId, eid).Equals(0))
             {
                 TempData["alertMessage"] = "Success Drop";
                 _enrollSerivce.drop(eid);
