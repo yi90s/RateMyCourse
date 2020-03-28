@@ -126,7 +126,13 @@
     <PackageReference Include="Xamarin.Forms" Version="4.4.0.991265" />
     <PackageReference Include="Xamarin.Essentials" Version="1.3.1" />
   </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets"  Condition="Exists('$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets')" />
+  <Target Name="Build" >
+    <Message Text="No build because this is a Xamarin.Android project" />
+  </Target>
+  <Target Name="VSTest" >
+    <Message Text="No tests because this is a Xamarin.Android project" />
+  </Target>
   <ItemGroup>
     <ProjectReference Include="..\cRegis.Mobile\cRegis.Mobile.csproj">
       <Project>{F5FFA8ED-C07E-483B-84D5-21340C3E2BE5}</Project>
