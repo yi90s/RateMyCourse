@@ -93,6 +93,10 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         [Fact]
         public async void verifyDropForStudentTest_HappyPath()
         {
+            int studentId = 1;
+            int enrolledId = 5;
+            int temp = _context.Enrolled.Find(enrolledId).studentId;
+            Assert.True(studentId == temp);
             int outcome = await _studentService.verifyDropForStudent(1, 5);
             Assert.True(outcome == 0);
         }
@@ -100,6 +104,10 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         [Fact]
         public async void verifyDropForStudentTest_FalseOutcome()
         {
+            int studentId = 2;
+            int enrolledId = 5;
+            int temp = _context.Enrolled.Find(enrolledId).studentId;
+            Assert.False(studentId == temp);
             int outcome = await _studentService.verifyDropForStudent(2, 5);
             Assert.True(outcome == -1);
         }
