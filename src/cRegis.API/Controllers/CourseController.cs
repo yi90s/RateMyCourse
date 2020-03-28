@@ -31,7 +31,8 @@ namespace cRegis.API.Controllers
         }
 
         [Route("[controller]")]
-        public ActionResult<List<Course>> getCoursesInYear(int year)
+        [HttpGet]
+        public ActionResult<List<Course>> getCoursesInYear([FromQuery]int year)
         {
             List<Course> result = _courseServices.getCoursesInYear(year);
 
@@ -39,6 +40,7 @@ namespace cRegis.API.Controllers
         }
 
         [Route("[controller]/recommend")]
+        [HttpGet]
         public async Task<ActionResult<List<Course>>> getRecCoursesForStudentAsync()
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
@@ -48,6 +50,7 @@ namespace cRegis.API.Controllers
         }
 
         [Route("[controller]/eligible")]
+        [HttpGet]
         public async Task<ActionResult<List<Course>>> getEligibleCoursesForStudentAsync()
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
@@ -57,6 +60,7 @@ namespace cRegis.API.Controllers
         }
 
         [Route("[controller]/taking")]
+        [HttpGet]
         public async Task<ActionResult<List<Course>>> getTakingCourses()
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
@@ -66,6 +70,7 @@ namespace cRegis.API.Controllers
         }
 
         [Route("[controller]/completed")]
+        [HttpGet]
         public ActionResult<List<Course>> getCompletedCourses()
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
