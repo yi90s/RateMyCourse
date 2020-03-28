@@ -24,13 +24,20 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         //TODO : writting test against all the methods in cRegis.Core.Service.FacultyService
 
         [Fact]
-        public void GetFacultyTest()
+        public void GetFacultyTest_HappyPath()
         {
             Faculty faculty = _facultyService.getFaculty(1);
             Assert.NotNull(faculty);
             Assert.True(faculty.facultyId == 1);
             Assert.Equal("Computer Science", faculty.facultyName);
             Assert.True(faculty.graduateCreditHours == 60);
+        }
+
+        [Fact]
+        public void GetFacultyTest_NonExistantFaculty()
+        {
+            Faculty faculty = _facultyService.getFaculty(-1);
+            Assert.Null(faculty);
         }
     }
 }
