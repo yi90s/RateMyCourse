@@ -1,34 +1,30 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using cRegis.Core.Interfaces;
-using cRegis.Core.Identities;
-using cRegis.Core.Entities;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication;
 using System.IdentityModel.Tokens.Jwt;
-using System;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using cRegis.Core.Interfaces;
+using cRegis.Core.Entities;
+using cRegis.Core.DTOs;
 
 namespace cRegis.API.Controllers
 {
     [ApiController]
-    [Authorize(Roles="Student")]
+    [Authorize(Roles = "Student")]
     public class CourseController : ControllerBase
     {
         private readonly ICourseService _courseServices;
-        private readonly JwtSecurityTokenHandler _tokenHandler;
+
         public CourseController(ICourseService courseService)
         {
             _courseServices = courseService;
-            _tokenHandler = new JwtSecurityTokenHandler();
         }
 
         [Route("[controller]")]
         [HttpGet]
         public ActionResult<List<Course>> getCoursesByKeywords([FromQuery]string keywords)
         {
-
             List<Course> results = _courseServices.getCoursesByKeywords(keywords);
 
             return results;
@@ -43,79 +39,59 @@ namespace cRegis.API.Controllers
         }
 
         [Route("[controller]/recommend")]
-        public async Task<ActionResult<List<Course>>> getRecCourses()
+        public async Task<ActionResult<List<Course>>> getRecCoursesForStudentAsync()
         {
-            List<Course> recCourses = new List<Course>();
-            
-            foreach(var claim in this.User.Claims)
-            {
-                if(claim.Type == "sid")
-                {
-                    recCourses = await _courseServices.getRecCoursesForStudentAsync(Int32.Parse(claim.Value));
-                }
-            }
-            
+            int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
+            var recCourses = await _courseServices.getRecCoursesForStudentAsync(sid);
+           
             return recCourses;
         }
 
         [Route("[controller]/eligible")]
-        public async Task<ActionResult<List<Course>>> getEligibleCourses()
+        public async Task<ActionResult<List<Course>>> getEligibleCoursesForStudentAsync()
         {
-            List<Course> eligibleCourses = new List<Course>();
-            foreach (var claim in this.User.Claims)
-            {
-                if (claim.Type == "sid")
-                {
-                    eligibleCourses = await _courseServices.getEligibleCoursesForStudentAsync(Int32.Parse(claim.Value));
-                }
-            }
-
+            int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
+            var eligibleCourses = await _courseServices.getEligibleCoursesForStudentAsync(sid);
+      
             return eligibleCourses;
         }
 
         [Route("[controller]/taking")]
         public async Task<ActionResult<List<Course>>> getTakingCourses()
         {
-            List<Course> takingCourses = new List<Course>();
-            foreach (var claim in this.User.Claims)
-            {
-                if (claim.Type == "sid")
-                {
-                    takingCourses = await _courseServices.getTakingCoursesForStudentAsync(Int32.Parse(claim.Value));
-                }
-            }
-
+            int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
+            var takingCourses = await _courseServices.getTakingCoursesForStudentAsync(sid);
+           
             return takingCourses;
         }
 
         [Route("[controller]/completed")]
         public ActionResult<List<Course>> getCompletedCourses()
         {
-            List<Course> completedCourses = new List<Course>();
-            foreach (var claim in this.User.Claims)
-            {
-                if (claim.Type == "sid")
-                {
-                    completedCourses = _courseServices.getCompletedCoursesForStudent(Int32.Parse(claim.Value));
-                }
-            }
-
+            int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
+            var completedCourses = _courseServices.getCompletedCoursesForStudent(sid);
+           
             return completedCourses;
         }
 
-        [Route("[controller]/{id}")]
+        [Route("[controller]/{cid}")]
         [HttpGet]
-        public async Task<ActionResult<Course>> getCourse(int id)
+        public async Task<ActionResult<Course>> getCourseAsync(int cid)
         {
-            Course result = await _courseServices.getCourseAsync(id);
+            Course result = await _courseServices.getCourseAsync(cid);
 
             return result;
         }
 
 
+        [Route("[controller]/{cid}/comments")]
+        [HttpGet]
+        public ActionResult<List<Comment>> getCommentsForCourse(int cid)
+        {
+            List<Comment> result =  _courseServices.getCommentsForCourse(cid);
 
-
-
+            return result;
+        }
 
 
     }

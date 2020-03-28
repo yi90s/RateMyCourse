@@ -1,20 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using cRegis.Core.Identities;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using Microsoft.Extensions.Configuration;
-using cRegis.API.Models;
 using Microsoft.Extensions.Options;
+using cRegis.API.Models;
 using cRegis.API.Helpers;
-using Microsoft.AspNetCore.Authorization;
+using cRegis.Core.Identities;
 
 namespace cRegis.API.Controllers
 {
@@ -39,8 +35,9 @@ namespace cRegis.API.Controllers
         [Route("[controller]")]
         [AllowAnonymous]
         [HttpPost]
-        public async Task<object> Index([FromHeader] string authorization)
+        public async Task<object> getUser([FromHeader] string authorization)
         {
+        
             string authInfo = Encoding.UTF8.GetString(Convert.FromBase64String(authorization.Split(" ")[1]));
             string userName = authInfo.Split(":")[0];
             string password = authInfo.Split(":")[1];
@@ -57,7 +54,7 @@ namespace cRegis.API.Controllers
             {
                 return StatusCode(401);
             }
-
+            
         }
 
 

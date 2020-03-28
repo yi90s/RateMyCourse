@@ -31,7 +31,7 @@ namespace cRegis.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddCors();
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Production")));
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
             services.AddIdentity<StudentUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
