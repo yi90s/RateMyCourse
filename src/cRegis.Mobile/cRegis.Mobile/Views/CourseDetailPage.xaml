@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="cRegis.Mobile.Views.CourseDetailPage">
+    <StackLayout  BackgroundColor="#ecf0f1"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+        <Label Text="{Binding courseName}" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+
+        <StackLayout Margin="6,4,6,4" BackgroundColor="White">
+            <Label  Text="{Binding courseDescription, StringFormat='Course Name: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+            <Label  Text="{Binding creditHours, StringFormat='Credit Hours: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+            <Label  Text="{Binding space, StringFormat='Available Space: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+            <Label  Text="{Binding date, StringFormat='Date: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+        </StackLayout>
+    </StackLayout>
+</ContentPage>

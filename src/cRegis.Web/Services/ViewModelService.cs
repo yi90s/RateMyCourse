@@ -106,8 +106,10 @@ namespace cRegis.Web.Services
             }
 
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
-            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.AddToWishlist};
-            List<Course> eligibleCourses = await _courseService.getRecCoursesForStudentAsync(student);
+
+            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.AddToWishlist };
+            List<Course> eligibleCourses = await _courseService.getRecCoursesForStudentAsync(student.studentId);
+
 
             foreach (Course c in eligibleCourses)
             {
