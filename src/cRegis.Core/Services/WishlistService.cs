@@ -94,6 +94,5 @@ namespace cRegis.Core.Services
             return orderedWishlist;
         }
 
-
     }
 }

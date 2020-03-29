@@ -47,7 +47,7 @@ namespace cRegis.Web.Controllers
             int sid = curUser.StudentId;
 
             if (await _studentSerivce.verifyRegistrationForStudent(sid, cid) == 0)
-            {
+            { 
                 await _studentSerivce.registerCourseForStudent(sid, cid);
                 _wishlistService.removeCourseFromStudentWishlist(sid, cid);
                 TempData["alertMessage"] = "Success Registration";
