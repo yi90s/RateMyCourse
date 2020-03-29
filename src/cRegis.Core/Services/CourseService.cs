@@ -38,9 +38,10 @@ namespace cRegis.Core.Services
             return result;
         }
 
-        public List<Course> getCoursesInYear(List<Course> courses, int year)
+        public List<Course> getCoursesInYear(int year)
         {
-            List<Course> result = new List<Course>();
+            var courses = _context.Courses;
+            var result = new List<Course>();
             if (year == -1)
             {
                 result.AddRange(courses);
@@ -49,7 +50,8 @@ namespace cRegis.Core.Services
             {
                 foreach (var cor in courses)
                 {
-                    if (cor.courseId >= year * 1000 && cor.courseId < (year + 1) * 1000)
+                    var courseNumber = int.Parse(cor.courseName.Substring(5));
+                    if (courseNumber >= year * 1000 && courseNumber < (year + 1) * 1000)
                     {
                         result.Add(cor);
                     }
@@ -61,19 +63,19 @@ namespace cRegis.Core.Services
         public async Task<List<Course>> getEligibleCoursesForStudentAsync(int sid)
         {
             List<Course> allCourses = await _context.Courses.ToListAsync();
-            List<Course> takingCourses = await getTakingEnrollsForStudentAsync(sid);
+            List<Course> takingCourses = await getTakingCoursesForStudentAsync(sid);
             List<Course> takenCourses = getCompletedCoursesForStudent(sid);
             allCourses.RemoveAll(c => takingCourses.Contains(c) && takenCourses.Contains(c));
 
             return allCourses;
         }
 
-        public async Task<List<Course>> getTakingEnrollsForStudentAsync(int sid)
+        public async Task<List<Course>> getTakingCoursesForStudentAsync(int sid)
         {
-            List<Enrolled> enrolls = _context.Enrolled.Where(e => !e.completed && e.studentId == sid).ToList();
+            List<Enrolled> enrolls = await _context.Enrolled.Where(e => !e.completed && e.studentId == sid).ToListAsync(); 
             List<Course> enrolledCourses = new List<Course>();
             enrolls.ForEach(
-                e => enrolledCourses.Add(_context.Courses.Find(e.courseId))
+                async e => enrolledCourses.Add(await _context.Courses.FindAsync(e.courseId))
                 );
 
             return enrolledCourses;
@@ -89,8 +91,9 @@ namespace cRegis.Core.Services
             return takenCourses;
         }
 
-        public async Task<List<Course>> getRecCoursesForStudentAsync(Student stu)
+        public async Task<List<Course>> getRecCoursesForStudentAsync(int sid)
         {
+            Student stu = _context.Students.Find(sid);
             Dictionary<int, int?> finishedCourseIdAndGrade = await _context.Enrolled.Where(e => e.studentId == stu.studentId && e.completed).ToDictionaryAsync(e => e.courseId, e => e.grade);
             List<int> requiredCourseId = await _context.Required.Where(r => r.facultyId == stu.majorId).Select(r => r.courseId).ToListAsync();
             List<int> completedAndTakingCourseId = await _context.Enrolled.Where(e => e.studentId == stu.studentId).Select(e => e.courseId).ToListAsync();

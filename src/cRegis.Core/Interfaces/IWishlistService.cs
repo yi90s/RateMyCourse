@@ -19,10 +19,10 @@ namespace cRegis.Core.Interfaces
 
         void removeCourseFromStudentWishlist(int sid, int cid);
 
-        public IOrderedEnumerable<Wishlist> getStudentWishlist(int sid);
+        void movePriority(int sid, int cid, MoveDirection direction);
 
-        public bool isInWishlist(int sid, int cid);
+        bool isInWishlist(int sid, int cid);
 
-        public void movePriority(int sid, int cid, MoveDirection direction);
+        IOrderedEnumerable<Wishlist> getStudentWishlist(int sid);
     }
 }

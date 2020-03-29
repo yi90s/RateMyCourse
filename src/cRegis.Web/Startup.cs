@@ -28,8 +28,9 @@ namespace cRegis.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //make the connection string to default
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Local")));
             services.AddControllersWithViews();
             services.AddIdentity<StudentUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
@@ -56,11 +57,6 @@ namespace cRegis.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-
-            }
 
             if (env.IsDevelopment())
             {

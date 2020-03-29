@@ -16,12 +16,12 @@ namespace cRegis.Core.Interfaces
 
         int getAvailableSpaceForCourse(int cid);
 
-        List<Course> getCoursesInYear(List<Course> courses, int year);
-        Task<List<Course>> getRecCoursesForStudentAsync(Student student);
+        List<Course> getCoursesInYear(int year);
+        Task<List<Course>> getRecCoursesForStudentAsync(int sid);
 
         Task<List<Course>> getEligibleCoursesForStudentAsync(int sid);
 
-        Task<List<Course>> getTakingEnrollsForStudentAsync(int sid);
+        Task<List<Course>> getTakingCoursesForStudentAsync(int sid);
 
         List<Course> getCompletedCoursesForStudent(int sid);
 

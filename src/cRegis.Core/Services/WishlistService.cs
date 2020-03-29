@@ -48,18 +48,6 @@ namespace cRegis.Core.Services
             _context.SaveChanges();
         }
 
-        public IOrderedEnumerable<Wishlist> getStudentWishlist(int sid)
-        {
-            List<Wishlist> wishlist = _context.Wishlist.Where(w => w.studentId == sid).ToList();
-            IOrderedEnumerable<Wishlist> orderedWishlist = wishlist.OrderBy(w => w.priority);
-            return orderedWishlist;
-        }
-
-        public bool isInWishlist(int sid, int cid)
-        {
-            return _context.Wishlist.Find(sid, cid) != null;
-        }
-
         public void movePriority(int sid, int cid, MoveDirection direction)
         {
             Wishlist sourceEntry = _context.Wishlist.Find(sid, cid);
@@ -80,7 +68,7 @@ namespace cRegis.Core.Services
             {
                 return;
             }
-                    
+
             Wishlist destinationEntry = _context.Wishlist.FirstOrDefault(w => w.studentId == sid && w.priority == destinationEntryPriority);
 
             sourceEntry.priority = destinationEntryPriority;
@@ -92,8 +80,20 @@ namespace cRegis.Core.Services
             {
                 _context.SaveChanges();
             }
-                
-
         }
+
+        public bool isInWishlist(int sid, int cid)
+        {
+            return _context.Wishlist.Find(sid, cid) != null;
+        }
+
+        public IOrderedEnumerable<Wishlist> getStudentWishlist(int sid)
+        {
+            List<Wishlist> wishlist = _context.Wishlist.Where(w => w.studentId == sid).ToList();
+            IOrderedEnumerable<Wishlist> orderedWishlist = wishlist.OrderBy(w => w.priority);
+            return orderedWishlist;
+        }
+
+
     }
 }
