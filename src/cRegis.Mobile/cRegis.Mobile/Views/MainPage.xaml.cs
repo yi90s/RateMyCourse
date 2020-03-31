@@ -9,6 +9,8 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using cRegis.Mobile.Interfaces;
+using cRegis.Mobile.Services;
 
 namespace cRegis.Mobile.Views
 {
@@ -17,10 +19,13 @@ namespace cRegis.Mobile.Views
     [DesignTimeVisible(false)]
     public partial class MainPage : ContentPage
     {
+        private IAuthService _authService;
+
         public MainPage()
         {
             InitializeComponent();
             Init();
+            _authService = new AuthService();
         }
 
         void Init()
@@ -30,14 +35,13 @@ namespace cRegis.Mobile.Views
 
         async void ValidateStudent(object sender, EventArgs e)
         {
-            HttpClient client = new HttpClient();
-            string authHeader64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", Entry_userName.Text, Entry_password.Text)));
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", authHeader64);
-            var stringContent = new StringContent("");
-            var response = await client.PostAsync("http://ec2-15-223-82-164.ca-central-1.compute.amazonaws.com/auth", stringContent);
-
+            HttpResponseMessage response = await _authService.jwtAuthenticate(Entry_userName.Text, Entry_password.Text);
+            
             if (response.IsSuccessStatusCode)
             {
+                //put the jwt in a sessional storage
+                Application.Current.Properties["jwt"] = await response.Content.ReadAsStringAsync();
+
                 if (Device.OS == TargetPlatform.Android)
                 {
                     Application.Current.MainPage = new NavigationPage(new MasterPage());
