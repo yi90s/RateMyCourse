@@ -19,20 +19,17 @@ namespace cRegis.Tests.IntegrationTest.UITests
             _factory = factory;
         }
 
-        //[Theory]
-        //[InlineData(1)]
+
         [Fact]
         public async Task HttpGetPageTest()
         {
-            // Arrange
-            var provider = TestClaimsProvider.WithStudentClaims();
-            var client = _factory.CreateClientWithTestAuth(provider);
+            //Arrange
+            var client = _factory.CreateClient();
 
             // Act
-            var response = await client.GetAsync("/");
+            var response = await client.GetAsync("/Home");
+            var content = await HtmlHelpers.GetDocumentAsync(response);
 
-
-            //var UserName = content.QuerySelector("li[class='list-group-item']");
 
             // Assert
             response.EnsureSuccessStatusCode(); // Status Code 200-299
