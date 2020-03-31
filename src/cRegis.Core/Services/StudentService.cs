@@ -48,7 +48,7 @@ namespace cRegis.Core.Services
         {
             Enrolled thisEnroll = _context.Enrolled.Find(eid);
 
-            bool result = (sid == thisEnroll.studentId);
+            bool result = (sid == thisEnroll.studentId && !thisEnroll.completed);
 
             return result;
         }
