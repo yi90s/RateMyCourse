@@ -9,7 +9,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace cRegis.IntegrationTest.Infrastructure
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class FakeUserManager : UserManager<StudentUser>
     {

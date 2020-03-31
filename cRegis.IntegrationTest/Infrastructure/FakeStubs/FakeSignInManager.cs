@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace cRegis.IntegrationTest.Infrastructure
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class FakeSignInManager:SignInManager<StudentUser>
     {

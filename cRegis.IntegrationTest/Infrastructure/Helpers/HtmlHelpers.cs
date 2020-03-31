@@ -6,7 +6,7 @@ using AngleSharp;
 using AngleSharp.Html.Dom;
 using AngleSharp.Io;
 //From https://github.com/dotnet/AspNetCore.Docs/blob/master/aspnetcore/test/integration-tests/samples/3.x/IntegrationTestsSample/tests/RazorPagesProject.Tests/Helpers/HtmlHelpers.cs
-namespace cRegis.IntegrationTest.Helper
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class HtmlHelpers
     {

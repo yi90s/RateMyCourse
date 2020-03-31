@@ -5,9 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using cRegis.Core.Data;
-using cRegis.IntegrationTest.Infrastructure;
-
-namespace cRegis.Tests
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class TestApplicationFactory<TStartup> : WebApplicationFactory<TStartup> where TStartup : class
     {

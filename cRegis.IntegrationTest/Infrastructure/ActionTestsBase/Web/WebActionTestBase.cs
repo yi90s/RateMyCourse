@@ -8,7 +8,7 @@ using Moq;
 using System;
 using System.Net;
 
-namespace cRegis.IntegrationTest.Infrastructure
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class WebActionTestBase 
     {

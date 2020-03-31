@@ -1,5 +1,5 @@
 ﻿using cRegis.Core.Entities;
-using cRegis.IntegrationTest.Infrastructure;
+using cRegis.Tests.IntegrationTest.Infrastructure;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace cRegis.IntegrationTest.ActionTests
+namespace cRegis.Tests.IntegrationTest.ActionTests.Web
 {
     public class DropCourseTests:WebActionTestBase
     {

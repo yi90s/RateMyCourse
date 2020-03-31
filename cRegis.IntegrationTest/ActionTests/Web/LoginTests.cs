@@ -1,5 +1,5 @@
 ﻿using cRegis.Core.Identities;
-using cRegis.IntegrationTest.Infrastructure;
+using cRegis.Tests.IntegrationTest.Infrastructure;
 using cRegis.Web.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace cRegis.IntegrationTest.ActionTests
+namespace cRegis.Tests.IntegrationTest.ActionTests.Web
 {
     public class LoginTests : WebActionTestBase
     {

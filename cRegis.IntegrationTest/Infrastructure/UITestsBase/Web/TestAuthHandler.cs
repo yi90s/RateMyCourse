@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 
-namespace cRegis.IntegrationTest.Infrastructure
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class TestAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {

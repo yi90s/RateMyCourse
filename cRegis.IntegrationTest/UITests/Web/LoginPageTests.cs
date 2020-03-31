@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace cRegis.IntegrationTest.UITests
+namespace cRegis.Tests.IntegrationTest.UITests
 {
     public class LoginPageTests : IClassFixture<WebApplicationFactory<Startup>>
     {

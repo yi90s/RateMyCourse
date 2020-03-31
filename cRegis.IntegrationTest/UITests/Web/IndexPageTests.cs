@@ -1,5 +1,4 @@
-﻿using cRegis.IntegrationTest.Helper;
-using cRegis.IntegrationTest.Infrastructure;
+﻿using cRegis.Tests.IntegrationTest.Infrastructure;
 using cRegis.Web;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -9,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace cRegis.IntegrationTest.UITests
+namespace cRegis.Tests.IntegrationTest.UITests
 {
     public class IndexPageTests : IClassFixture<WebApplicationFactory<Startup>>
     {

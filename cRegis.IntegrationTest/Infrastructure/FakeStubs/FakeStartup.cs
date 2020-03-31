@@ -13,7 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace cRegis.IntegrationTest.Infrastructure
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class FakeStartup
     {

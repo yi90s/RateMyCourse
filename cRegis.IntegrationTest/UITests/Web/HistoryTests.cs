@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace cRegis.IntegrationTest.UITests
+namespace cRegis.Tests.IntegrationTest.UITests
 {
     class Class1
     {

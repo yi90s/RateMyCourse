@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 
 
-namespace cRegis.IntegrationTest.Infrastructure
+namespace cRegis.Tests.IntegrationTest.Infrastructure
 {
     public class DataContextTest : DataContext
     {
