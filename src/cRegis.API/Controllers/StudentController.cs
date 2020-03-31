@@ -30,9 +30,9 @@ namespace cRegis.API.Controllers
         public async Task<ActionResult> registerCourseForStudent(int cid)
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
-            bool valid = await _studentService.verifyRegistrationForStudent(sid, cid);
+            int valid = await _studentService.verifyRegistrationForStudent(sid, cid);
 
-            if (!valid)
+            if (valid <= 0)
             {
                 return BadRequest("Student is not able to register the course");
             }
