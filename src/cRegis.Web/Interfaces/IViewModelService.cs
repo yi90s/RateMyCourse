@@ -20,9 +20,9 @@ namespace cRegis.Web.Interfaces
 
         CourseDetailViewModel buildCourseDetailViewModel(int cid);
 
-        Task<ProfileViewModel> buildProfileViewModel(Student student);
+        ProfileViewModel buildProfileViewModel(Student student);
 
-        Task<FindCourseViewModel> buildFindCourseViewModel(Student student);
+        Task<FindCourseViewModel> buildFindCourseViewModelAsync(Student student);
 
         HistoryViewModel buildHistoryViewModel(Student student);
 

@@ -8,7 +8,8 @@ using System.Linq;
 
 namespace cRegis.Core.Data
 {
-    public class DataContext : IdentityDbContext{
+    public class DataContext : IdentityDbContext
+    {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
@@ -37,7 +38,7 @@ namespace cRegis.Core.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            foreach (Microsoft.EntityFrameworkCore.Metadata.IMutableForeignKey relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
@@ -162,7 +163,7 @@ namespace cRegis.Core.Data
 
 
             modelBuilder.Entity<Faculty>().HasData(
-                new Faculty { facultyId = 1, facultyName = "Computer Science",graduateCreditHours = 60}
+                new Faculty { facultyId = 1, facultyName = "Computer Science", graduateCreditHours = 60 }
                 );
 
             modelBuilder.Entity<Prerequisite>().HasData(
@@ -203,22 +204,22 @@ namespace cRegis.Core.Data
                 new Required { facultyId = 1, courseId = 17 }
                 );
 
-            var studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };
-            var adminRole = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" };
+            IdentityRole studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };
+            IdentityRole adminRole = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" };
             modelBuilder.Entity<IdentityRole>().HasData(
                 studentRole, adminRole
                 );
 
-            var user1 = makeStudentUser("jb", 1, "Password1!");
-            var user2 = makeStudentUser("mz", 2, "Password1!");
-            var user3 = makeStudentUser("pg", 3, "Password1!");
-            var user4 = makeStudentUser("rg", 4, "Password1!");
-            var user5 = makeStudentUser("gb", 5, "Password1!");
-            var user6 = makeStudentUser("cl", 6, "Password1!");
-            var user7 = makeStudentUser("fb", 7, "Password1!");
+            StudentUser user1 = makeStudentUser("jb", 1, "Password1!");
+            StudentUser user2 = makeStudentUser("mz", 2, "Password1!");
+            StudentUser user3 = makeStudentUser("pg", 3, "Password1!");
+            StudentUser user4 = makeStudentUser("rg", 4, "Password1!");
+            StudentUser user5 = makeStudentUser("gb", 5, "Password1!");
+            StudentUser user6 = makeStudentUser("cl", 6, "Password1!");
+            StudentUser user7 = makeStudentUser("fb", 7, "Password1!");
 
             modelBuilder.Entity<StudentUser>().HasData(
-                user1, user2, user3,user4,user5,user6,user7
+                user1, user2, user3, user4, user5, user6, user7
                 );
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
@@ -232,12 +233,13 @@ namespace cRegis.Core.Data
                 );
         }
 
-        protected virtual StudentUser makeStudentUser(string UserName, int StudentId, string Password )
+        protected virtual StudentUser makeStudentUser(string UserName, int StudentId, string Password)
         {
             try
             {
                 //filling up the mandatoryy fields in AspNetusers table
-                StudentUser user = new StudentUser {
+                StudentUser user = new StudentUser
+                {
                     UserName = UserName,
                     StudentId = StudentId,
                     NormalizedUserName = UserName.ToUpper(),
@@ -249,7 +251,8 @@ namespace cRegis.Core.Data
                 user.PasswordHash = new PasswordHasher<StudentUser>().HashPassword(user, Password);
                 return user;
 
-            }catch(Exception e)
+            }
+            catch (Exception)
             {
                 return null;
             }

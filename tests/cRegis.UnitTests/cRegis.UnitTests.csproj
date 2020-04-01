@@ -28,5 +28,6 @@
 
   <ItemGroup>
     <Compile Remove="UnitTests\Web\Controller\HomeControllerTests.cs" />
+    <Compile Remove="UnitTests\Web\Services\BuildViewModelTests.cs" />
   </ItemGroup>
 </Project>
