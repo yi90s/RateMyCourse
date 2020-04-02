@@ -93,11 +93,11 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         [Fact]
         public async void verifyDropForStudentTest_HappyPath()
         {
-            int studentId = 1;
-            int enrolledId = 5;
+            int studentId = 3;
+            int enrolledId = 28;
             int temp = _context.Enrolled.Find(enrolledId).studentId;
             Assert.True(studentId == temp);
-            int outcome = await _studentService.verifyDropForStudent(1, 5);
+            int outcome = await _studentService.verifyDropForStudent(3, 28);
             Assert.True(outcome == 0);
         }
 
