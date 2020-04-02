@@ -58,7 +58,9 @@ namespace cRegis.Web.Controllers
         {
             var curUser = await _userManager.GetUserAsync(this.User);
 
-            if (_studentSerivce.verifyDropForStudent(curUser.StudentId, eid).Equals(0))
+            int index = await  _studentSerivce.verifyDropForStudent(curUser.StudentId, eid);
+
+            if (index==0)
             {
                 TempData["alertMessage"] = "Success Drop";
                 _enrollSerivce.drop(eid);
