@@ -8,9 +8,7 @@ using System.Linq;
 
 namespace cRegis.Core.Data
 {
-    public class 
-        
-        DataContext : IdentityDbContext{
+    public class DataContext : IdentityDbContext{
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
@@ -101,6 +99,7 @@ namespace cRegis.Core.Data
                 new Enrolled { enrollId = 10, studentId = 1, courseId = 11, completed = true, grade = 92, rating = null, comment = null },
                 new Enrolled { enrollId = 11, studentId = 1, courseId = 15, completed = true, grade = 87, rating = null, comment = null },
                 new Enrolled { enrollId = 12, studentId = 1, courseId = 14, completed = true, grade = 88, rating = null, comment = null },
+
                 //Mike Zapp's enrollments
                 new Enrolled { enrollId = 13, studentId = 2, courseId = 1, completed = true, grade = 70, rating = 70, comment = "NEVER AGAIN" },
                 new Enrolled { enrollId = 14, studentId = 2, courseId = 2, completed = true, grade = 73, rating = 80, comment = "You will either love the course or hate time" },
@@ -113,6 +112,7 @@ namespace cRegis.Core.Data
                 new Enrolled { enrollId = 21, studentId = 2, courseId = 13, completed = true, grade = 65, rating = null, comment = null },
                 new Enrolled { enrollId = 22, studentId = 2, courseId = 14, completed = true, grade = 50, rating = null, comment = null },
                 new Enrolled { enrollId = 23, studentId = 2, courseId = 6, completed = false, grade = null, rating = null, comment = null },
+
                 //Peter Graham's enrollements
                 new Enrolled { enrollId = 24, studentId = 3, courseId = 1, completed = true, grade = 90, rating = 87, comment = "Very excellent professor. Very clear, informative, and very helpful. He knows his stuff very well! Can manage to balance his two positions in the Faculty of Science and Computer Science very well." },
                 new Enrolled { enrollId = 25, studentId = 3, courseId = 2, completed = true, grade = 70, rating = 90, comment = "Markers marks unnecessarily harsh. Like his intention is to fail you not to grade you. Nevertheless, he does do his best, and he is better than many." },
@@ -156,7 +156,8 @@ namespace cRegis.Core.Data
                 new Student { studentId = 4, name = "Robert Guderian", majorId = 1 },
                 new Student { studentId = 5, name = "Gord Boyer", majorId = 1 },
                 new Student { studentId = 6, name = "Carson Leung", majorId = 1 },
-                new Student { studentId = 7, name = "Franklin Bristow", majorId = 1 }
+                new Student { studentId = 7, name = "Franklin Bristow", majorId = 1 },
+                new Student { studentId = 8, name = "Allan Marshall", majorId = 1 }
                 );
 
 

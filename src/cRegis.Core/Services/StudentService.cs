@@ -27,6 +27,11 @@ namespace cRegis.Core.Services
         public int getRemainingCredithoursForStudent(int sid)
         {
             Student student = _context.Students.Find(sid);
+            if (student == null)
+            {
+                return -1;
+            }
+
             int creditHourNeed = _context.Faculties.Find(student.majorId).graduateCreditHours;
             int creditHourTook = 0;
             List<int> finshedCourseId =  _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToList();
@@ -37,24 +42,45 @@ namespace cRegis.Core.Services
             return creditHourNeed - creditHourTook;
         }
 
-        public void registerCourseForStudent(int sid, int cid)
+        public async Task<int> registerCourseForStudent(int sid, int cid)
         {
+            if (await _context.Students.FindAsync(sid) == null) {
+                return 1;
+            }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
             Enrolled newEnroll = new Enrolled { courseId = cid, studentId = sid, completed = false, grade = null, rating = null, comment = null };
             _context.Enrolled.Add(newEnroll);
             _context.SaveChanges();
+            return 0;
         }
 
-        public bool verifyDropForStudent(int sid, int eid)
+        public async Task<int> verifyDropForStudent(int sid, int eid)
         {
-            Enrolled thisEnroll = _context.Enrolled.Find(eid);
-
-            bool result = (sid == thisEnroll.studentId && !thisEnroll.completed);
-
-            return result;
+            if (await _context.Enrolled.FindAsync(eid) == null)
+            {
+                return 1;
+            }
+            if (sid == _context.Enrolled.Find(eid).studentId)
+            {
+                return 0;
+            }
+            return -1;
         }
 
-        public async Task<bool> verifyRegistrationForStudent(int sid, int cid)
+        public async Task<int> verifyRegistrationForStudent(int sid, int cid)
         {
+            if (await _context.Students.FindAsync(sid) == null)
+            {
+                return 1;
+            }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
+
             Student student = _context.Students.Find(sid);
 
             //************************************************************************
@@ -65,9 +91,9 @@ namespace cRegis.Core.Services
 
             if (student == null || remainSpace <= 0)
             {
-                return false;
+                return -1;
             }
-            bool result = true;
+            int result = 0;
             List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
             foreach (Prerequisite require in prerequisiteList)
             {
@@ -84,12 +110,12 @@ namespace cRegis.Core.Services
                     }
                     if (grade < require.grade)
                     {
-                        result = false;
+                        result = -1;
                     }
                 }
                 else
                 {
-                    result = false;
+                    result = -1;
                 }
             }
             return result;

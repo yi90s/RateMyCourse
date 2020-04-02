@@ -29,7 +29,8 @@ namespace cRegis.Web
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Development")));
+            //make the connection string to default
+            services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllersWithViews();
             services.AddIdentity<StudentUser, IdentityRole>()
                     .AddRoles<IdentityRole>()
@@ -55,11 +56,6 @@ namespace cRegis.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-
-            }
 
             if (env.IsDevelopment())
             {

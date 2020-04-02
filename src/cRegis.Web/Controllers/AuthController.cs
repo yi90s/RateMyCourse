@@ -64,7 +64,7 @@ namespace cRegis.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> AccessDenied()
         {
-            return await AccessDenied();
+            return StatusCode(401);
         }
     }
 }
