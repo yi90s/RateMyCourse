@@ -23,23 +23,6 @@ namespace cRegis.Tests.IntegrationTest.UITests
         [Fact]
         public async Task HttpGetPageTest()
         {
-            //    var client = _factory.WithWebHostBuilder(builder =>
-            //    {
-            //        builder.ConfigureServices(services =>
-            //        {
-            //            services.AddAuthentication("Test")
-            //               .AddScheme<AuthenticationSchemeOptions, TestAuthHandler>(
-            //                   "Test", options => { });
-
-            //        });
-            //    })
-            //.CreateClient(new WebApplicationFactoryClientOptions
-            //{
-            //    AllowAutoRedirect = false
-            //});
-
-            //    client.DefaultRequestHeaders.Authorization =
-            //    new AuthenticationHeaderValue("Test");
             var client = _factory.CreateClient();
             var response = await client.GetAsync("/course/Detail?cid=1");
 

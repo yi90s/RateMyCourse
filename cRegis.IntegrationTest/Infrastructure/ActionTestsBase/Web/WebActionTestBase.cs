@@ -51,21 +51,5 @@ namespace cRegis.Tests.IntegrationTest.Infrastructure
             _authController = new AuthController(_signInManager);
         }
 
-        //public void ConfigureServices(string account)
-        //{
-        //    var authenticationManagerMock = new Mock<AuthenticationManager>();
-        //    var httpContextMock = new Mock<HttpContext>();
-        //    //httpContextMock.Setup(x => x.Authentication).Returns(authenticationManagerMock.Object);
-        //    var httpContextAccessorMock = new Mock<IHttpContextAccessor>();
-        //    httpContextAccessorMock.Setup(x => x.HttpContext.User.Identity.Name).Returns(account);
-        //    httpContextAccessorMock.Setup(x => x.HttpContext).Returns(httpContextMock.Object);
-        //    var httpContextMockObject = httpContextAccessorMock.Object;
-        //    _signInManager = new FakeSignInManager(_userManager, httpContextMockObject);
-        //    _authController = new AuthController(_signInManager);
-        //    //services.AddScoped(x => httpContextAccessorMock);
-        //    //services.AddScoped(x => httpContextMockObject);
-        //    //services.BuildServiceProvider();
-        //}
-
     }
 }
