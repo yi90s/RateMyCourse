@@ -9,16 +9,13 @@ using Xunit;
 
 namespace cRegis.UnitTests.UnitTests.Web.Services
 {
-    public class BuildProfileViewModelTests : TestBase
+    public class BuildProfileViewModelTests : ViewModelServiceTestsBase
     {
         private readonly IViewModelService _viewModelService;
 
         public BuildProfileViewModelTests()
         {
-            _viewModelService = new ViewModelService(new CourseService(_context),
-                new EnrollService(_context),
-                new StudentService(_context),
-                new FacultyService(_context));
+            _viewModelService = getContext();
         }
 
         //TODO: write test against all method in cRegis.Web.Service.ViewModelService
