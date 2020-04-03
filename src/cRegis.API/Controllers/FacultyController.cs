@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Mvc;
 namespace cRegis.API.Controllers
 {
     [Authorize(Roles = "Student")]
-    [Route("api/[controller]")]
     [ApiController]
     public class FacultyController : ControllerBase
     {
