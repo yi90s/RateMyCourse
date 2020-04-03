@@ -7,22 +7,29 @@ using cRegis.Mobile.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using cRegis.Mobile.Models.Entities;
+using cRegis.Mobile.Interfaces;
+using cRegis.Mobile.Services;
 
 namespace cRegis.Mobile.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class CoursePage : ContentPage
     {
+        private ICourseService _courseService;
+
         public CoursePage()
         {
             InitializeComponent();
             Init();
         }
 
-        void Init()
+        async void Init()
         {
-            CourseViewModel test = new CourseViewModel();
-            test.test();
+
+            _courseService = new CourseService((string)Application.Current.Properties["jwt"]);
+            List<Course> l = await _courseService.getCourseListAsync();
+            CourseViewModel test = new CourseViewModel(l);
+            //test.test();
             BindingContext = test;
         }
 

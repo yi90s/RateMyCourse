@@ -9,7 +9,7 @@ namespace cRegis.Mobile.ViewModels
     {
         public List<Course> AllCourses { get; set; }
 
-        public void test()
+        /**public void test()
         {
             AllCourses = new List<Course>();
             AllCourses.Add(new Course() { courseId = 1, courseName = "COMP 4350", courseDescription = "Software Engineering 2", creditHours = 3, space = 5, date = "N/A" });
@@ -19,6 +19,11 @@ namespace cRegis.Mobile.ViewModels
             AllCourses.Add(new Course() { courseId = 5, courseName = "MATH 1500", courseDescription = "Caculus 1", creditHours = 3, space = 5, date = "N/A" });
             AllCourses.Add(new Course() { courseId = 6, courseName = "BIOL 1000", courseDescription = "BIOLOGY 1", creditHours = 3, space = 5, date = "N/A" });
             AllCourses.Add(new Course() { courseId = 7, courseName = "ASTR 1000", courseDescription = "Astronomy 1", creditHours = 3, space = 5, date = "N/A" });
+        }**/
+
+        public CourseViewModel(List<Course> l)
+        {
+            AllCourses = l;
         }
     }
 }

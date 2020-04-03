@@ -31,10 +31,9 @@ namespace cRegis.Mobile.Services
 
         public async Task<string> getStudentCreditAsync()
         {
-            var response = await _client.GetAsync(API_DOMAIN + "/student/crehrs");
+            var response = await _client.GetAsync(API_DOMAIN + "/student/credhrs");
 
             var crehrs = await response.Content.ReadAsStringAsync();
-            //int result = JsonConvert.DeserializeObject<int>(crehrs);
 
             return crehrs;
         }
