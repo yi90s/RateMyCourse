@@ -20,16 +20,20 @@ namespace cRegis.Mobile.Views
         public ProfilePage()
         {
             InitializeComponent();
-            testInit();
             _studentService = new StudentService((string)Application.Current.Properties["jwt"]);
+            testInit();
         }
 
         async void testInit()
         {
-            StudentViewModel test = new StudentViewModel();
+            
             //calling api to get student's detail infomation
             Student curStudent =  await _studentService.getStudentAsync();
-
+            string crehrs = await _studentService.getStudentCreditAsync();
+            List<Course> listC = await _studentService.getStudentCourseListAsync();
+            //int crehrs = 0;
+            //List<Course> listC = new List<Course>();
+            StudentViewModel test = new StudentViewModel(curStudent, crehrs, listC);
             BindingContext = test;
         }
 

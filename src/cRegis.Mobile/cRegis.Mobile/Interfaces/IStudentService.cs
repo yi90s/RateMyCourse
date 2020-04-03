@@ -8,6 +8,8 @@ namespace cRegis.Mobile.Interfaces
 {
     public interface IStudentService
     {
-        Task<Student> getStudentAsync(); 
+        Task<Student> getStudentAsync();
+        Task<string> getStudentCreditAsync();
+        Task<List<Course>> getStudentCourseListAsync();
     }
 }
