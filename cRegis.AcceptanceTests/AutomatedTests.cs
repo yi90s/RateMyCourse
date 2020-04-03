@@ -8,6 +8,7 @@ namespace cRegis.AcceptanceTests
     public class AutomatedTests : IDisposable
     {
         private readonly IWebDriver _driver;
+        private string testingUrl = "http://ec2-15-222-137-75.ca-central-1.compute.amazonaws.com/";
 
         public AutomatedTests()
         {
@@ -23,9 +24,13 @@ namespace cRegis.AcceptanceTests
         //Tests
 
         [Fact]
-        public void Create_WhenExecuted_ReturnsCreateView()
+        public void TestLogin()
         {
-            _driver.Navigate().GoToUrl("https://localhost:44353/Home");
+            _driver.Navigate().GoToUrl(testingUrl);
+            _driver.FindElement(By.Id("UserName")).SendKeys("jb");
+            _driver.FindElement(By.Id("Password")).SendKeys("Password1!");
+            _driver.FindElement(By.Id("Password")).Submit();
+            Assert.Contains("Welcome, John Braico", _driver.PageSource);
         }
     }
 }
