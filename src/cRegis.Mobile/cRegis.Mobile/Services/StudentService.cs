@@ -48,5 +48,6 @@ namespace cRegis.Mobile.Services
 
             return courseList;
         }
+
     }
 }

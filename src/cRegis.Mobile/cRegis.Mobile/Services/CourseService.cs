@@ -28,5 +28,27 @@ namespace cRegis.Mobile.Services
 
             return courseList;
         }
+
+        public async Task<List<Course>> getHistoryListAsync()
+        {
+            var response = await _client.GetAsync(API_DOMAIN + "/course/completed");
+
+            var courseInfo = await response.Content.ReadAsStringAsync();
+
+            List<Course> courseList = JsonConvert.DeserializeObject<List<Course>>(courseInfo);
+
+            return courseList;
+        }
+
+        public async Task<List<Comment>> getCourseCommentAsync(int cid)
+        {
+            var response = await _client.GetAsync(API_DOMAIN + String.Format("/course/{0}/comments", cid));
+
+            var courseInfo = await response.Content.ReadAsStringAsync();
+
+            List<Comment> commentList = JsonConvert.DeserializeObject<List<Comment>>(courseInfo);
+
+            return commentList;
+        }
     }
 }

@@ -9,5 +9,7 @@ namespace cRegis.Mobile.Interfaces
     public interface ICourseService
     {
         Task<List<Course>> getCourseListAsync();
+        Task<List<Course>> getHistoryListAsync();
+        Task<List<Comment>> getCourseCommentAsync(int cid);
     }
 }
