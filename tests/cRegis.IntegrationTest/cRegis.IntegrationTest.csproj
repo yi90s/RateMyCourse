@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Infrastructure\ActionTestsBase\Mobile\**" />
     <Compile Remove="Infrastructure\PageTestsBase\**" />
+    <EmbeddedResource Remove="Infrastructure\ActionTestsBase\Mobile\**" />
     <EmbeddedResource Remove="Infrastructure\PageTestsBase\**" />
+    <None Remove="Infrastructure\ActionTestsBase\Mobile\**" />
     <None Remove="Infrastructure\PageTestsBase\**" />
   </ItemGroup>
 
@@ -25,12 +28,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\cRegis.Core\cRegis.Core.csproj" />
     <ProjectReference Include="..\..\src\cRegis.Web\cRegis.Web.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ActionTests\Mobile\" />
-    <Folder Include="Infrastructure\ActionTestsBase\Mobile\" />
-    <Folder Include="UITests\Mobile\" />
   </ItemGroup>
 
 </Project>
