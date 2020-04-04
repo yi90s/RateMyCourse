@@ -59,11 +59,12 @@ namespace cRegis.Core.Services
 
         public async Task<int> verifyDropForStudent(int sid, int eid)
         {
-            if (await _context.Enrolled.FindAsync(eid) == null)
+            Enrolled enroll = await _context.Enrolled.FindAsync(eid);
+            if (enroll == null)
             {
                 return 1;
             }
-            if (sid == _context.Enrolled.Find(eid).studentId)
+            if ( !enroll.completed )
             {
                 return 0;
             }

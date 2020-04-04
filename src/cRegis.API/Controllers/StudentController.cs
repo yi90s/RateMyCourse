@@ -32,7 +32,8 @@ namespace cRegis.API.Controllers
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
             int valid = await _studentService.verifyRegistrationForStudent(sid, cid);
 
-            if (valid<0)
+            if (valid <= 0)
+
             {
                 return BadRequest("Student is not able to register the course");
             }
