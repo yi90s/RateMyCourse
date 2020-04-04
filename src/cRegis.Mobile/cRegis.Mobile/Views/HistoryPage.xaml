@@ -5,11 +5,41 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="cRegis.Mobile.Views.HistoryPage">
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="History Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <StackLayout  BackgroundColor="#ecf0f1"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+        <Label Text="Registration History" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+        
+        
+        <ListView  ItemsSource="{Binding AllCourses}" IsPullToRefreshEnabled="True"  x:Name="CourseListView" HasUnevenRows="true" SeparatorVisibility="Default" >
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout HorizontalOptions="StartAndExpand">
+                                <Label Text="{Binding courseName}"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding courseDescription}"
+                                       TextColor="Gray" />
+                            </StackLayout>
+                            <Button Text="Detail"
+                                        BorderColor="Silver"
+                                        FontSize="Small"
+                                        TextColor="White"
+                                        BackgroundColor="#3399ff"
+                                        VerticalOptions="Center"
+                                        Clicked="ViewCourseDetail" CommandParameter="{Binding .}"/>
+                            <Button Text="Rate"
+                                        BorderColor="Silver"
+                                        FontSize="Small"
+                                        TextColor="White"
+                                        BackgroundColor="Red"
+                                        VerticalOptions="Center"
+                                        Clicked="RateCourse" CommandParameter="{Binding .}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
 </ContentPage>
