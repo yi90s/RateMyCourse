@@ -49,7 +49,10 @@ namespace cRegis.Web.Controllers
             if (await _studentSerivce.verifyRegistrationForStudent(sid, cid) == 0)
             { 
                 await _studentSerivce.registerCourseForStudent(sid, cid);
-                _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+                if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
+                {
+                    _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+                }
                 TempData["alertMessage"] = "Success Registration";
             }
             else
@@ -106,30 +109,30 @@ namespace cRegis.Web.Controllers
             return View(vm);
         }
 
-        public async Task<IActionResult> AddToWishlist(int cid)
+        public async Task<IActionResult> Add(int cid)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
             int sid = curUser.StudentId;
 
-            if (_wishlistService.isInWishlist(sid, cid))
+            if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
             {
                 TempData["alertMessage"] = "Course is Already in Wishlist";
             }
             else
             {
-                _wishlistService.addCoursetoStudentWishlist(sid, cid);
+                await _wishlistService.addCoursetoStudentWishlist(sid, cid);
                 TempData["alertMessage"] = "Added to Wishlist";
 
             }
             return RedirectToAction("Register", "Home");
         }
 
-        public async Task<IActionResult> RemoveFromWishlist(int cid)
+        public async Task<IActionResult> Remove(int cid)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
             int sid = curUser.StudentId;
 
-            if (_wishlistService.isInWishlist(sid, cid))
+            if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
             {
                 _wishlistService.removeCourseFromStudentWishlist(sid, cid);
                 TempData["alertMessage"] = "Course was Removed From Wishlist";
@@ -141,17 +144,17 @@ namespace cRegis.Web.Controllers
             return RedirectToAction("Wishlist", "Home");
         }
 
-        public async Task<IActionResult> moveInWishlist(int cid, CourseActions direction)
+        public async Task<IActionResult> Move(int cid, CourseActions direction)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
             int sid = curUser.StudentId;
 
             if(direction == CourseActions.WishlistPriorityUp)
             {
-                _wishlistService.movePriority(sid, cid, MoveDirection.MoveUp);
+                await _wishlistService.updatePriority(sid, cid, MoveDirection.MoveUp);
             } else if (direction == CourseActions.WishlistPriorityDown)
             {
-                _wishlistService.movePriority(sid, cid, MoveDirection.MoveDown);
+                await _wishlistService.updatePriority(sid, cid, MoveDirection.MoveDown);
             }
             return RedirectToAction("Wishlist", "Home");
         }

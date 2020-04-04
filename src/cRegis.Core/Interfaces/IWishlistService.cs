@@ -15,14 +15,14 @@ namespace cRegis.Core.Interfaces
 
     public interface IWishlistService
     {
-        void addCoursetoStudentWishlist(int sid, int cid);
+        Task<int> addCoursetoStudentWishlist(int sid, int cid);
 
-        void removeCourseFromStudentWishlist(int sid, int cid);
+        Task<int> updatePriority(int sid, int cid, MoveDirection direction);
 
-        void movePriority(int sid, int cid, MoveDirection direction);
+        Task<int> verifyWishlistEntry(int sid, int cid);
 
-        bool isInWishlist(int sid, int cid);
+        Wishlist removeCourseFromStudentWishlist(int sid, int cid);
 
-        IOrderedEnumerable<Wishlist> getStudentWishlist(int sid);
+        List<Wishlist> getStudentWishlist(int sid);
     }
 }

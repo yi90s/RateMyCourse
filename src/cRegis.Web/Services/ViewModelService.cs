@@ -152,7 +152,7 @@ namespace cRegis.Web.Services
 
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> {CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.WishlistPriorityUp, CourseActions.WishlistPriorityDown, CourseActions.RemoveFromWishlist};
-            IOrderedEnumerable<Wishlist> wishlist = _wishlistService.getStudentWishlist(student.studentId);
+            List<Wishlist> wishlist = _wishlistService.getStudentWishlist(student.studentId);
      
             foreach (Wishlist entry in wishlist)
             {

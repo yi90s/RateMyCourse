@@ -41,19 +41,19 @@
                     }
                     @if (Model.actions.Contains(CourseActions.AddToWishlist))
                     {
-                        <a class="btn btn-danger" asp-controller="course" asp-action="AddToWishlist" asp-route-cid="@Model.courseId">Add To Wishlist</a>
+                        <a class="btn btn-danger" asp-controller="course" asp-action="Add" asp-route-cid="@Model.courseId">Add To Wishlist</a>
                     }
                     @if (Model.actions.Contains(CourseActions.WishlistPriorityUp))
                     {
-                        <a class="btn btn-light" asp-controller="course" asp-action="moveInWishlist" asp-route-cid="@Model.courseId" asp-route-direction="@CourseActions.WishlistPriorityUp">⮝</a>
+                        <a class="btn btn-light" asp-controller="course" asp-action="Move" asp-route-cid="@Model.courseId" asp-route-direction="@CourseActions.WishlistPriorityUp">⮝</a>
                     }
                     @if (Model.actions.Contains(CourseActions.WishlistPriorityDown))
                     {
-                        <a class="btn btn-light" asp-controller="course" asp-action="moveInWishlist" asp-route-cid="@Model.courseId" asp-route-direction="@CourseActions.WishlistPriorityDown">⮟</a>
+                        <a class="btn btn-light" asp-controller="course" asp-action="Move" asp-route-cid="@Model.courseId" asp-route-direction="@CourseActions.WishlistPriorityDown">⮟</a>
                     }
                     @if (Model.actions.Contains(CourseActions.RemoveFromWishlist))
                     {
-                        <a class="btn btn-danger" asp-controller="course" asp-action="RemoveFromWishlist" asp-route-cid="@Model.courseId">🗙</a>
+                        <a class="btn btn-danger" asp-controller="course" asp-action="Remove" asp-route-cid="@Model.courseId">🗙</a>
                     }
                 </div>
              </div>

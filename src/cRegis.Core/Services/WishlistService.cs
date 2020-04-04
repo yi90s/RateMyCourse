@@ -19,8 +19,16 @@ namespace cRegis.Core.Services
             _context = context;
         }
 
-        public void addCoursetoStudentWishlist(int sid, int cid)
+        public async Task<int> addCoursetoStudentWishlist(int sid, int cid)
         {
+            if (await _context.Students.FindAsync(sid) == null)
+            {
+                return 1;
+            }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
             int lastPriorityNum = 0;
             if (_context.Wishlist.Any(w => w.studentId == sid))
             {
@@ -29,32 +37,23 @@ namespace cRegis.Core.Services
             Wishlist newWishlistEntry = new Wishlist {studentId = sid, courseId = cid, priority = lastPriorityNum+1};
             _context.Wishlist.Add(newWishlistEntry);
             _context.SaveChanges();
+            return 0;
         }
-        public void removeCourseFromStudentWishlist(int sid, int cid)
-        {
-            Wishlist thisEntry = _context.Wishlist.Find(sid, cid);
-            _context.Wishlist.Remove(thisEntry);
 
-            int lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
-            if(thisEntry.priority < lastPriorityNum)
+        public async Task<int> updatePriority(int sid, int cid, MoveDirection direction)
+        {
+            if (await _context.Students.FindAsync(sid) == null)
             {
-                IOrderedEnumerable<Wishlist> entriesToModify = _context.Wishlist.Where(w => w.studentId == sid && w.priority > thisEntry.priority).ToList().OrderBy(w => w.priority);
-                foreach(Wishlist entry in entriesToModify)
-                {
-                    entry.priority = entry.priority - 1;
-                    _context.Wishlist.Update(entry);
-                }
+                return 1;
             }
-            _context.SaveChanges();
-        }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
 
-        public void movePriority(int sid, int cid, MoveDirection direction)
-        {
             Wishlist sourceEntry = _context.Wishlist.Find(sid, cid);
             int sourceEntryPriority = sourceEntry.priority;
-
             int lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
-
             int destinationEntryPriority = -1;
             if (direction == MoveDirection.MoveUp && sourceEntryPriority > 1)
             {
@@ -66,32 +65,68 @@ namespace cRegis.Core.Services
             }
             else
             {
-                return;
+                return 3; 
             }
 
+            int result = 0;
             Wishlist destinationEntry = _context.Wishlist.FirstOrDefault(w => w.studentId == sid && w.priority == destinationEntryPriority);
-
             sourceEntry.priority = destinationEntryPriority;
             destinationEntry.priority = sourceEntryPriority;
-
             var change1 = _context.Wishlist.Update(sourceEntry);
             var change2 = _context.Wishlist.Update(destinationEntry);
             if (change1.State == EntityState.Modified && change2.State == EntityState.Modified)
             {
                 _context.SaveChanges();
+                result = 0;
             }
+            else
+            {
+                result = 4;
+            }
+            return result;
         }
 
-        public bool isInWishlist(int sid, int cid)
+        public async Task<int> verifyWishlistEntry(int sid, int cid)
         {
-            return _context.Wishlist.Find(sid, cid) != null;
+            if (await _context.Students.FindAsync(sid) == null)
+            {
+                return 1;
+            }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
+            if (await _context.Wishlist.FindAsync(sid, cid) == null)
+            {
+                return 3;
+            }
+            return 0;
         }
 
-        public IOrderedEnumerable<Wishlist> getStudentWishlist(int sid)
+        public Wishlist removeCourseFromStudentWishlist(int sid, int cid)
+        {
+            Wishlist thisEntry = _context.Wishlist.Find(sid, cid);
+            _context.Wishlist.Remove(thisEntry);
+
+            int lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
+            if (thisEntry.priority < lastPriorityNum)
+            {
+                IOrderedEnumerable<Wishlist> entriesToModify = _context.Wishlist.Where(w => w.studentId == sid && w.priority > thisEntry.priority).ToList().OrderBy(w => w.priority);
+                foreach (Wishlist entry in entriesToModify)
+                {
+                    entry.priority = entry.priority - 1;
+                    _context.Wishlist.Update(entry);
+                }
+            }
+            _context.SaveChanges();
+            return thisEntry;
+        }
+
+        public List<Wishlist> getStudentWishlist(int sid)
         {
             List<Wishlist> wishlist = _context.Wishlist.Where(w => w.studentId == sid).ToList();
             IOrderedEnumerable<Wishlist> orderedWishlist = wishlist.OrderBy(w => w.priority);
-            return orderedWishlist;
+            return orderedWishlist.ToList();
         }
 
     }
