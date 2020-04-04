@@ -24,5 +24,32 @@
                     Margin="8"
                     FontSize="Medium" />
         </StackLayout>
+
+
+        <Label Text="Comments" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+
+        <ListView x:Name="registeredCourseList"
+                  SeparatorVisibility="None"
+                  ItemsSource="{Binding commentList}"
+                  HasUnevenRows="True"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout HorizontalOptions="StartAndExpand" Margin="6,4,6,4" BackgroundColor="White">
+                            <Label Text="{Binding ratingScore}"
+                                       FontAttributes="Bold" />
+                            <Label Text="{Binding comment}"
+                                       TextColor="Gray" />
+                            <Label Text="{Binding takenDate}"
+                                       TextColor="Gray" />
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+
+        </ListView>
     </StackLayout>
 </ContentPage>
