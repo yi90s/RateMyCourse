@@ -36,14 +36,27 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Margin="6,4,6,4" BackgroundColor="White">
-                            <Label  Text="{Binding courseName}"
-                                Margin="8"
-                                FontSize="Medium" />
-                            <Label  Text="{Binding courseDescription}"
-                                Margin="8,2,8,4"
-                                FontSize="Small" />
-                            <Button x:Name="Btn_ViewCourse" Text="View Course" Margin="8" HorizontalOptions="Start" Clicked="ViewCourseDetail" CommandParameter="{Binding .}"/>
+                        <StackLayout Orientation="Horizontal" BackgroundColor="White" Margin="6,4,6,4">
+                            <StackLayout HorizontalOptions="StartAndExpand">
+                                <Label Text="{Binding cName}"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding cDes}"
+                                       TextColor="Gray" />
+                            </StackLayout>
+                            <Button Text="Detail"
+                                        BorderColor="Silver"
+                                        FontSize="Small"
+                                        TextColor="White"
+                                        BackgroundColor="#3399ff"
+                                        VerticalOptions="Center"
+                                        Clicked="ViewCourseDetail" CommandParameter="{Binding .}"/>
+                            <Button Text="Drop"
+                                        BorderColor="Silver"
+                                        FontSize="Small"
+                                        TextColor="White"
+                                        BackgroundColor="Red"
+                                        VerticalOptions="Center"
+                                        Clicked="DropCourse" CommandParameter="{Binding .}"/>
                         </StackLayout>
                     </ViewCell>
                 </DataTemplate>

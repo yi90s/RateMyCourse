@@ -32,7 +32,7 @@
                                         TextColor="White"
                                         BackgroundColor="Red"
                                         VerticalOptions="Center"
-                                        Clicked="Register"/>
+                                        Clicked="Register" CommandParameter="{Binding .}"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>

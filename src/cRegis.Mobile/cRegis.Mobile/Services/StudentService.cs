@@ -49,5 +49,27 @@ namespace cRegis.Mobile.Services
             return courseList;
         }
 
+        public async Task<List<Enrolled>> getStudentEnrolledListAsync()
+        {
+            var response = await _client.GetAsync(API_DOMAIN + "/enroll/current");
+
+            var enrollInfo = await response.Content.ReadAsStringAsync();
+
+            List<Enrolled> enrollList = JsonConvert.DeserializeObject<List<Enrolled>>(enrollInfo);
+
+            return enrollList;
+        }
+
+        public async Task<Course> getCourseAsync(int cid)
+        {
+            var response = await _client.GetAsync(API_DOMAIN + String.Format("/course/{0}", cid));
+
+            var CourseInfo = await response.Content.ReadAsStringAsync();
+
+            Course c = JsonConvert.DeserializeObject<Course>(CourseInfo);
+
+            return c;
+        }
+
     }
 }

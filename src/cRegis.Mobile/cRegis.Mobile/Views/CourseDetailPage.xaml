@@ -38,7 +38,7 @@
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout HorizontalOptions="StartAndExpand">
+                        <StackLayout HorizontalOptions="StartAndExpand" Margin="6,4,6,4" BackgroundColor="White">
                             <Label Text="{Binding ratingScore}"
                                        FontAttributes="Bold" />
                             <Label Text="{Binding comment}"

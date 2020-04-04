@@ -16,6 +16,7 @@ namespace cRegis.Mobile.Views
     public partial class CoursePage : ContentPage
     {
         private ICourseService _courseService;
+        private IModifyService _modifyService;
 
         public CoursePage()
         {
@@ -27,6 +28,7 @@ namespace cRegis.Mobile.Views
         {
 
             _courseService = new CourseService((string)Application.Current.Properties["jwt"]);
+            _modifyService = new ModifyService((string)Application.Current.Properties["jwt"]);
             List<Course> l = await _courseService.getCourseListAsync();
             CourseViewModel test = new CourseViewModel(l);
             //test.test();
@@ -58,9 +60,13 @@ namespace cRegis.Mobile.Views
             await Navigation.PushAsync(new CourseDetailPage(chosenCourse));
         }
 
-        void Register(object sender, EventArgs e)
+        public async void Register(object sender, EventArgs e)
         {
-            DisplayAlert("Register", "Register Success", "Okay");
+            var menuItem = sender as Button;
+            var chosenCourse = menuItem.CommandParameter as Course;
+
+            string result = await _modifyService.registerCourseAsync(chosenCourse.courseId);
+            await DisplayAlert("Register", result, "Okay");
         }
     }
 }

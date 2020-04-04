@@ -30,7 +30,7 @@ namespace cRegis.Mobile.Views
         {
             _courseService = new CourseService((string)Application.Current.Properties["jwt"]);
             List<Comment> l = await _courseService.getCourseCommentAsync(c.courseId);
-
+            //List<Comment> l = new List<Comment>();
             CourseDetailViewModel model = new CourseDetailViewModel(c, l);
 
             BindingContext = model;

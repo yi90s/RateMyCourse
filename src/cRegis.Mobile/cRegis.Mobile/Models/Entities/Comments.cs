@@ -14,12 +14,6 @@ namespace cRegis.Mobile.Models.Entities
         public string comment { get; set; }
         public DateTime takenDate { get; set; }
 
-        public Comment(Enrolled enroll)
-        {
-            this.ratingScore = enroll.rating ?? default(int);
-            this.comment = enroll.comment;
-            this.takenDate = enroll.course.date;
-        }
 
     }
 }
