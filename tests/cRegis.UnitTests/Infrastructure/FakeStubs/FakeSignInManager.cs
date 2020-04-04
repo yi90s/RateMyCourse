@@ -30,5 +30,6 @@ namespace cRegis.Tests.Infrastructure.FakeStubs
             result.setSucceed();
             return Task.Run(() => { return (SignInResult)result; });
         }
+
     } 
 }

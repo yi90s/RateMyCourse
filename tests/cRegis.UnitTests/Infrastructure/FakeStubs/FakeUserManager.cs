@@ -36,5 +36,17 @@ namespace cRegis.Tests.Infrastructure.FakeStubs
             }
             return null;
         }
+
+        public override Task<StudentUser> FindByNameAsync(string username)
+        {
+            foreach (StudentUser stu in Users)
+            {
+                if (stu.UserName.Equals(username))
+                {
+                    return Task.Run(() => { return stu; });
+                }
+            }
+            return null;
+        }
     }
 }

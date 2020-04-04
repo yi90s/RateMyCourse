@@ -22,9 +22,13 @@ namespace cRegis.UnitTests.UnitTests.API
         [InlineData("jb:Password1!") ]
         public async Task getUserSuccessTestAsync(string authorization)
         {
-            var result = await _controller.getUser(authorization);
+            //arrange
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(authorization);
+            string encoded = System.Convert.ToBase64String(plainTextBytes);
+            encoded = " " + encoded;
+
+            var result = await _controller.getUser(encoded);
             Assert.NotNull(result);
-            Assert.True((result.GetType()).Equals(typeof(StudentUser)));
         }
 
     }

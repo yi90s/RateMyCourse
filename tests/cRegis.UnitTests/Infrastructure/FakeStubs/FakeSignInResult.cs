@@ -13,5 +13,6 @@ namespace cRegis.Tests.Infrastructure.FakeStubs
         {
             base.Succeeded = true;
         }
+
     }
 }
