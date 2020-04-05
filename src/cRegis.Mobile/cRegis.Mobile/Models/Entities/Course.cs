@@ -18,7 +18,7 @@ namespace cRegis.Mobile.Models.Entities
         public string courseDescription { get; set; }
         public int creditHours { get; set; }
         public int space { get; set; }
-        public string date { get; set; }
+        public DateTime date { get; set; }
 
     }
 }
