@@ -32,7 +32,8 @@ namespace cRegis.Mobile.Views
             //calling api to get student's detail infomation
             Student curStudent =  await _studentService.getStudentAsync();
             string crehrs = await _studentService.getStudentCreditAsync();
-            string fName = await _studentService.getFacultyName(curStudent.majorId);
+            Faculty f = await _studentService.getFaculty(curStudent.majorId);
+            string fName = f.facultyName;
             List<Enrolled> listE = await _studentService.getStudentEnrolledListAsync();
             List<EnrolledViewModel> listEnroll = new List<EnrolledViewModel>();
 
