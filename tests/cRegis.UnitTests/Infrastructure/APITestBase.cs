@@ -15,6 +15,7 @@ namespace cRegis.UnitTests.Infrastructure
         protected readonly StudentService _studentService;
         protected readonly EnrollService _enrollService;
         protected readonly FacultyService _facultyService;
+        protected readonly WishlistService _wishlistService;
 
         public APITestBase():base()
         {
@@ -26,6 +27,7 @@ namespace cRegis.UnitTests.Infrastructure
             _studentService = new StudentService(_context);
             _enrollService = new EnrollService(_context);
             _facultyService = new FacultyService(_context);
+            _wishlistService = new WishlistService(_context);
 
         }
     }

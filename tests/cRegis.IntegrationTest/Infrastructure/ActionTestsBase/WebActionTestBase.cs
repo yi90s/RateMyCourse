@@ -16,6 +16,7 @@ namespace cRegis.Tests.IntegrationTest.Infrastructure
         protected readonly StudentService _studentService;
         protected readonly EnrollService _enrollService;
         protected readonly FacultyService _facultyService;
+        protected readonly WishlistService _wishlistService;
         protected readonly ViewModelService _viewModelService;
         protected readonly AuthController _authController;
         protected readonly HomeController _homeController;
@@ -45,8 +46,9 @@ namespace cRegis.Tests.IntegrationTest.Infrastructure
             _studentService = new StudentService(_context);
             _enrollService = new EnrollService(_context);
             _facultyService = new FacultyService(_context);
-            _viewModelService = new ViewModelService(_courseService, _enrollService, _studentService, _facultyService);
-            _courseController = new CourseController(_userManager, null, _courseService, _studentService, _enrollService, _viewModelService);
+            _wishlistService = new WishlistService(_context);
+            _viewModelService = new ViewModelService(_courseService, _enrollService, _studentService, _facultyService, _wishlistService);
+            _courseController = new CourseController(_userManager, null, _courseService, _studentService, _enrollService, _wishlistService, _viewModelService);
             _homeController = new HomeController(_userManager, null, _courseService, _studentService, _enrollService, _viewModelService);
             _authController = new AuthController(_signInManager);
         }

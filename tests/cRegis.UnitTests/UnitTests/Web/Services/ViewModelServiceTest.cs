@@ -115,6 +115,22 @@ namespace cRegis.UnitTests.UnitTests.Web.Services
         }
 
         [Fact]
+        public void buildWishlistViewModelTest()
+        {
+            Student thisStudent = _context.Students.Find(1);
+            WishlistViewModel test = _viewModelSerivce.buildWishlistViewModel(thisStudent);
+            Assert.True(test.courses.First().courseId == 1);
+            Assert.True(test.courses.Count() == 5);
+        }
+
+        [Fact]
+        public void buildWishlistViewModelEdgeCaseTest()
+        {
+            WishlistViewModel test = _viewModelSerivce.buildWishlistViewModel(null);
+            Assert.Null(test);
+        }
+
+        [Fact]
         public async Task buildProfileViewModelTestAsync()
         {
             Student thisStudent = _context.Students.Find(1);
