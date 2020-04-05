@@ -17,9 +17,9 @@
                     <ViewCell>
                         <StackLayout Orientation="Horizontal">
                             <StackLayout HorizontalOptions="StartAndExpand">
-                                <Label Text="{Binding courseName}"
+                                <Label Text="{Binding cName}"
                                        FontAttributes="Bold" />
-                                <Label Text="{Binding courseDescription}"
+                                <Label Text="{Binding cDes}"
                                        TextColor="Gray" />
                             </StackLayout>
                             <Button Text="Detail"

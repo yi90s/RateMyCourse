@@ -20,13 +20,12 @@ namespace cRegis.Mobile.ViewModels
 
         public List<EnrolledViewModel> enrolledlist { get; set; }
 
-        public StudentViewModel(Student s, string crehrs, List<EnrolledViewModel> listC)
+        public StudentViewModel(Student s, string crehrs, List<EnrolledViewModel> listC, string fName)
         {
             studentName = s.name;
             studentID = s.studentId;
-            facultyName = "Computer Science";
+            facultyName = fName;
             creditRemain = crehrs;
-            //creditRemain = "120";
             enrolledlist = listC;
         }
 

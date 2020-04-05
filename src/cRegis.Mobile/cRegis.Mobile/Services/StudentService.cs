@@ -71,5 +71,15 @@ namespace cRegis.Mobile.Services
             return c;
         }
 
+        public async Task<Faculty> getFaculty(int fid)
+        {
+            var response = await _client.GetAsync(API_DOMAIN + String.Format("/faculty/{0}", fid));
+
+            var data = await response.Content.ReadAsStringAsync();
+
+            Faculty f = JsonConvert.DeserializeObject<Faculty>(data);
+
+            return f;
+        }
     }
 }
