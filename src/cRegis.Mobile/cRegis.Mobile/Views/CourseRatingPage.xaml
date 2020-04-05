@@ -10,8 +10,8 @@
                   HorizontalOptions="FillAndExpand"
                   VerticalOptions="FillAndExpand">
         <Label Text="Rate Course" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
-        <Label Text="{Binding courseName}" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
-        <Label Text="{Binding courseDescription}" FontSize="Medium" FontAttributes="Bold" Margin="6,8,6,8"/>
+        <Label Text="{Binding cName}" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+        <Label Text="{Binding cDes}" FontSize="Medium" FontAttributes="Bold" Margin="6,8,6,8"/>
 
 
         <StackLayout VerticalOptions="StartAndExpand" Margin="6,8,6,8">

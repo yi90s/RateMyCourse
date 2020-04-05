@@ -71,5 +71,13 @@ namespace cRegis.Mobile.Services
             return c;
         }
 
+        public async Task<string> getFacultyName(int fid)
+        {
+            var response = await _client.GetAsync(API_DOMAIN + String.Format("/faculty/{0}", fid));
+
+            var name = await response.Content.ReadAsStringAsync();
+
+            return name;
+        }
     }
 }

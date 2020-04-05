@@ -13,5 +13,6 @@ namespace cRegis.Mobile.Interfaces
         Task<List<Course>> getStudentCourseListAsync();
         Task<List<Enrolled>> getStudentEnrolledListAsync();
         Task<Course> getCourseAsync(int cid);
+        Task<string> getFacultyName(int fid);
     }
 }
