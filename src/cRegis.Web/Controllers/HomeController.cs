@@ -45,7 +45,7 @@ namespace cRegis.Web.Controllers
             //get instance of current StudentUser oboject
             var curUser = await _userManager.GetUserAsync(this.User);
             Student student = await _studentSerivce.getStudentAsync(curUser.StudentId);
-            ProfileViewModel thisView =  await _viewModelSerivce.buildProfileViewModel(student);
+            ProfileViewModel thisView = _viewModelSerivce.buildProfileViewModel(student);
 
             return View(thisView);
          }
@@ -56,7 +56,7 @@ namespace cRegis.Web.Controllers
         {
             var curUser = await _userManager.GetUserAsync(this.User);
             Student stu = await _studentSerivce.getStudentAsync(curUser.StudentId);
-            FindCourseViewModel thisView =  await _viewModelSerivce.buildFindCourseViewModel(stu);
+            FindCourseViewModel thisView =  await _viewModelSerivce.buildFindCourseViewModelAsync(stu);
 
             return View(thisView);
         }
