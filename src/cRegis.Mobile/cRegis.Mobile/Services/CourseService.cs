@@ -20,7 +20,7 @@ namespace cRegis.Mobile.Services
 
         public async Task<List<Course>> getCourseListAsync()
         {
-            var response = await _client.GetAsync(API_DOMAIN + "/course/eligible");
+            var response = await _client.GetAsync(API_DOMAIN + "/course/recommend");
 
             var courseInfo = await response.Content.ReadAsStringAsync();
 
