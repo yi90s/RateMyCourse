@@ -17,7 +17,7 @@
                 </Grid.RowDefinitions>
                 <Grid>
                     <StackLayout Padding="0,20,0,0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
-                        <Label Text="Hi John" FontSize="Large" />
+                        <Label Text="Hi There" FontSize="Large" />
                     </StackLayout>
                 </Grid>
                 <StackLayout  Grid.Row="1" Spacing="15">

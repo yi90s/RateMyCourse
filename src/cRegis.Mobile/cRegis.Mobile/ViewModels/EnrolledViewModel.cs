@@ -12,6 +12,7 @@ namespace cRegis.Mobile.ViewModels
         public string cName { get; set; }
         public string cDes { get; set; }
         public Course cour { get; set; }
+        public Enrolled enroll { get; set; }
         
         public EnrolledViewModel(Course c, Enrolled e)
         {
@@ -20,6 +21,7 @@ namespace cRegis.Mobile.ViewModels
             cName = c.courseName;
             cDes = c.courseDescription;
             cour = c;
+            enroll = e;
         }
     }
 }

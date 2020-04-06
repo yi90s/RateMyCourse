@@ -17,8 +17,8 @@ namespace cRegis.Web.Services
         private readonly IFacultyService _facultyService;
         private readonly IWishlistService _wishlistService;
 
-        public ViewModelService(ICourseService courseService, 
-            IEnrollService enrollService, 
+        public ViewModelService(ICourseService courseService,
+            IEnrollService enrollService,
             IStudentService studentService,
             IFacultyService facultyService, IWishlistService wishlistService)
         {
@@ -31,19 +31,27 @@ namespace cRegis.Web.Services
 
         public CourseCommentViewModel buildCourseCommentViewModel(Comment comment)
         {
-            var vm = new CourseCommentViewModel
+            if (comment == null)
+            {
+                return null;
+            }
+
+            return new CourseCommentViewModel
             {
                 ratingScore = comment.ratingScore,
                 comment = comment.comment,
                 takenDate = comment.takenDate
             };
-
-            return vm;
         }
 
         public CourseContainerViewModel buildCourseContainerViewModel(Course course, ISet<CourseActions> actions, Enrolled enroll = null, Student student = null)
         {
-            var vm = new CourseContainerViewModel
+            if (course == null)
+            {
+                return null;
+            }
+
+            return new CourseContainerViewModel
             {
                 courseId = course.courseId,
                 courseName = course.courseName,
@@ -52,95 +60,88 @@ namespace cRegis.Web.Services
                 enrollId = enroll?.enrollId,
                 studentId = student?.studentId
             };
-
-            return vm;
         }
 
         public CourseDetailViewModel buildCourseDetailViewModel(int cid)
         {
-            Course c = _courseService.getCourse(cid);
-            CourseDetailViewModel vm = null;
-            List<CourseCommentViewModel> commentsVM = null;
-            string avgRating = "N/A";
-
-            if (c == null)
+            Course course = _courseService.getCourse(cid);
+            if (course == null)
             {
                 return null;
             }
 
-            List<Comment> comments = _courseService.getCommentsForCourse(c.courseId);
+            List<CourseCommentViewModel> commentsVM = null;
+            string avgRating = "N/A";
+            List<Comment> comments = _courseService.getCommentsForCourse(course.courseId);
 
             if (comments.Count > 0)
-            { 
+            {
                 commentsVM = new List<CourseCommentViewModel>();
 
                 int ratingSum = 0;
-                foreach (var cmt in comments)
+                foreach (Comment cmt in comments)
                 {
                     ratingSum += cmt.ratingScore;
                     commentsVM.Add(buildCourseCommentViewModel(cmt));
                 }
                 avgRating = (ratingSum / comments.Count).ToString() + "/100";
-
             }
 
-            vm = new CourseDetailViewModel
+            return new CourseDetailViewModel
             {
-                courseName = c.courseName,
-                courseDescription = c.courseDescription,
-                availableSpace = _courseService.getAvailableSpaceForCourse(c.courseId),
-                date = c.date,
+                courseName = course.courseName,
+                courseDescription = course.courseDescription,
+                availableSpace = _courseService.getAvailableSpaceForCourse(course.courseId),
+                date = course.date,
                 avgRating = avgRating,
                 comments = commentsVM,
             };
-
-            return vm;
-
         }
 
-        public async Task<FindCourseViewModel> buildFindCourseViewModel(Student student)
+        public async Task<FindCourseViewModel> buildFindCourseViewModelAsync(Student student)
         {
             if (student == null)
             {
                 return null;
             }
 
-            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            List<CourseContainerViewModel> courseContainerViewModels = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.AddToWishlist };
             List<Course> eligibleCourses = await _courseService.getRecCoursesForStudentAsync(student.studentId);
 
-            foreach (Course c in eligibleCourses)
+            foreach (Course course in eligibleCourses)
             {
-                var ccvm = buildCourseContainerViewModel(c, actions, student:student);
-                ccvms.Add(ccvm);
+                courseContainerViewModels.Add(buildCourseContainerViewModel(course, actions, student: student));
             }
 
-            FindCourseViewModel vmodel = new FindCourseViewModel { courseList = ccvms};
-
-            return vmodel;
+            return new FindCourseViewModel
+            {
+                courseList = courseContainerViewModels
+            };
         }
 
-        public  HistoryViewModel buildHistoryViewModel(Student student)
+        public HistoryViewModel buildHistoryViewModel(Student student)
         {
             if (student == null)
             {
                 return null;
             }
 
-            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            List<CourseContainerViewModel> courseContainerViewModels = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.RateCourse, CourseActions.ViewDetail };
             List<Enrolled> completed = _enrollService.getCompletedEnrollsForStudent(student.studentId);
 
             foreach (Enrolled enroll in completed)
             {
-                Course course =  _courseService.getCourse(enroll.courseId);
-                var ccvm = buildCourseContainerViewModel(course, actions, enroll:enroll);
-                ccvms.Add(ccvm);
+                Course course = _courseService.getCourse(enroll.courseId);
+                courseContainerViewModels.Add(buildCourseContainerViewModel(course, actions, enroll: enroll));
             }
 
-            HistoryViewModel vmodel = new HistoryViewModel { thisStudent = student, courses = ccvms};
-
-            return vmodel;
+            return new HistoryViewModel
+            {
+                thisStudent = student,
+                courses = courseContainerViewModels
+            };
         }
 
         public WishlistViewModel buildWishlistViewModel(Student student)
@@ -165,8 +166,7 @@ namespace cRegis.Web.Services
 
             return vmodel;
         }
-
-        public async Task<ProfileViewModel> buildProfileViewModel(Student student)
+        public ProfileViewModel buildProfileViewModel(Student student)
         {
             if (student == null)
             {
@@ -174,31 +174,45 @@ namespace cRegis.Web.Services
             }
 
             int remainCreditHours = _studentService.getRemainingCredithoursForStudent(student.studentId);
-            string majorName =  _facultyService.getFaculty(student.majorId).facultyName;
+
+            string majorName = "";
+            Faculty tempFaculty = _facultyService.getFaculty(student.majorId);
+            if (tempFaculty != null)
+            {
+                majorName = tempFaculty.facultyName;
+            }
+
             List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
             ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.DropCourse };
             List<Enrolled> regCourses = _enrollService.getCurrentEnrollsForStudent(student.studentId);
-            
+
             foreach (Enrolled e in regCourses)
             {
                 Course thisCourse = _courseService.getCourse(e.courseId);
-                var ccvm = buildCourseContainerViewModel(thisCourse, actions,e);
+                CourseContainerViewModel ccvm = buildCourseContainerViewModel(thisCourse, actions, e);
                 ccvms.Add(ccvm);
             }
 
-            ProfileViewModel vmodel = new ProfileViewModel {
+            return new ProfileViewModel
+            {
                 thisStudent = student,
                 majorName = majorName,
                 cViewModels = ccvms,
                 remainingCreditHours = remainCreditHours
             };
-
-            return vmodel;
         }
 
         public RateCourseViewModel buildRateCourseViewModel(Enrolled rate, Course course)
         {
-            var vm = new RateCourseViewModel
+            if (rate == null)
+            {
+                return null;
+            }
+            if (course == null)
+            {
+                return null;
+            }
+            return new RateCourseViewModel
             {
                 EnrollId = rate.enrollId,
                 Rating = rate.rating,
@@ -206,8 +220,6 @@ namespace cRegis.Web.Services
                 CourseName = course.courseName,
                 courseDescription = course.courseDescription
             };
-
-            return vm;
         }
     }
 }
