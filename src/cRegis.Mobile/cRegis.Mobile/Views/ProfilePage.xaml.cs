@@ -23,15 +23,17 @@ namespace cRegis.Mobile.Views
             InitializeComponent();
             _studentService = new StudentService((string)Application.Current.Properties["jwt"]);
             _modifyService = new ModifyService((string)Application.Current.Properties["jwt"]);
-            testInit();
+            Init();
         }
 
-        async void testInit()
+        async void Init()
         {
             
             //calling api to get student's detail infomation
             Student curStudent =  await _studentService.getStudentAsync();
             string crehrs = await _studentService.getStudentCreditAsync();
+            Faculty f = await _studentService.getFaculty(curStudent.majorId);
+            string fName = f.facultyName;
             List<Enrolled> listE = await _studentService.getStudentEnrolledListAsync();
             List<EnrolledViewModel> listEnroll = new List<EnrolledViewModel>();
 
@@ -42,10 +44,7 @@ namespace cRegis.Mobile.Views
                 listEnroll.Add(new EnrolledViewModel(tempC, e));
             }
 
-            //List<Course> listC = await _studentService.getStudentCourseListAsync();
-            //int crehrs = 0;
-            //List<Course> listC = new List<Course>();
-            StudentViewModel test = new StudentViewModel(curStudent, crehrs, listEnroll);
+            StudentViewModel test = new StudentViewModel(curStudent, crehrs, listEnroll, fName);
             BindingContext = test;
         }
 

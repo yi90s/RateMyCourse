@@ -16,7 +16,8 @@ namespace cRegis.Mobile.Views
     public partial class HistoryPage : ContentPage
     {
 
-        private ICourseService _courseService;
+        private IStudentService _studentService;
+        private IHistoryService _historyService;
 
         public HistoryPage()
         {
@@ -26,11 +27,22 @@ namespace cRegis.Mobile.Views
 
         async void Init()
         {
-            _courseService = new CourseService((string)Application.Current.Properties["jwt"]);
-            List<Course> l = await _courseService.getHistoryListAsync();
-            CourseViewModel test = new CourseViewModel(l);
-            //test.test();
-            BindingContext = test;
+            _studentService = new StudentService((string)Application.Current.Properties["jwt"]);
+            _historyService = new HistoryService((string)Application.Current.Properties["jwt"]);
+
+            List<Enrolled> listE = await _historyService.getHistoryEnrolledListAsync();
+            List<EnrolledViewModel> listEnroll = new List<EnrolledViewModel>();
+
+            foreach (Enrolled e in listE)
+            {
+                int tempI = e.courseId;
+                Course tempC = await _studentService.getCourseAsync(tempI);
+                listEnroll.Add(new EnrolledViewModel(tempC, e));
+            }
+
+
+            HistoryViewModel model = new HistoryViewModel(listEnroll);
+            BindingContext = model;
         }
 
         public async void ViewCourseDetail(object sender, EventArgs e)
@@ -38,17 +50,17 @@ namespace cRegis.Mobile.Views
             //var chosenCourse = (Course)registeredCourseList.SelectedItem;
 
             var menuItem = sender as Button;
-            var chosenCourse = menuItem.CommandParameter as Course;
+            var chosenCourse = menuItem.CommandParameter as EnrolledViewModel;
 
-            await Navigation.PushAsync(new CourseDetailPage(chosenCourse));
+            await Navigation.PushAsync(new CourseDetailPage(chosenCourse.cour));
         }
 
         public async void RateCourse(object sender, EventArgs e)
         {
             var menuItem = sender as Button;
-            var chosenCourse = menuItem.CommandParameter as Course;
+            var chosenCourse = menuItem.CommandParameter as EnrolledViewModel;
 
-            await Navigation.PushAsync(new CourseRatingPage(chosenCourse));
+            await Navigation.PushAsync(new CourseRatingPage(chosenCourse.cour, chosenCourse.enroll));
         }
     }
 }
