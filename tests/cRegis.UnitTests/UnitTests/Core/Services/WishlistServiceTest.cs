@@ -37,14 +37,14 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void addCoursetoStudentWishlistTest_NonExistantStudent()
+        public async void addCoursetoStudentWishlistTest_NonExistentStudent()
         {
             int outcome = await _wishlistService.addCoursetoStudentWishlist(-1, 6);
             Assert.True(outcome == 1);
         }
 
         [Fact]
-        public async void addCoursetoStudentWishlistTest_NonExistantCourse()
+        public async void addCoursetoStudentWishlistTest_NonExistentCourse()
         {
             int outcome = await _wishlistService.addCoursetoStudentWishlist(2, -1);
             Assert.True(outcome == 2);
@@ -80,7 +80,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void updatePriorityTest_MoveUp_NonExistantStudent()
+        public async void updatePriorityTest_MoveUp_NonExistentStudent()
         {
             int studentId = -1;
             int courseId = 1;
@@ -90,7 +90,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void updatePriorityTest_MoveUp_NonExistantCourse()
+        public async void updatePriorityTest_MoveUp_NonExistentCourse()
         {
             int studentId = 1;
             int courseId = -1;
@@ -133,7 +133,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void updatePriorityTest_MoveDown_NonExistantStudent()
+        public async void updatePriorityTest_MoveDown_NonExistentStudent()
         {
             int studentId = -1;
             int courseId = 1;
@@ -143,7 +143,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public async void updatePriorityTest_MoveDown_NonExistantCourse()
+        public async void updatePriorityTest_MoveDown_NonExistentCourse()
         {
             int studentId = 1;
             int courseId = -1;
@@ -265,7 +265,7 @@ namespace cRegis.UnitTests.UnitTests.Core.Services
         }
 
         [Fact]
-        public void removeCourseFromStudentWishlist_NonExistantEntry()
+        public void removeCourseFromStudentWishlist_NonExistentEntry()
         {
             //Get Entry
             int studentId = 1;
