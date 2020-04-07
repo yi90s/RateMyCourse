@@ -144,7 +144,7 @@ namespace cRegis.AcceptanceTests
         [Fact]
         public void History_Rate_Test()
         {
-            string rating = "0";
+            string rating = rand.Next(100).ToString();
             string randomComment = rand.Next().ToString();
 
             signin();
