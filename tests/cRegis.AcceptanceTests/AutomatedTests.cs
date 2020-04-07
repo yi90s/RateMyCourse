@@ -1,6 +1,5 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
-using OpenQA.Selenium.Support.UI;
 using System;
 using Xunit;
 
@@ -18,6 +17,7 @@ namespace cRegis.AcceptanceTests
             _driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
 
             signin();
+            clearRegistrations();
         }
 
         public void Dispose()
@@ -106,18 +106,11 @@ namespace cRegis.AcceptanceTests
             Assert.Contains("Average Rating", _driver.PageSource);
             Assert.Contains("Instructor", _driver.PageSource);
             Assert.Contains("Location", _driver.PageSource);
-
-            //Click the "jb" button
-            _driver.FindElement(By.LinkText("jb")).Click();
-
-            dropCourse();
         }
 
         [Fact]
         public void FindCourse_RegisterCourse_DropCourse_Test()
         {
-            clearRegistrations();
-
             string courseName = registerCourse();
 
             Assert.Contains(courseName, _driver.PageSource);
@@ -129,6 +122,8 @@ namespace cRegis.AcceptanceTests
 
             //Click the "Find Course" Button
             _driver.FindElement(By.LinkText("Find Course")).Click();
+
+            //Ensure that the Course is displayed as Registerable
             Assert.Contains(courseName, _driver.PageSource);
         }
 
@@ -155,13 +150,11 @@ namespace cRegis.AcceptanceTests
             //Click the "History" Button
             _driver.FindElement(By.LinkText("History")).Click();
             Assert.Contains("Registration History", _driver.PageSource);
-            Assert.Contains("An Introduction to Computer Science 1", _driver.PageSource);
 
             //Click the "Detail" button for this Course
             _driver.FindElement(By.XPath("/html/body/div/main/div/div[1]/div[2]/div/div[2]/div/a[1]")).Click();
 
             //Verify that it shows the Details for that Course
-            Assert.Contains("COMP 1010 - An Introduction to Computer Science 1", _driver.PageSource);
             Assert.Contains("Available Space", _driver.PageSource);
             Assert.Contains("Date", _driver.PageSource);
             Assert.Contains("Average Rating", _driver.PageSource);
@@ -181,7 +174,7 @@ namespace cRegis.AcceptanceTests
             //Click the "History" Button
             _driver.FindElement(By.LinkText("History")).Click();
             Assert.Contains("Registration History", _driver.PageSource);
-            Assert.Contains("An Introduction to Computer Science 1", _driver.PageSource);
+            string courseName = _driver.FindElement(By.XPath("/html/body/div/main/div/div[1]/div[1]")).Text;
 
             //Click the "Rate" button for this Course
             _driver.FindElement(By.XPath("/html/body/div/main/div/div[1]/div[2]/div/div[2]/div/a[2]")).Click();
@@ -197,7 +190,7 @@ namespace cRegis.AcceptanceTests
 
             //Click the "History" Button
             _driver.FindElement(By.LinkText("History")).Click();
-            Assert.Contains("An Introduction to Computer Science 1", _driver.PageSource);
+            Assert.Contains(courseName, _driver.PageSource);
 
             //Click the "Detail" button for this Course
             _driver.FindElement(By.XPath("/html/body/div/main/div/div[1]/div[2]/div/div[2]/div/a[1]")).Click();
