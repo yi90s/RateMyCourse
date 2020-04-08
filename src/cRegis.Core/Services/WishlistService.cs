@@ -29,10 +29,11 @@ namespace cRegis.Core.Services
             {
                 return 2;
             }
-            if(await _context.Wishlist.FindAsync(sid, cid) != null)
+            if (await _context.Wishlist.FindAsync(sid, cid) != null)
             {
                 return 3;
             }
+            
             int lastPriorityNum = 0;
             if (_context.Wishlist.Any(w => w.studentId == sid))
             {
