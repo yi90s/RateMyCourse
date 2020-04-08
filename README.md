@@ -31,6 +31,7 @@ cReg™ is an application that enables university students to efficiently and ef
   - Unit Test: xUnit, Moq
   - Intergration Test: In Progress
   - System Test: In Progress
+  - Acceptance Test: Selenium
 
 # Running Instance
 - [Login Info](docs/loginInfo.md)
