@@ -110,6 +110,14 @@ namespace cRegis.Web.Controllers
             return View(vm);
         }
 
+        [HttpGet]
+        public List<Course> Index(string keywords)
+        {
+            var results = _courseService.getCoursesByKeywords(keywords);
+
+            return results;
+        }
+
         public async Task<IActionResult> Add(int cid)
         {
             var curUser = await _userManager.GetUserAsync(this.User);
