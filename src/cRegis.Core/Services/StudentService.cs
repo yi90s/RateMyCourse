@@ -34,7 +34,7 @@ namespace cRegis.Core.Services
 
             int creditHourNeed = _context.Faculties.Find(student.majorId).graduateCreditHours;
             int creditHourTook = 0;
-            List<int> finshedCourseId =  _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToList();
+            List<int> finshedCourseId = _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToList();
             foreach (int courseId in finshedCourseId)
             {
                 creditHourTook += _context.Courses.Find(courseId).creditHours;
@@ -99,7 +99,7 @@ namespace cRegis.Core.Services
             foreach (Prerequisite require in prerequisiteList)
             {
                 List<Enrolled> thisEnrolls = await _context.Enrolled.Where(e => e.studentId == sid && e.courseId == require.prerequisiteId && e.completed).ToListAsync();
-                if (thisEnrolls.Count>0)
+                if (thisEnrolls.Count > 0)
                 {
                     int grade = -1;
                     foreach (Enrolled enroll in thisEnrolls)
@@ -121,7 +121,5 @@ namespace cRegis.Core.Services
             }
             return result;
         }
-
-
     }
 }

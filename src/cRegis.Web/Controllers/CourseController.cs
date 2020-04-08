@@ -1,5 +1,6 @@
 ﻿
 using System.Threading.Tasks;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,7 @@ namespace cRegis.Web.Controllers
         private readonly ICourseService _courseService;
         private readonly IStudentService _studentSerivce;
         private readonly IEnrollService _enrollSerivce;
+        private readonly IWishlistService _wishlistService;
         private readonly IViewModelService _viewModelSerivce;
 
         public CourseController(UserManager<StudentUser> userManager,
@@ -27,12 +29,14 @@ namespace cRegis.Web.Controllers
                               ICourseService courserSerivce,
                               IStudentService studentSerivce,
                               IEnrollService enrollSerivce,
+                              IWishlistService wishlistService,
                               IViewModelService viewModelSerivce)
         {
             _viewModelSerivce = viewModelSerivce;
             _enrollSerivce = enrollSerivce;
             _studentSerivce = studentSerivce;
             _courseService = courserSerivce;
+            _wishlistService = wishlistService;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -43,8 +47,12 @@ namespace cRegis.Web.Controllers
             int sid = curUser.StudentId;
 
             if (await _studentSerivce.verifyRegistrationForStudent(sid, cid) == 0)
-            {
+            { 
                 await _studentSerivce.registerCourseForStudent(sid, cid);
+                if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
+                {
+                    _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+                }
                 TempData["alertMessage"] = "Success Registration";
             }
             else
@@ -101,6 +109,54 @@ namespace cRegis.Web.Controllers
             return View(vm);
         }
 
-    }
+        public async Task<IActionResult> Add(int cid)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
 
+            if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
+            {
+                TempData["alertMessage"] = "Course is Already in Wishlist";
+            }
+            else
+            {
+                await _wishlistService.addCoursetoStudentWishlist(sid, cid);
+                TempData["alertMessage"] = "Added to Wishlist";
+
+            }
+            return RedirectToAction("Register", "Home");
+        }
+
+        public async Task<IActionResult> Remove(int cid)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
+
+            if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
+            {
+                _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+                TempData["alertMessage"] = "Course was Removed From Wishlist";
+            }
+            else
+            {
+                TempData["alertMessage"] = "Course is Not in Wishlist";
+            }
+            return RedirectToAction("Wishlist", "Home");
+        }
+
+        public async Task<IActionResult> Move(int cid, CourseActions direction)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
+
+            if(direction == CourseActions.WishlistPriorityUp)
+            {
+                await _wishlistService.updatePriority(sid, cid, MoveDirection.MoveUp);
+            } else if (direction == CourseActions.WishlistPriorityDown)
+            {
+                await _wishlistService.updatePriority(sid, cid, MoveDirection.MoveDown);
+            }
+            return RedirectToAction("Wishlist", "Home");
+        }
+    }
 }

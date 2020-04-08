@@ -5,6 +5,7 @@ using cRegis.Web.Interfaces;
 using cRegis.Web.ViewModels;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace cRegis.Web.Services
 {
@@ -14,16 +15,18 @@ namespace cRegis.Web.Services
         private readonly IEnrollService _enrollService;
         private readonly IStudentService _studentService;
         private readonly IFacultyService _facultyService;
+        private readonly IWishlistService _wishlistService;
 
         public ViewModelService(ICourseService courseService,
             IEnrollService enrollService,
             IStudentService studentService,
-            IFacultyService facultyService)
+            IFacultyService facultyService, IWishlistService wishlistService)
         {
             _facultyService = facultyService;
             _studentService = studentService;
             _courseService = courseService;
             _enrollService = enrollService;
+            _wishlistService = wishlistService;
         }
 
         public CourseCommentViewModel buildCourseCommentViewModel(Comment comment)
@@ -103,7 +106,7 @@ namespace cRegis.Web.Services
             }
 
             List<CourseContainerViewModel> courseContainerViewModels = new List<CourseContainerViewModel>();
-            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse };
+            ISet<CourseActions> actions = new HashSet<CourseActions> { CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.AddToWishlist };
             List<Course> eligibleCourses = await _courseService.getRecCoursesForStudentAsync(student.studentId);
 
             foreach (Course course in eligibleCourses)
@@ -141,6 +144,28 @@ namespace cRegis.Web.Services
             };
         }
 
+        public WishlistViewModel buildWishlistViewModel(Student student)
+        {
+            if (student == null)
+            {
+                return null;
+            }
+
+            List<CourseContainerViewModel> ccvms = new List<CourseContainerViewModel>();
+            ISet<CourseActions> actions = new HashSet<CourseActions> {CourseActions.ViewDetail, CourseActions.RegisterCourse, CourseActions.WishlistPriorityUp, CourseActions.WishlistPriorityDown, CourseActions.RemoveFromWishlist};
+            List<Wishlist> wishlist = _wishlistService.getStudentWishlist(student.studentId);
+     
+            foreach (Wishlist entry in wishlist)
+            {
+                Course course = _courseService.getCourse(entry.courseId);
+                var ccvm = buildCourseContainerViewModel(course, actions, student: student);
+                ccvms.Add(ccvm);
+            }
+
+            WishlistViewModel vmodel = new WishlistViewModel { thisStudent = student, courses = ccvms };
+
+            return vmodel;
+        }
         public ProfileViewModel buildProfileViewModel(Student student)
         {
             if (student == null)

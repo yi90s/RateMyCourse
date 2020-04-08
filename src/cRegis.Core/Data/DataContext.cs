@@ -34,6 +34,8 @@ namespace cRegis.Core.Data
 
         public DbSet<StudentUser> StuentUsers { get; set; }
 
+        public DbSet<Wishlist> Wishlist { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -48,6 +50,9 @@ namespace cRegis.Core.Data
 
             modelBuilder.Entity<Prerequisite>()
                 .HasKey(p => new { p.courseId, p.prerequisiteId });
+
+            modelBuilder.Entity<Wishlist>()
+                .HasKey(p => new { p.studentId, p.courseId });
 
 
             seed(modelBuilder);
@@ -204,6 +209,41 @@ namespace cRegis.Core.Data
                 new Required { facultyId = 1, courseId = 17 }
                 );
 
+            modelBuilder.Entity<Wishlist>().HasData(
+                //John Brico's wishlist
+                new Wishlist { studentId = 1, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 1, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 1, courseId = 3, priority = 3 },
+                new Wishlist { studentId = 1, courseId = 4, priority = 4 },
+                new Wishlist { studentId = 1, courseId = 5, priority = 5 },
+                //Mike Zapp's wishlist
+                new Wishlist { studentId = 2, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 2, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 2, courseId = 3, priority = 3 },
+                new Wishlist { studentId = 2, courseId = 4, priority = 4 },
+                //Peter Graham's wishlist
+                new Wishlist { studentId = 3, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 3, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 3, courseId = 3, priority = 3 },
+                new Wishlist { studentId = 3, courseId = 4, priority = 4 },
+                //Robert Guderian wishlist
+                new Wishlist { studentId = 4, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 4, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 4, courseId = 3, priority = 3 },
+                //Gord Boyer wishlist
+                new Wishlist { studentId = 5, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 5, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 5, courseId = 3, priority = 3 },
+                //Carson Leung wishlist
+                new Wishlist { studentId = 6, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 6, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 6, courseId = 3, priority = 3 },
+                //Franklin Bristow wishlist
+                new Wishlist { studentId = 7, courseId = 1, priority = 1 },
+                new Wishlist { studentId = 7, courseId = 2, priority = 2 },
+                new Wishlist { studentId = 7, courseId = 3, priority = 3 }
+                );
+
             IdentityRole studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };
             IdentityRole adminRole = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" };
             modelBuilder.Entity<IdentityRole>().HasData(
@@ -257,7 +297,5 @@ namespace cRegis.Core.Data
                 return null;
             }
         }
-
-
     }
 }

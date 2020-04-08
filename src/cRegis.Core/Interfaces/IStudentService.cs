@@ -17,7 +17,5 @@ namespace cRegis.Core.Interfaces
         Task<int> verifyRegistrationForStudent(int sid, int cid);
 
         Task<int> verifyDropForStudent(int sid, int eid);
-
-
     }
 }
