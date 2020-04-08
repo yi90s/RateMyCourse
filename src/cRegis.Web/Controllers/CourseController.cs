@@ -8,6 +8,7 @@ using cRegis.Core.Interfaces;
 using cRegis.Core.Entities;
 using cRegis.Web.Interfaces;
 using cRegis.Web.ViewModels;
+using System.Collections.Generic;
 
 namespace cRegis.Web.Controllers
 {
@@ -58,9 +59,9 @@ namespace cRegis.Web.Controllers
         {
             var curUser = await _userManager.GetUserAsync(this.User);
 
-            int index = await  _studentSerivce.verifyDropForStudent(curUser.StudentId, eid);
+            int index = await _studentSerivce.verifyDropForStudent(curUser.StudentId, eid);
 
-            if (index==0)
+            if (index == 0)
             {
                 TempData["alertMessage"] = "Success Drop";
                 _enrollSerivce.drop(eid);
@@ -99,6 +100,14 @@ namespace cRegis.Web.Controllers
             CourseDetailViewModel vm = _viewModelSerivce.buildCourseDetailViewModel(cid);
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public List<Course> Index([FromQuery]string keywords)
+        {
+            List<Course> recCourses = _courseService.getCoursesByKeywords(keywords);
+
+            return recCourses;
         }
 
     }
