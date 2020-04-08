@@ -133,7 +133,22 @@ namespace cRegis.Web.Controllers
             var curUser = await _userManager.GetUserAsync(this.User);
             int sid = curUser.StudentId;
 
-    }
+            if (await _wishlistService.verifyWishlistEntry(sid, cid) == 0)
+            {
+                _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+                TempData["alertMessage"] = "Course was Removed From Wishlist";
+            }
+            else
+            {
+                TempData["alertMessage"] = "Course is Not in Wishlist";
+            }
+            return RedirectToAction("Wishlist", "Home");
+        }
+
+        public async Task<IActionResult> Move(int cid, CourseActions direction)
+        {
+            var curUser = await _userManager.GetUserAsync(this.User);
+            int sid = curUser.StudentId;
 
             if(direction == CourseActions.WishlistPriorityUp)
             {
