@@ -24,11 +24,17 @@ namespace cRegis.Core.Services
             return await _context.Students.FindAsync(sid);
         }
 
-        public int getRemainingCredithoursForStudent(Student student)
+        public int getRemainingCredithoursForStudent(int sid)
         {
+            Student student = _context.Students.Find(sid);
+            if (student == null)
+            {
+                return -1;
+            }
+
             int creditHourNeed = _context.Faculties.Find(student.majorId).graduateCreditHours;
             int creditHourTook = 0;
-            List<int> finshedCourseId =  _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToList();
+            List<int> finshedCourseId = _context.Enrolled.Where(e => e.studentId == student.studentId && e.completed).Select(e => e.courseId).ToList();
             foreach (int courseId in finshedCourseId)
             {
                 creditHourTook += _context.Courses.Find(courseId).creditHours;
@@ -36,33 +42,48 @@ namespace cRegis.Core.Services
             return creditHourNeed - creditHourTook;
         }
 
-        public void registerCourseForStudent(Student student, Course course)
+        public async Task<int> registerCourseForStudent(int sid, int cid)
         {
-            int cid = course.courseId;
-            if (student != null)
-            {
-                Enrolled newEnroll = new Enrolled { courseId = cid, studentId = student.studentId, completed = false, grade = null, rating = null, comment = null };
-                _context.Enrolled.Add(newEnroll);
-                 _context.SaveChanges();
+            if (await _context.Students.FindAsync(sid) == null) {
+                return 1;
             }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
+            Enrolled newEnroll = new Enrolled { courseId = cid, studentId = sid, completed = false, grade = null, rating = null, comment = null };
+            _context.Enrolled.Add(newEnroll);
+            _context.SaveChanges();
+            return 0;
         }
 
-        public void updateStudent(Student student)
+        public async Task<int> verifyDropForStudent(int sid, int eid)
         {
-            throw new NotImplementedException();
+            Enrolled enroll = await _context.Enrolled.FindAsync(eid);
+            if (enroll == null)
+            {
+                return 1;
+            }
+            if ( !enroll.completed )
+            {
+                return 0;
+            }
+            return -1;
         }
 
-        public bool verifyDropForStudent(Student student, int eid)
+        public async Task<int> verifyRegistrationForStudent(int sid, int cid)
         {
-            Enrolled thisEnroll = _context.Enrolled.Find(eid);
+            if (await _context.Students.FindAsync(sid) == null)
+            {
+                return 1;
+            }
+            if (await _context.Courses.FindAsync(cid) == null)
+            {
+                return 2;
+            }
 
-            bool result = (student.studentId == thisEnroll.studentId);
+            Student student = _context.Students.Find(sid);
 
-            return result;
-        }
-
-        public async Task<bool> verifyRegistrationForStudent(Student student, int cid)
-        {
             //************************************************************************
             int totalSpace = _context.Courses.Find(cid).space;
             int occupied = _context.Enrolled.Where(e => e.courseId == cid && !e.completed).Count();
@@ -71,15 +92,14 @@ namespace cRegis.Core.Services
 
             if (student == null || remainSpace <= 0)
             {
-                return false;
+                return -1;
             }
-            bool result = true;
-            int sid = student.studentId;
+            int result = 0;
             List<Prerequisite> prerequisiteList = await _context.Prerequisites.Where(p => p.courseId == cid).ToListAsync().ConfigureAwait(false);
             foreach (Prerequisite require in prerequisiteList)
             {
                 List<Enrolled> thisEnrolls = await _context.Enrolled.Where(e => e.studentId == sid && e.courseId == require.prerequisiteId && e.completed).ToListAsync();
-                if (thisEnrolls.Count>0)
+                if (thisEnrolls.Count > 0)
                 {
                     int grade = -1;
                     foreach (Enrolled enroll in thisEnrolls)
@@ -91,17 +111,15 @@ namespace cRegis.Core.Services
                     }
                     if (grade < require.grade)
                     {
-                        result = false;
+                        result = -1;
                     }
                 }
                 else
                 {
-                    result = false;
+                    result = -1;
                 }
             }
             return result;
         }
-
-
     }
 }

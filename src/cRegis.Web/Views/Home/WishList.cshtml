@@ -1,8 +1,21 @@
-﻿
+﻿@model cRegis.Web.ViewModels.WishlistViewModel
 @{
-    ViewData["Title"] = "WishList";
-    ViewData["Name"] = @Model.name;
-}
-<h1>WishList</h1>
-<h4>IN DEVELOPMENT</h4>
+    ViewData["Title"] = "Wishlist";
 
+    if (null != TempData["alertMessage"])
+    {
+        <script type="text/javascript">
+       alert('@TempData["alertMessage"]');
+        </script>
+    }
+}
+<h1>Wishlist</h1>
+
+<div class="container">
+
+    @foreach (var courseVM in Model.courses)
+    {
+        @await Html.PartialAsync("_courseContainer", courseVM);
+    }
+
+</div>

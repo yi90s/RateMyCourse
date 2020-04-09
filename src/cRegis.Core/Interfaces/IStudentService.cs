@@ -10,16 +10,12 @@ namespace cRegis.Core.Interfaces
     {
         Task<Student> getStudentAsync(int sid);
 
-        void updateStudent(Student student);
+        Task<int> registerCourseForStudent(int sid, int cid);
 
-        void registerCourseForStudent(Student student, Course course);
+        int getRemainingCredithoursForStudent(int sid);
 
-        int getRemainingCredithoursForStudent(Student student);
+        Task<int> verifyRegistrationForStudent(int sid, int cid);
 
-        Task<bool> verifyRegistrationForStudent(Student student, int cid);
-
-        bool verifyDropForStudent(Student student, int eid);
-
-
+        Task<int> verifyDropForStudent(int sid, int eid);
     }
 }

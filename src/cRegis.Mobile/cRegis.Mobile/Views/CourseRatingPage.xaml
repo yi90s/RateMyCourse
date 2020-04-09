@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="cRegis.Mobile.Views.CourseRatingPage">
+
+    <StackLayout  BackgroundColor="#ecf0f1"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+        <Label Text="Rate Course" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+        <Label Text="{Binding cName}" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+        <Label Text="{Binding cDes}" FontSize="Medium" FontAttributes="Bold" Margin="6,8,6,8"/>
+
+
+        <StackLayout VerticalOptions="StartAndExpand" Margin="6,8,6,8">
+
+            <Label Text="Your Rating (0 - 100)"/>
+            <Entry x:Name="Entry_rating" Placeholder="Enter your rating" PlaceholderColor="AliceBlue"/>
+            <Label Text="Your Comment"/>
+            <Editor x:Name="Entry_comment" Placeholder="Enter your comment" PlaceholderColor="AliceBlue"/>
+
+            <Button x:Name="Btn_SignIn" Text="Post" Clicked="PostComment"/>
+
+        </StackLayout>
+
+
+    </StackLayout>
+
+</ContentPage>

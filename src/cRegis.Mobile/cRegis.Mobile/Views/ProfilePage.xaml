@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="cRegis.Mobile.Views.ProfilePage">
+
+    <StackLayout  BackgroundColor="#ecf0f1"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+
+        <Label Text="{Binding studentName, StringFormat='Welcome {0}'}" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+
+        <StackLayout Margin="6,4,6,4" BackgroundColor="White">
+            <Label  Text="{Binding studentID, StringFormat='Student ID: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+            <Label  Text="{Binding facultyName, StringFormat='Major: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+            <Label  Text="{Binding creditRemain, StringFormat='Remaining Credits: {0}'}"
+                    Margin="8"
+                    FontSize="Medium" />
+        </StackLayout>
+
+        <Label Text="Registered Courses" FontSize="Large" FontAttributes="Bold" Margin="6,8,6,8"/>
+
+        <ListView x:Name="registeredCourseList"
+                  SeparatorVisibility="None"
+                  ItemsSource="{Binding enrolledlist}"
+                  HasUnevenRows="True"
+                  HorizontalOptions="FillAndExpand"
+                  VerticalOptions="FillAndExpand">
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal" BackgroundColor="White" Margin="6,4,6,4">
+                            <StackLayout HorizontalOptions="StartAndExpand">
+                                <Label Text="{Binding cName}"
+                                       FontAttributes="Bold" />
+                                <Label Text="{Binding cDes}"
+                                       TextColor="Gray" />
+                            </StackLayout>
+                            <Button Text="Detail"
+                                        BorderColor="Silver"
+                                        FontSize="Small"
+                                        TextColor="White"
+                                        BackgroundColor="#3399ff"
+                                        VerticalOptions="Center"
+                                        Clicked="ViewCourseDetail" CommandParameter="{Binding .}"/>
+                            <Button Text="Drop"
+                                        BorderColor="Silver"
+                                        FontSize="Small"
+                                        TextColor="White"
+                                        BackgroundColor="Red"
+                                        VerticalOptions="Center"
+                                        Clicked="DropCourse" CommandParameter="{Binding .}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+            
+        </ListView>
+
+    </StackLayout>
+
+</ContentPage>

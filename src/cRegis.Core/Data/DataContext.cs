@@ -8,9 +8,8 @@ using System.Linq;
 
 namespace cRegis.Core.Data
 {
-    public class 
-        
-        DataContext : IdentityDbContext{
+    public class DataContext : IdentityDbContext
+    {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
 
@@ -35,11 +34,13 @@ namespace cRegis.Core.Data
 
         public DbSet<StudentUser> StuentUsers { get; set; }
 
+        public DbSet<Wishlist> Wishlist { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            foreach (Microsoft.EntityFrameworkCore.Metadata.IMutableForeignKey relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
             {
                 relationship.DeleteBehavior = DeleteBehavior.Restrict;
             }
@@ -49,6 +50,9 @@ namespace cRegis.Core.Data
 
             modelBuilder.Entity<Prerequisite>()
                 .HasKey(p => new { p.courseId, p.prerequisiteId });
+
+            modelBuilder.Entity<Wishlist>()
+                .HasKey(p => new { p.studentId, p.courseId });
 
 
             seed(modelBuilder);
@@ -101,6 +105,7 @@ namespace cRegis.Core.Data
                 new Enrolled { enrollId = 10, studentId = 1, courseId = 11, completed = true, grade = 92, rating = null, comment = null },
                 new Enrolled { enrollId = 11, studentId = 1, courseId = 15, completed = true, grade = 87, rating = null, comment = null },
                 new Enrolled { enrollId = 12, studentId = 1, courseId = 14, completed = true, grade = 88, rating = null, comment = null },
+
                 //Mike Zapp's enrollments
                 new Enrolled { enrollId = 13, studentId = 2, courseId = 1, completed = true, grade = 70, rating = 70, comment = "NEVER AGAIN" },
                 new Enrolled { enrollId = 14, studentId = 2, courseId = 2, completed = true, grade = 73, rating = 80, comment = "You will either love the course or hate time" },
@@ -113,6 +118,7 @@ namespace cRegis.Core.Data
                 new Enrolled { enrollId = 21, studentId = 2, courseId = 13, completed = true, grade = 65, rating = null, comment = null },
                 new Enrolled { enrollId = 22, studentId = 2, courseId = 14, completed = true, grade = 50, rating = null, comment = null },
                 new Enrolled { enrollId = 23, studentId = 2, courseId = 6, completed = false, grade = null, rating = null, comment = null },
+
                 //Peter Graham's enrollements
                 new Enrolled { enrollId = 24, studentId = 3, courseId = 1, completed = true, grade = 90, rating = 87, comment = "Very excellent professor. Very clear, informative, and very helpful. He knows his stuff very well! Can manage to balance his two positions in the Faculty of Science and Computer Science very well." },
                 new Enrolled { enrollId = 25, studentId = 3, courseId = 2, completed = true, grade = 70, rating = 90, comment = "Markers marks unnecessarily harsh. Like his intention is to fail you not to grade you. Nevertheless, he does do his best, and he is better than many." },
@@ -156,12 +162,13 @@ namespace cRegis.Core.Data
                 new Student { studentId = 4, name = "Robert Guderian", majorId = 1 },
                 new Student { studentId = 5, name = "Gord Boyer", majorId = 1 },
                 new Student { studentId = 6, name = "Carson Leung", majorId = 1 },
-                new Student { studentId = 7, name = "Franklin Bristow", majorId = 1 }
+                new Student { studentId = 7, name = "Franklin Bristow", majorId = 1 },
+                new Student { studentId = 8, name = "Allan Marshall", majorId = 1 }
                 );
 
 
             modelBuilder.Entity<Faculty>().HasData(
-                new Faculty { facultyId = 1, facultyName = "Computer Science",graduateCreditHours = 60}
+                new Faculty { facultyId = 1, facultyName = "Computer Science", graduateCreditHours = 60 }
                 );
 
             modelBuilder.Entity<Prerequisite>().HasData(
@@ -202,22 +209,30 @@ namespace cRegis.Core.Data
                 new Required { facultyId = 1, courseId = 17 }
                 );
 
-            var studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };
-            var adminRole = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" };
+            modelBuilder.Entity<Wishlist>().HasData(
+                //John Brico's wishlist
+                new Wishlist { studentId = 1, courseId = 13, priority = 1 },
+                new Wishlist { studentId = 1, courseId = 16, priority = 2 },
+                new Wishlist { studentId = 1, courseId = 17, priority = 2 }
+                );
+
+            IdentityRole studentRole = new IdentityRole { Name = "Student", NormalizedName = "STUDENT" };
+            IdentityRole adminRole = new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" };
+
             modelBuilder.Entity<IdentityRole>().HasData(
                 studentRole, adminRole
                 );
 
-            var user1 = makeStudentUser("jb", 1, "Password1!");
-            var user2 = makeStudentUser("mz", 2, "Password1!");
-            var user3 = makeStudentUser("pg", 3, "Password1!");
-            var user4 = makeStudentUser("rg", 4, "Password1!");
-            var user5 = makeStudentUser("gb", 5, "Password1!");
-            var user6 = makeStudentUser("cl", 6, "Password1!");
-            var user7 = makeStudentUser("fb", 7, "Password1!");
+            StudentUser user1 = makeStudentUser("jb", 1, "Password1!");
+            StudentUser user2 = makeStudentUser("mz", 2, "Password1!");
+            StudentUser user3 = makeStudentUser("pg", 3, "Password1!");
+            StudentUser user4 = makeStudentUser("rg", 4, "Password1!");
+            StudentUser user5 = makeStudentUser("gb", 5, "Password1!");
+            StudentUser user6 = makeStudentUser("cl", 6, "Password1!");
+            StudentUser user7 = makeStudentUser("fb", 7, "Password1!");
 
             modelBuilder.Entity<StudentUser>().HasData(
-                user1, user2, user3,user4,user5,user6,user7
+                user1, user2, user3, user4, user5, user6, user7
                 );
 
             modelBuilder.Entity<IdentityUserRole<string>>().HasData(
@@ -231,12 +246,13 @@ namespace cRegis.Core.Data
                 );
         }
 
-        protected virtual StudentUser makeStudentUser(string UserName, int StudentId, string Password )
+        protected virtual StudentUser makeStudentUser(string UserName, int StudentId, string Password)
         {
             try
             {
                 //filling up the mandatoryy fields in AspNetusers table
-                StudentUser user = new StudentUser {
+                StudentUser user = new StudentUser
+                {
                     UserName = UserName,
                     StudentId = StudentId,
                     NormalizedUserName = UserName.ToUpper(),
@@ -248,12 +264,11 @@ namespace cRegis.Core.Data
                 user.PasswordHash = new PasswordHasher<StudentUser>().HashPassword(user, Password);
                 return user;
 
-            }catch(Exception e)
+            }
+            catch (Exception)
             {
                 return null;
             }
         }
-
-
     }
 }

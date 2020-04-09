@@ -1,11 +1,11 @@
-﻿using cRegis.Core.Entities;
+﻿using cRegis.Core.Data;
+using cRegis.Core.Entities;
 using cRegis.Core.Interfaces;
-using cRegis.Core.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using System.Linq;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace cRegis.Core.Services
 {
@@ -16,12 +16,15 @@ namespace cRegis.Core.Services
         {
             _context = context;
         }
-
-        public void drop(int eid)
+        public Enrolled drop(int eid)
         {
             Enrolled thisEnroll = _context.Enrolled.Find(eid);
-            _context.Enrolled.Remove(thisEnroll);
-            _context.SaveChanges();
+            if (thisEnroll != null)
+            {
+                _context.Enrolled.Remove(thisEnroll);
+                _context.SaveChanges();
+            }
+            return thisEnroll;
         }
 
         public List<Enrolled> getCompletedEnrollsForStudent(int sid)
@@ -31,9 +34,9 @@ namespace cRegis.Core.Services
             return completed;
         }
 
-        public List<Enrolled> getCurrentEnrollsForStudent(Student student)
+        public List<Enrolled> getCurrentEnrollsForStudent(int sid)
         {
-            return _context.Enrolled.Where(e => e.studentId == student.studentId && !e.completed).ToList();
+            return _context.Enrolled.Where(e => e.studentId == sid && !e.completed).ToList();
         }
 
         public async Task<Enrolled> getEnrollAsync(int eid)
@@ -41,21 +44,27 @@ namespace cRegis.Core.Services
             return await _context.Enrolled.FindAsync(eid);
         }
 
-        public List<Enrolled> getEnrollsForStudent(Student student)
+        public List<Enrolled> getEnrollsForStudent(int sid)
         {
-            return _context.Enrolled.Where(e => e.studentId == student.studentId).ToList();
+            return _context.Enrolled.Where(e => e.studentId == sid).ToList();
         }
 
-        public void updateEnroll(Enrolled newEnroll)
+        public int updateEnroll(Enrolled newEnroll)
         {
-            if (newEnroll != null)
+            if (newEnroll == null)
             {
-                var change = _context.Enrolled.Update(newEnroll);
-                if (change.State == EntityState.Modified)
-                {
-                    _context.SaveChanges();
-                }
+                return 1;
             }
+            if (!_context.Enrolled.Contains(newEnroll))
+            {
+                return 2;
+            }
+            if (_context.Enrolled.Update(newEnroll).State != EntityState.Modified)
+            {
+                return 3;
+            }
+            _context.SaveChanges();
+            return 0;
         }
     }
 }

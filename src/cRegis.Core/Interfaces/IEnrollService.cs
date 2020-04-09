@@ -8,14 +8,14 @@ namespace cRegis.Core.Interfaces
 {
     public interface IEnrollService
     {
-        void drop(int eid);
+        Enrolled drop(int eid);
 
         Task<Enrolled> getEnrollAsync(int eid);
-        void updateEnroll(Enrolled newEnroll);
+        int updateEnroll(Enrolled newEnroll);
 
-        List<Enrolled> getEnrollsForStudent(Student student);
+        List<Enrolled> getEnrollsForStudent(int sid);
 
-        List<Enrolled> getCurrentEnrollsForStudent(Student student);
+        List<Enrolled> getCurrentEnrollsForStudent(int sid);
 
         List<Enrolled> getCompletedEnrollsForStudent(int sid);
     }

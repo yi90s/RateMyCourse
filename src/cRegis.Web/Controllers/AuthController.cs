@@ -33,13 +33,6 @@ namespace cRegis.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(LoginViewModel model)
         {
-
-            if (!ModelState.IsValid)
-            {
-                ViewData["Message"] = "Incorrect user name or password";
-                return RedirectToAction("Index");
-            }
-
             
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, isPersistent: false, lockoutOnFailure: false);
             
@@ -62,9 +55,9 @@ namespace cRegis.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AccessDenied()
+        public IActionResult AccessDenied()
         {
-            return await AccessDenied();
+            return StatusCode(401);
         }
     }
 }
