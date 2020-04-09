@@ -67,6 +67,9 @@ namespace cRegis.Mobile.Views
 
             string result = await _modifyService.registerCourseAsync(chosenCourse.courseId);
             await DisplayAlert("Register", result, "Okay");
+            Navigation.InsertPageBefore(new CoursePage(), this);
+            Navigation.PopAsync();
+
         }
     }
 }
