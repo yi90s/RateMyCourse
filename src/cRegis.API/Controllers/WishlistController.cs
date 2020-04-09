@@ -28,7 +28,7 @@ namespace cRegis.API.Controllers
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
             int valid = await _wishlistService.verifyWishlistEntry(sid, cid);
 
-            if (valid <= 0)
+            if (valid < 3)
             {
                 return BadRequest("Student is not able to add the course to the wishlist");
             }
@@ -37,12 +37,21 @@ namespace cRegis.API.Controllers
             return Ok("Successful Addition To Wishlist");
         }
 
-        [Route("[controller]")]
+        [Route("[controller]/{cid}")]
         [HttpPost]
-        public async Task<ActionResult> updatePriority(int cid, [FromQuery] MoveDirection direction)
+        public async Task<ActionResult> updatePriorityUp(int cid)
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
-            await _wishlistService.updatePriority(sid, cid, direction);
+            await _wishlistService.updatePriority(sid, cid, MoveDirection.MoveUp);
+            return Ok();
+        }
+
+        [Route("[controller]/{cid}")]
+        [HttpPost]
+        public async Task<ActionResult> updatePriorityDown(int cid)
+        {
+            int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
+            await _wishlistService.updatePriority(sid, cid, MoveDirection.MoveDown);
             return Ok();
         }
 
@@ -51,8 +60,13 @@ namespace cRegis.API.Controllers
         public ActionResult removeCourseFromStudentWishlist(int cid)
         {
             int sid = Int32.Parse(this.User.FindFirst("sid")?.Value);
-            _wishlistService.removeCourseFromStudentWishlist(sid, cid);
-            return Ok();
+            Wishlist entryToRemove = _wishlistService.removeCourseFromStudentWishlist(sid, cid);
+
+            if (entryToRemove == null)
+            {
+                return BadRequest("Student is not able to remove the course to the wishlist");
+            }
+            return Ok("Successful Removal From Wishlist");
         }
 
         [Route("[controller]")]

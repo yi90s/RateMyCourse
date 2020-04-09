@@ -29,6 +29,11 @@ namespace cRegis.Core.Services
             {
                 return 2;
             }
+            if (await _context.Wishlist.FindAsync(sid, cid) != null)
+            {
+                return 3;
+            }
+            
             int lastPriorityNum = 0;
             if (_context.Wishlist.Any(w => w.studentId == sid))
             {
@@ -59,31 +64,26 @@ namespace cRegis.Core.Services
             {
                 destinationEntryPriority = sourceEntryPriority - 1;
             }
+            else if (direction == MoveDirection.MoveUp && sourceEntryPriority <= 1)
+            {
+                return 3;
+            }
             else if (direction == MoveDirection.MoveDown && sourceEntryPriority < lastPriorityNum)
             {
                 destinationEntryPriority = sourceEntryPriority + 1;
             }
-            else
+            else if (direction == MoveDirection.MoveDown && sourceEntryPriority >= lastPriorityNum)
             {
-                return 3; 
+                return 4;
             }
 
-            int result = 0;
-            Wishlist destinationEntry = _context.Wishlist.FirstOrDefault(w => w.studentId == sid && w.priority == destinationEntryPriority);
+            Wishlist destinationEntry = _context.Wishlist.SingleOrDefault(w => w.studentId == sid && w.priority == destinationEntryPriority);
             sourceEntry.priority = destinationEntryPriority;
             destinationEntry.priority = sourceEntryPriority;
             var change1 = _context.Wishlist.Update(sourceEntry);
             var change2 = _context.Wishlist.Update(destinationEntry);
-            if (change1.State == EntityState.Modified && change2.State == EntityState.Modified)
-            {
-                _context.SaveChanges();
-                result = 0;
-            }
-            else
-            {
-                result = 4;
-            }
-            return result;
+            _context.SaveChanges();
+            return 0;
         }
 
         public async Task<int> verifyWishlistEntry(int sid, int cid)
@@ -107,19 +107,21 @@ namespace cRegis.Core.Services
         public Wishlist removeCourseFromStudentWishlist(int sid, int cid)
         {
             Wishlist thisEntry = _context.Wishlist.Find(sid, cid);
-            _context.Wishlist.Remove(thisEntry);
-
-            int lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
-            if (thisEntry.priority < lastPriorityNum)
+            if (thisEntry != null)
             {
-                IOrderedEnumerable<Wishlist> entriesToModify = _context.Wishlist.Where(w => w.studentId == sid && w.priority > thisEntry.priority).ToList().OrderBy(w => w.priority);
-                foreach (Wishlist entry in entriesToModify)
+                _context.Wishlist.Remove(thisEntry);
+                int lastPriorityNum = _context.Wishlist.Where(w => w.studentId == sid).Max(w => w.priority);
+                if (thisEntry.priority < lastPriorityNum)
                 {
-                    entry.priority = entry.priority - 1;
-                    _context.Wishlist.Update(entry);
+                    IOrderedEnumerable<Wishlist> entriesToModify = _context.Wishlist.Where(w => w.studentId == sid && w.priority > thisEntry.priority).ToList().OrderBy(w => w.priority);
+                    foreach (Wishlist entry in entriesToModify)
+                    {
+                        entry.priority = entry.priority - 1;
+                        _context.Wishlist.Update(entry);
+                    }
                 }
+                _context.SaveChanges();
             }
-            _context.SaveChanges();
             return thisEntry;
         }
 
